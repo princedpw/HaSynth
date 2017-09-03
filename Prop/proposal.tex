@@ -1,0 +1,140 @@
+\newif\ifdraft\drafttrue
+\newif\ifjnf\jnffalse
+
+\makeatletter \@input{config} \makeatother
+
+
+\documentclass[11pt]{article}
+
+
+\ifjnf
+\usepackage[no-math]{fontspec}
+\defaultfontfeatures{Scale=MatchLowercase,Mapping=tex-text}
+\setmainfont{Times New Roman}
+\else
+\usepackage{times}
+\fi
+
+\usepackage[margin=1in,includefoot]{geometry}
+
+\usepackage{color}
+\usepackage{xspace}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{syntax}
+\usepackage{url}
+\usepackage{xspace}
+\usepackage{fancyhdr}
+\usepackage{listings}
+%% \lstset{
+%%   language=[Objective]Caml,
+%%   basicstyle=\small\upshape\ttfamily,
+%%   framexleftmargin=1ex,
+%%   framexrightmargin=1ex,
+%%   showstringspaces=false,
+%%   commentstyle=\itshape\rmfamily,
+%%   columns=flexible,
+%%   stringstyle=\ttfamily
+%% }
+\usepackage{sansmath}
+\usepackage{wrapfig}
+\usepackage{lipsum}
+
+\setlength{\pdfpagewidth}{\paperwidth}
+\setlength{\pdfpageheight}{\paperheight}
+\setlength{\textheight}{8.7in}
+\setlength{\footskip}{0.3in}
+\pagestyle{fancy} 
+
+% Creates a display mode for code in sans serif font
+\lstnewenvironment{mylisting}[1][]
+  {\lstset{%
+    mathescape,
+    basicstyle=\small\ttfamily,
+    aboveskip=5pt,
+    belowskip=5pt,
+    columns=flexible,
+    xleftmargin=1em,#1}\sansmath}
+  {}
+% end
+
+
+%% % saves space for bullet lists
+%% \newenvironment{smallItems}{
+%% \vspace{-8pt}
+%% \begin{itemize}
+%%   \setlength{\leftmargin}{0pt}
+%% %  \setlength{\itemindent}{-10pt}
+%% %  \setlength{\listparindent}{-50pt}
+%%   \setlength{\itemsep}{1pt}
+%%   \setlength{\parskip}{0pt}
+%%   \setlength{\parsep}{0pt}
+%% }{\end{itemize}\vspace{-6pt}}
+
+%% \newenvironment{smallEnums}{
+%% \vspace{-8pt}
+%% \begin{enumerate}
+%%   % \setlength{\itemindent}{-10pt}
+%%   \setlength{\itemsep}{1pt}
+%%   \setlength{\parskip}{0pt}
+%%   \setlength{\parsep}{0pt}
+%% }{\end{enumerate}\vspace{-6pt}}
+
+%% \newcommand{\Para}[1]{{\vspace{0.03in}\noindent \bf {#1}}}
+
+% Definitions
+
+\input{defs}
+
+% This PROP
+
+\newcommand{\mytitle}{Language Support for Resourceful Synthesis of Data and Control Structures}
+\newcommand{\myname}{Fisher \& Walker}
+
+\lfoot{\small{\myname, \emph{\mytitle}}}
+\cfoot{}
+\rfoot{\small{\thepage}}
+\lhead{}
+\chead{}
+\rhead{}
+\renewcommand{\headrulewidth}{0pt} 
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+\begin{document}
+
+
+% \newpage
+
+%\thispagestyle{empty}
+%\input{summary}
+
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\begin{centering}
+\section*{{\Large CCF:Small:Collaborative Research: \\ Language Support for Resourceful Synthesis of Data Representations and Control Structures} \\
+   {\normalsize Kathleen Fisher (Tufts) and David Walker (Princeton)} }
+\end{centering}
+
+\makeatletter
+\renewcommand{\paragraph}{%
+  \@startsection{paragraph}{4}%
+  {\z@}{0.5ex \@plus 0.5ex \@minus .2ex}{-1em}%
+  {\normalfont\normalsize\bfseries}%
+}
+\makeatother
+
+\input{body}
+
+\newpage
+
+\setcounter{page}{1}
+\bibliographystyle{abbrv}
+\bibliography{references}
+
+\newpage
+
+\end{document}

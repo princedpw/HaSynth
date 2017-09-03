@@ -1,0 +1,157 @@
+% Note: must be in third person, must reflect both ``intellectual
+% merit and broader impact'' of the proposal.  ``objectives and
+% methods''
+
+%% From the NSF: The proposal must contain a summary of the proposed
+%% activity suitable for publication, not more than one page in
+%% length.  It should not be an abstract of the proposal, but rather a
+%% self-contained description of the activity that would result if the
+%% proposal were funded.  The summary should be written in the third
+%% person and include a statement of objectives and methods to be
+%% employed.  It must clearly address in separate statements (within
+%% the one-page summary): (1) the intellectual merit of the proposed
+%% activity; and (2) the broader impacts resulting from the proposed
+%% activity.  (See Chapter III for further descriptive information on
+%% the NSF merit review criteria.)  It should be informative to other
+%% persons working in the same or related fields and, insofar as
+%% possible, understandable to a scientifically or technically
+%% literate lay reader.  Proposals that do not separately address both
+%% merit review criteria within the one page Project Summary will be
+%% returned without review.
+
+%% State the "objectives", "goals" or "challenges" of this work
+
+\documentclass[12pt]{article}
+
+\topmargin=-0.5in
+\oddsidemargin=0in
+\evensidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+
+\usepackage{color}
+\usepackage{xspace}
+
+\newcommand{\Propane}{{\sc Propane}\@\xspace}
+\newcommand{\Name}{{\sc Butane}\@\xspace}
+
+\begin{document}
+\setcounter{page}{1}
+
+ \begin{large}
+\begin{center}
+CCF:Small:Collaborative Research: \\
+Language Support for Resourceful Synthesis of Data and Control Structure
+\end{center}
+\end{large}
+
+\noindent
+\textbf{Overview:} 
+Surveys of network operators have shown that human error during
+network configuration and update is one of the major causes of network
+downtime.  
+%% One fundamental reason for these misconfigurations is the
+%% mismatch between the intended high-level
+%% policies of operators and the low-level, device-by-device configurations
+%% that implement them.  On the one hand, most routing policies involve
+%% network-wide properties:  never announce a particular destination externally, isolate two subnetworks from one another, prefer traffic through a transit customer over a transit provider, etc.
+%% On the other hand, these policies must be implemented via hundreds of low-level configuration directives at each individual router in the network. 
+%% As a result, errors range from simple consistency issues (community values do not match) to more subtle scenarios (misconfigured ACLs causing intermittent disconnectivity).  Moreover, networks networks must continue to function properly when node and link failures occur---a near impossible task when reasoning
+%% about network behavior without automated help. 
+In response, researchers have proposed several
+high-level abstractions for programmatic network control, as well
+as compiler algorithms that synthesize the nitty-gritty details
+of router configurations.  The PIs' recent work on \Propane 
+(SIGCOMM 2016 Best Paper Award) is promising in this regard
+as it allows users to describe end-to-end paths for intra- and
+inter-domain routing, as well as backup paths in the case of 
+failure.  Unfortunately, many barriers to practical deployment of \Propane
+and related technologies persist as current languages are insufficiently
+expressive, lack tools that make their outputs intelligible, 
+provide no help migrating legacy configurations to new models, and
+do not admit incremental deployment.
+%(1) they are insufficiently \emph{expressive},
+%lacking abstractions that match operator cognitive models; (2) their
+%output configurations are insufficiently \emph{intelligeable}, preventing
+%operators from auditing or debugging their outputs; (3) they provide
+%no tools to help \emph{migrate} from legacy configurations to new
+%abstractions; and (4) they do not admit \emph{incremental deployment}.
+
+\noindent\textbf{Keywords:} network programming languages;
+domain-specific programming languages; program synthesis; 
+network verification; network management; inter-domain routing
+
+\noindent
+\textbf{Intellectual Merit:} 
+The goal of this project is to 
+{\em surmount the technical challenges that impede practical 
+deployment of high-level network abstractions}.  We will demonstrate
+our advances by building on \Propane and delivering a new system \Name, which
+will exhibit:  
+\begin{enumerate}
+\item {\bf New topological abstractions}:  Users will be able to declare device 
+\emph{roles} (\emph{e.g.}, top-of-rack switch)
+and the \emph{connectivity invariants} related to them.  A new compiler
+will verify safety properties of policies in the presence of such 
+declarations and generate parameterized \emph{templates}
+that make compiler outputs more \emph{intelligible} for operators.  
+\item {\bf Costs and contracts for inter-domain transit:}
+Users will specify 
+\emph{financial contracts} that govern transit
+costs using a new declarative language and our compiler will
+optimize routes automatically by generating refined policies that meet objectives.
+\item {\bf Back-end diversity:}  We will develop algorithms that
+can synthesize and exploit the benefits of heterogenous back-ends 
+involving BGP, OSPF, OpenFlow and P4.
+%In order to give users access to
+%the benefits of performance properties of different protocols,
+%we will develop algorithms that synthesize configurations employing a 
+%combination of \emph{inter-domain routing} protocols such as BGP 
+%and \emph{intra-domain routing protocols} such as OSPF and RIP as well
+%as OpenFlow and P4. 
+\item {\bf Migration technology:} We will develop
+tools that will help network operators \emph{infer} 
+new high-level configurations from existing low-level configurations
+and to \emph{verify} that new configurations are equivalent to old ones.
+\item {\bf Mixed operation and verification:} We will support mixed
+legacy- and \Name-managed network operations so engineers can
+migrate their networks slowly over time and test partial deployment on
+small fractions of their live traffic.
+\end{enumerate}
+
+\noindent
+\textbf{Broader Impacts:} 
+%Our economy, businesses, governmental and 
+%military infrastructure all depend upon having networks that function
+%reliably. This proposal will tackle the technical challenges that
+%prevent deployment of high-level programming abstractions capable
+%of improving network reliability.  In addition, 
+We will 
+\emph{work with
+operators of two major clouds}, Microsoft Azure and Google,
+to identify the pragmatic barriers to adoption, evaluate our proposed solutions using the policies of real industrial networks, and deploy our system where possible.   We will also engage in more general \emph{industry outreach}
+by organizing a workshop under
+the umbrella of the newly-formed
+Cornell-Princeton Center for Network Programming (CNP).
+% in which 
+%academics and industrial researchers exchange problems, solutions,
+%ideas and contact information.  
+Our \emph{educational plan} involves
+developing a new curriculum at UCLA with the aim of producing
+future network engineers with interdisciplinary skills in verification
+and programming languages.  
+We will also work to provide both
+graduate and undergraduate
+\emph{under-represented minorities} research opportunities as we
+have successfully done in the past.
+
+
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "proposal.tex"
+%%% TeX-PDF-mode: t
+%%% End:

@@ -1,0 +1,27 @@
+% COMMENTS
+
+\newcommand{\comment}[1]{}
+
+\definecolor{pennred}{RGB}{149,0,26}
+\definecolor{cornellred}{RGB}{196,18,48}
+\definecolor{princetonorange}{RGB}{255,143,0}
+\definecolor{tmlblue}{RGB}{0,58,120}  % tml == Toronto Maple Leafs
+\definecolor{brownbrown}{RGB}{121,37,0}
+
+\newcommand{\finish}[1]{\ifdraft#1\else\fi}
+\newcommand{\dpw}[1]{\finish{\textcolor{tmlblue}{[#1 --DPW]}}} 
+\newcommand{\tdm}[1]{\finish{\textcolor{pennred}{[#1 --TDM]}}} 
+
+% Abbreviations
+
+\def\eg{\emph{e.g.\@\xspace}}
+\def\ie{\emph{i.e.\@\xspace}}
+\def\etc{\emph{etc.\@\xspace}}
+\def\etal{\emph{et\ al.\@\xspace}}
+
+% Definitions
+
+\newcommand{\Propane}{{\sc Propane}\@\xspace}
+\newcommand{\Name}{{\sc Butane}\@\xspace}
+
+\newcommand{\cd}[1]{\lstinline[backgroundcolor=\color{white}]$#1$}

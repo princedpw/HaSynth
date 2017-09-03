@@ -1,0 +1,414 @@
+\documentclass[11pt]{article}
+        % Use font 11pt Roman.
+%\documentstyle{article}
+
+\usepackage{url}
+
+%\def\references{\newpage\section*{References}}
+%\newcounter{refcount}
+%\def\lit#1{~[\ref{#1}]}
+%\def\cit#1#2#3#4{#1\quad#2\quad{\it #3}\quad #4\vskip.15in }
+%\def\citb#1#2#3{#1\quad{\it #2}.\quad#3.}
+%\def\citu#1#2{#1\quad#2.}
+
+\newcommand{\comment}[1]{}
+
+
+% No header or foot; top 2.0in, left 0.6in, right 0.9in, bottom 0.5in
+
+%\pagestyle{empty}
+%\topmargin=-.5in
+%\textheight=8.8in
+%\leftmargin=-1.0in
+%\oddsidemargin=.25in
+%\oddsidemargin=.25in
+%\textwidth=6.2in
+
+\setlength{\textheight}{22.8true cm}
+%\setlength{\textwidth}{15.4true cm}
+\setlength{\textwidth}{15.9true cm}
+\setlength{\oddsidemargin}{.55true cm}
+\setlength{\evensidemargin}{.55true cm}
+\setlength{\topmargin}{-1.0cm}
+\pagestyle{empty}
+
+\newlength{\oldparindent}
+\setlength{\oldparindent}{\parindent}
+\setlength{\parindent}{0pt}
+
+% No indentation at the beginning of paragraphs.
+
+% Don't hyphenate.
+%\hyphenpenalty=10000
+
+
+% Rsection: a resume section environment.
+\newenvironment{Rsection}[1]{
+  \noindent{\bf #1}
+  \begin{list}{}{\topsep=-\parskip
+                 \leftmargin=-0.0in}
+    \item[]
+}{
+  \end{list}
+%  \vspace \baselineskip
+}
+                           
+% Section: a resume section environment.
+\newenvironment{Section}[1]{
+  \centerline{\bf #1}
+  \begin{list}{}{\topsep=-\parskip
+                 \leftmargin=-0.5in}
+    \item[]
+}{
+  \end{list}
+%  \vspace \baselineskip
+}
+
+% edlist: a resume education list environment.
+\newenvironment{edlist}{
+  \begin{list}{}{\topsep=-\parskip
+                 \itemsep=0.5\baselineskip
+                 \leftmargin=0.25in}
+}{
+  \end{list}
+}
+
+
+% edlist2: a resume education list environment.
+\newenvironment{edlist2}{
+  \begin{list}{}{\topsep=-\parskip
+                 \itemsep=0.5\baselineskip
+                 \leftmargin=0.25in
+                 \setlength{\rightmargin}{\leftmargin}
+                 \textwidth=4in}
+}{
+  \end{list}
+}
+                           
+
+% honorlist: a resume honor list environment.
+\newenvironment{honor2list}{
+  \begin{list}{}{\topsep=-\parskip
+                 \itemindent=-0.in
+                 \itemsep=0.0\baselineskip
+                 \leftmargin=.25in}
+}{
+  \end{list}
+}  
+
+\newenvironment{honor2enum}{
+  \begin{enumerate}{}{\topsep=-\parskip
+                 \itemindent=-0.in
+                 \itemsep=0.0\baselineskip
+                 \leftmargin=.25in}
+}{
+  \end{enumerate}
+}  
+
+\newenvironment{honor3enum}{
+  \begin{enumerate}{}{\topsep=-\parskip
+                 \itemindent=-0in
+                 \itemsep=0.0\baselineskip
+                 \leftmargin=.25in}
+}{
+  \end{enumerate}
+}  
+
+
+
+% honorlist: a resume honor list environment.
+\newenvironment{honorlist}{
+  \begin{list}{}{\topsep=-\parskip
+                 \itemindent=-0.in
+                 \itemsep=0.2\baselineskip
+                 \leftmargin=.25in}
+}{
+  \end{list}
+}  
+
+
+% joblist: a resume job list environment.
+\newenvironment{joblist}{
+  \begin{list}{}{\topsep=-\parskip
+                 \itemsep=0.5\baselineskip
+                 \leftmargin=0.5in}
+}{
+  \end{list}
+}
+
+                                      
+% job: a job entry for a joblist environment
+\newcommand{\job}[3]{
+  \item[]
+  \begin{tabbing}
+    \hspace{-0.5in}\=\hspace{1.5in}\=\kill
+    \>    {\it #1:}       \> #2   \\
+    \>                    \> #3   \\
+  \end{tabbing}
+  \vspace{-\baselineskip}
+}
+
+              
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\leftmargin=-1in
+\begin{document}
+
+
+\centerline{\Large \bf {\LARGE \bf D}AVID {\LARGE \bf W}ALKER}
+\vskip .3in
+
+\normalsize
+\it
+\begin{tabular}{@{\hspace{0in}}l@{\hspace{1.4in}}l}
+35 Olden Street   & Phone: (609) 258--7654  \\
+Princeton University   & Email: {\rm dpw@cs.princeton.edu} \\
+Princeton, NJ 08544
+
+\end{tabular}
+\rm
+\vskip.3in
+
+\begin{Rsection}{\Large \bf {Professional Preparation}}
+\vskip.1in
+\begin{edlist}
+
+\item {\bf Queens University, Kingston, Ontario, Canada }
+  \begin{honor2list}
+  \item {Computer Science, B.Sc. Honors, 1995.}  
+
+  \end{honor2list}
+\item {\bf Cornell University, Ithaca, NY, US}
+\begin{honor2list}
+\item {Computer Science, M.S. 1999.}
+\item {Computer Science, Ph.D. 2001.}
+\end{honor2list}
+
+\item {\bf Carnegie Mellon University, Dept. of Computer Science, Pittsburgh, PA, US}
+\begin{honor2list}
+\item Postdoctoral Fellow, Oct. 2000--Oct. 2001
+\end{honor2list}
+\end{edlist}
+\end{Rsection}
+
+
+\vskip.3in
+\begin{Rsection}{\Large \bf {Appointments}}
+\vskip.1in
+%\vskip .05in
+\vspace{-1ex}
+\begin{honor2list}
+\item Full Professor with Tenure, Princeton,  Computer Science, July 2013--Present.
+\item Associate visiting faculty, U. Pennsylvania, Aug 2015--Aug 2016.  
+\item Associate Professor with Tenure, Princeton,  Computer Science, July 2008--June 2013.
+\item Visiting researcher, Microsoft Research Cambridge, UK, Jun 2010--Jul 2010.
+\item Visiting researcher, Microsoft Research Redmond, Sep. 2009--Dec. 2009.  
+\item Assistant Professor, Princeton,  Computer Science, Feb. 2002--July 2008.
+\end{honor2list}
+
+
+
+
+\end{Rsection}
+
+
+\vskip.3in
+\begin{Rsection}{{\Large \bf {Products}} 
+}
+\vskip.1in
+\begin{edlist}
+
+\item {\bf Selected products of greatest relevance}
+\begin{honor2enum}
+\vskip .1in
+
+\item
+Don't Mind the Gap: Bridging Network-wide Objectives and Device-level Configurations. Ryan Beckett, Ratul Mahajan, Todd Millstein, Jitu Padhye and David Walker. ACM SIGCOMM, August 2016.  Winner of a SIGCOMM 2016 best paper award.
+
+\item
+Programming Protocol-independent Packet Processors, Pat Bosshart, Dan Daly, Martin Izzard, Nick McKeown, Jennifer Rexford, Dan Talayco, Amin Vahdat, George Varghese and David Walker.  Computer and Communications Review (CCR).  Volume 44, Issue 3.  July 2014.
+
+\item
+NetKAT: Semantic Foundations for Networks.  Carolyn Jane Anderson, Nate Foster, Arjun Guha, Jean-Baptiste Jeannin, Dexter Kozen, Cole Schlesinger, and David Walker.  ACM SIGPLAN-SIGACT POPL. January 2014.
+
+\item 
+Abstractions for Network Update.  Mark Reittblatt, Nate Foster, Jen Rexford, Cole Schlesinger and David Walker.  ACM SIGCOMM, August 2012.
+
+\item
+Frenetic: A Network Programming Language.  Nate Foster, Rob Harrison, Michael J. Freedman, Christopher Monsanto, Jennifer Rexford, Alec Story and David Walker.  ACM SIGPLAN International Conference on Functional Programming, September 2011.
+
+
+
+%
+
+\end{honor2enum}
+
+\newpage
+\item {\bf Selected other products:}
+\begin{honor2enum}
+
+\item
+Example-Directed Synthesis: A Type-theoretic Interpretation. Jonathan Frankle, Peter-Michael, David Walker, and Steve Zdancewic In ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages (POPL 16), January 2016.
+
+\item 
+Composing Software-Defined Networks.  Chris Monsanto, Josh Reich, Nate Foster, Jen Rexford, and David Walker.  USENIX NSDI, April 2013.  Winner of the NSDI Community Award. 
+
+\item The Next 700 Data Description Languages. Kathleen Fisher, 
+Yitzhak Mandelbaum and David Walker.  Journal of the ACM.  
+Volume 57, Issue 2.  January 2010.
+
+\item Fault-tolerant Typed Assembly Language. Frances Perry, Lester
+Mackey, George A. Reis, Jay Ligatti, David I. August, and David
+Walker.  ACM SIGPLAN PLDI, June 2007.  Winner of the PLDI 2007 Best Paper Award.
+%Nominated as an ACM SIGPLAN CACM "Research Highlight."
+
+\item
+From System F to Typed Assembly Language.  Greg Morrisett, David
+Walker, Karl Crary, and Neal Glew. ACM SIGPLAN-SIGACT POPL,
+January 1998.  Winner of the Most Influential 1998 POPL Paper Award
+(awarded after 10 years reflection at POPL 2008).
+
+
+\end{honor2enum}
+
+\end{edlist}
+\end{Rsection}
+
+
+
+\vskip.3in
+\begin{Rsection}{\Large \bf {Synergistic Activities}}
+\begin{honor2list}
+\vskip .1in
+\begin{itemize}
+\item Member of the Cornell-Princeton Center on Network Programming 
+\begin{itemize}
+\item \url{http://network-programming.org/}
+\end{itemize}
+\item ACM Program Chair 2015; ACM POPL Steering Committee; Program
+committees for POPL, PLDI, ICFP, SOSR and other conferences and 
+workshops over the years.
+\item Associate editor for ACM TOPLAS 2007-2015.
+\item P4 Language Advisory Group: A small group of programming languages
+researchers providing feedback on P4 language design issues
+\item Online courseware in functional programming and programming language
+semantics (see \url{http://www.cs.princeton.edu/~dpw})
+\end{itemize}
+
+
+
+\end{honor2list}
+\end{Rsection}
+\vskip.3in
+
+%% \begin{Rsection}{\Large \bf {Collaborators and Other Affiliations}}
+%% \begin{itemize}
+%% \vskip .1in
+%% \item Current Collaborators and Co-Editors (Outside Princeton) (Total=14): 
+%% %Andrew Appel (Princeton),
+%% %Zena Ariola (U of Oregon),
+%% %Pat Bosshart (Barefoot Networks),
+%% %Matthew Caesar (UIUC),
+%% %Lujo Bauer (Carnegie Mellon),
+%% %Iliano Cervesato (Tulane),
+%% %Karl Crary (Carnegie Mellon University),
+%% %Daniel Dantas (Princeton University),
+%% %Dan Daly (Intel),
+%% %Ed Felten (Princeton University),
+%% %Mary Fernandez (AT\&T),
+%% %Nick Feamster (Princeton U),
+%% Kathleen Fisher (Tufts),
+%% Matthew Flatt (Utah),
+%% Nate Foster (Cornell),
+%% %Neal Glew (Intel),
+%% %Arjun Guha (UMass, Amherst)
+%% %Robert Harper (Carnegie Mellon),
+%% %Martin Izzard (Barefoot Networks),
+%% %Trevor Jim (AT\&T),
+%% %Limin Jia (Carnegie Mellon University)
+%% %Eric Keller (University of Colorado),
+%% Dexter Kozen (Cornell),
+%% %Shuvendu Lahiri (Microsoft),
+%% %Jay Ligatti (University of South Florida),
+%% Boon Thau Loo (UPenn),
+%% Ratul Mahajan (Microsoft Research),
+%% Todd Millstein (UCLA),
+%% %Yitzhak Mandelbaum (Google),
+%% %Greg Morrisett (Harvard),
+%% %Frank Pfenning (Carnegie Mellon),
+%% %Shaz Qadeer (Microsoft),
+%% %Jennifer Rexford (Princeton U),
+%% Jitu Padhye (Microsoft Research),
+%% Benjamin Pierce (UPenn)
+%% %Sriram Rajamani (Microsoft),
+%% %Josh Reich (AT\&T),
+%% Gun Sirer (Cornell),
+%% Jonathan Smith (UPenn),
+%% %Nikhil Swamy (Microsoft),
+%% %Fred Smith (MathWorks),
+%% %Frances Spalding (Princeton),
+%% %Dan Talayco (Barefoot Networks),
+%% %Amin Vahdat (Google),
+%% George Varghese (Microsoft),
+%% %Daniel Wang (Princeton),
+%% %Geoffrey Washburn (U of Pennsylvania),
+%% %Kevin Watkins (Carnegie Mellon),
+%% Stephanie Weirich (U of Pennsylvania),
+%% %Matt Welsh (Harvard),
+%% Steve Zdancewic (U of Pennsylvania),
+%% %Kenny Q. Zhu (Shanghai U),
+%% %Ben Zorn (Microsoft)
+
+
+%% \item Graduate Advisors and Postdoctoral Sponsors (Total=3): 
+%% Robert Harper (CMU), Greg Morrisett (Harvard), Frank Pfenning (CMU)
+%% \item Thesis Advisor and Postgraduate-Scholar Sponsors (Last 48 months, Total=3): 
+%% Christian Bell (MIT),
+%% Michael Greenberg (Pomona College), 
+%% Cole Schlesinger (Samsung),
+%% \item Current number of graduate students and postdoctoral scholars: 2
+%% \end{itemize}
+%% \end{Rsection}
+
+
+
+% \iffalse
+% \vskip.3in
+% \begin{Rsection}{\Large \bf {Selected Awards and Fellowships}}
+% \begin{itemize}
+% \vskip .1in
+% \end{itemize}
+% \end{Rsection}
+% \fi
+
+
+
+
+%\newpage
+
+%\newpage
+
+
+
+
+
+%%%%%$$^{\ref{fn:second}}$
+
+
+
+
+
+
+
+%\vskip.3in
+
+
+
+
+\end{document}
+
