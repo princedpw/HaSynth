@@ -33,22 +33,25 @@ let insert eq m key value =
 (**************************)
 
 type dag =
-    Base of tuple
-  | One of link
-  | Two of link * link
-and link = (tuple, dag) map
+    Base of tuple             (* bottom of dag *)
+  | One of link               (* current node has one child *)
+  | Two of link * link        (* current node has two children *)
+and link = (tuple, dag) map   (* in future, could have several kinds of maps
+				 such as hashtable, vectors, etc *)
 
+(* path through a dag *)
 type path =
-    End                                    (* arrive at Base of dag *)
-  | Next tuple * path                      (* take One descendent in dag *)
-  | Left tuple * path | Right tuple * path (* take Left or Right of Two *)
+    End                        (* arrive at tuple stored in dag *)
+  | Next of tuple * path       (* take One descendent in dag *)
+  | Left of tuple * path       (* take Left child of Two *)
+  | Right of tuple * path      (* take Right child of Two *)
 
 let rec read_dag (p:path) (d:dag) : tuple =
   match p, d with
       End, Base t -> t
-    | Next (t1,p1), One link -> read_dag p1 (lookup eq_tuple t1 link)
-    | Left (t1,p1), Two (l,r) -> read_dag p1 (lookup eq_tuple t1 l)
-    | Right (t1,p1), Two (l,r) -> read_dag p1 (lookup eq_tuple t1 r)
+    | Next (t1,p1), One link -> read_dag p1 (lookup eq_tuple link t1)
+    | Left (t1,p1), Two (l,r) -> read_dag p1 (lookup eq_tuple l t1)
+    | Right (t1,p1), Two (l,r) -> read_dag p1 (lookup eq_tuple r t1)
     | _, _ -> error "bad path"
 
 (*****************************************************)
@@ -71,9 +74,9 @@ type rep (cs:ctree) =
 let rec read_dag (cs:ctree) (p:path) (d:rep cs) : tuple =
   match p, cs with
     | End, Base -> d
-    | Next (t1,p1), One cs1  -> read_dag cs1 p1 (lookup eq_tuple t1 d)
-    | Left (t1,p1), Two (csl,csr) -> read_dag p1 (lookup eq_tuple t1 (fst d))
-    | Right (t1,p1), Two (csl,csr) -> read_dag p1 (lookup eq_tuple t1 (snd d))
+    | Next (t1,p1), One cs1  -> read_dag cs1 p1 (lookup eq_tuple d t1)
+    | Left (t1,p1), Two (csl,csr) -> read_dag p1 (lookup eq_tuple (fst d) t1)
+    | Right (t1,p1), Two (csl,csr) -> read_dag p1 (lookup eq_tuple (snd d) t2)
     | _, _ -> error "bad path"
 *)
 
