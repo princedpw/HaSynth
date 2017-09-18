@@ -1,8 +1,8 @@
-all:
-	ghc rep.hs
+graph: graph.ml
+	ocamlbuild graph.d.byte
 
 run:
-	./rep
+	./graph.d.byte
 
 clean:
 	rm -f *.hi *.o
