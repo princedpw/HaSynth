@@ -150,7 +150,26 @@ let query (t:dcomp_t) (q:query) (d:dcomp) : dcomp =
   let p = * : path where (fun p -> good_pq p q && good_pd p t) in
   query t p d
 
+=========
 
+The good thing about the above is that the query function hides the complexity
+of what is a "good" path and how to allocate the path from the user.
+The bad is that I was thinking that each syntactic occurrence of * gives you 1 symbolic
+value (ie:  you get 1, not 1 for each time the code is executed)
 
+An alternate possibility is you allocate the * in the client.  But then you
+need a general "assert" function.  And you also have to reveal to the client that
+you are doing some kind of symbolic search, which is not so good.  See here:
+
+query t (SrcDst (n1,n2)) e ( * ) in
+
+Here's a query function:
+
+let query (t:dcomp_t) (q:query) (d:dcomp) (p: path) =
+  assert (fun p -> good_pq p q && good_pd p t) p in
+  query t p d
+
+Perhaps the query function just needs to be a macro so it is unfolded many times --
+once for each use in the source file at compile time.
 
 *)
