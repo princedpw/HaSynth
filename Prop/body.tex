@@ -1,6 +1,71 @@
 \section{Introduction}
 
-need a cite \cite{frenetic}
+One of the most challenging aspects of software engineering is
+optimizing and performance-debugging one's programs.  \dpw{Explain
+how one does performance debugging and what is involved
+(found this:  \url{http://www.brendangregg.com/linuxperf.html})  Explain
+why it is hard.  Cite evidence.
+Note that the advent of big data makes this more important than ever 
+\em{today}.  Small
+changes in performance mean changes in power and lots of money.  Explain that
+the same program or same library can have different performance results 
+and require different implementations depending on the
+environment.  Perhaps bring in past experience with Hancock and explain
+the programmer productivity bottlenecks in that context.  Ideally some data about Hancock
+might be nice. }
+
+One way to tackle these problems effectively is to use a \emph{Centaur}-based 
+approach to programming~\cite{centaur}.  The ``modern centaur'' is 
+part human and part machine, and it exploits the strengths of each.
+Typically, the human supplies general knowledge of the external world,
+specific knowledge of the problem domain, and life experience.  The
+computer supplies the ability to test hypotheses rapidly and reliably,
+to search through large spaces rapidly.
+When it comes to performance debugging, the human's role is to describe
+the set of possible implementations without concern for how these implementations
+perform; the machine uses its computational power to search through the space of 
+implementations to find the best-performing one for the current environment.
+
+Indeed, researchers have already developed solutions to a variety of specific problems
+using this technique.  For instance, ... Representation Synthesis, AutoBahn, implicit
+parallelism, super-optimization via stochastic search ...
+
+However, each of the above systems was built from scratch --- a substantial undertaking
+that can only be achieved by experts willing to build their own new languages and
+compilers, or to dig into the internals of existing languages.  The goal of
+this proposal is to design and implement a platform for resource-aware program
+synthesis.  This platform will ask users to define:
+
+\begin{enumerate}
+\item new domain-specific abstractions for use by client programs
+\item the (possibly infinite) space of implementations of each abstraction
+\item a cost model
+\item a search strategy to navigate the space of implementations
+\item data to focus optimization
+\end{enumerate}
+
+The first 4 items need only be defined once ---they form a
+\emph{resource-aware synthesis module}.  The last item allows
+different clients to optimize for different environements.
+
+For example, to implement Hawkin's et al.'s representation synthesis engine, the
+engineer defining the resource-aware synthesis module would
+specify:
+
+\begin{enumerate}
+\item an interface with functions to insert, delete and look up records in a database
+\item a description of the implementations, which will be in terms of key-value maps,
+including, for instance, a hash table, a list and a vector implementation
+\item the cost model is simply the running time
+\item the search strategy is brute force enumeration
+\end{enumerate}
+
+Then users of that module could supply example data/programs and re-optimize for
+their environment.
+
+
+
+
 
 %\begin{figure}[t]
 %% \begin{wrapfigure}{R}{0.4\textwidth}
@@ -36,11 +101,11 @@ need a cite \cite{frenetic}
     \begin{minipage}{0.5\textwidth}
         \centering
 \begin{mylisting}
- 1. hi
- 2. bi
+ 1. random
+ 2. code
 \end{mylisting}
-        \caption{Data Center Policy}
-        \label{fig:policy}
+        \caption{Random Figure}
+        \label{fig:random}
     \end{minipage}
 \end{figure}
 
