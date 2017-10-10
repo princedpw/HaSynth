@@ -5,21 +5,38 @@ optimizing and performance-debugging one's programs.  }
 
 
 When writing robust software, functional correctness is only the
-beginning.  High-quality code also needs to make savvy use of resources.
-In modern computer systems, there are many implementation
-choices, and the best choice depends upon many factors that may be
+beginning.  High-quality code also needs to make savvy use of
+resources.  In modern computer systems, there are many implementation
+choices, and the best choices depend upon many factors that may be
 only poorly understood by programmers.  Examples of such factors
-include the difficult-to-predict effects of 
-hardware and/or software caches, 
-jit compilers, 
-the changing needs of dynamic workloads, and
-implementations of lazy language features.
+include difficult-to-predict effects of hardware and/or software
+caches, jit compilers, the changing needs of dynamic workloads, and
+implementations of lazy language features.   
+
+
+Overly Specialized.
+Even if programmers were able to figure out at a particular point in
+time how to get optimal performance on a particular machine with a
+particular compiler on a particular set of workloads, such codes are
+unlikely to be robust as the hardware/software/workload system
+co-evolves.
+
+
+Premature commitments. 
 Library writers face particuarly daunting challenges as the
 appropriate implementation choices may depend crucially on information
-not available until the library is used.  Exposing different API
-calls, for example as Haskell's JSON parsing library does, is a
-brittle and clumsy mechanism for allowing users to customize
-performance. 
+not available until the library is used.  Exposing different API calls
+for different workloads, for example as Haskell's JSON parsing library
+does, is a brittle and clumsy mechanism for allowing users to
+customize performance.
+
+A different approach to building robust performant systems is to allow
+programmers to specify the required functionality of a given piece of
+a system \textit{but not the implementation}.  
+Instead, the programmer specifies a search space of implementations
+and a cost model.   
+
+
 
   good example: database systems. 
 
@@ -28,6 +45,21 @@ Possible solution: centaur-based approach.
 
 Somewhere we need to mention combination of static and dynamic methods
 and argue for why static methods alone are likely to be insufficient.
+
+Goals:
+  - help user find programs that are correct and resource-savvy for
+  relevant workloads.  ``performance auto-tuning''
+  - help user write programs that are robust with respect to workload
+  changes.  Devise an infrastructure that allows programmers to specify their
+  intent at a high level, and then synthesize a performant
+  implementation.  This approach means the system can resynthesize a
+  different implementation in response to changes in workload while
+  leaving the high-level logic of the program unchanged.  
+  - help user find inputs on which current implementation exhibits
+  poor resource utlization.  annoying/unsuable and security
+  vulnerability as attackers can use these inputs to create denial of
+  service attacks. 
+
 
 \dpw{Explain
 how one does performance debugging and what is involved
@@ -94,19 +126,6 @@ Then users of that module could supply example data/programs and re-optimize for
 their environment.
 
 
-Goals:
-  - help user find programs that are correct and resource-savvy for
-  relevant workloads.  ``performance auto-tuning''
-  - help user write programs that are robust with respect to workload
-  changes.  Devise an infrastructure that allows programmers to specify their
-  intent at a high level, and then synthesize a performant
-  implementation.  This approach means the system can resynthesize a
-  different implementation in response to changes in workload while
-  leaving the high-level logic of the program unchanged.  
-  - help user find inputs on which current implementation exhibits
-  poor resource utlization.  annoying/unsuable and security
-  vulnerability as attackers can use these inputs to create denial of
-  service attacks. 
 
 
 
