@@ -1,8 +1,35 @@
 
 \section{Introduction}
+\dpw{One of the most challenging aspects of software engineering is
+optimizing and performance-debugging one's programs.  }
 
-One of the most challenging aspects of software engineering is
-optimizing and performance-debugging one's programs.  \dpw{Explain
+
+When writing robust software, functional correctness is only the
+beginning.  High-quality code also needs to make savvy use of resources.
+In modern computer systems, there are many implementation
+choices, and the best choice depends upon many factors that may be
+only poorly understood by programmers.  Examples of such factors
+include the difficult-to-predict effects of 
+hardware and/or software caches, 
+jit compilers, 
+the changing needs of dynamic workloads, and
+implementations of lazy language features.
+Library writers face particuarly daunting challenges as the
+appropriate implementation choices may depend crucially on information
+not available until the library is used.  Exposing different API
+calls, for example as Haskell's JSON parsing library does, is a
+brittle and clumsy mechanism for allowing users to customize
+performance. 
+
+  good example: database systems. 
+
+Possible solution: centaur-based approach.  
+
+
+Somewhere we need to mention combination of static and dynamic methods
+and argue for why static methods alone are likely to be insufficient.
+
+\dpw{Explain
 how one does performance debugging and what is involved
 (found this:  \url{http://www.brendangregg.com/linuxperf.html})  Explain
 why it is hard.  Cite evidence.
@@ -21,7 +48,7 @@ One way to tackle these problems effectively is to use a \emph{Centaur}-based
 approach to programming~\cite{centaur}.  The ``modern centaur'' is 
 part human and part machine, and it exploits the strengths of each.
 Typically, the human supplies general knowledge of the external world,
-specific knowledge of the problem domain, and life experience.  The
+specific knowledge of the problem domain, and intuition derived from life experience.  The
 computer supplies the ability to test hypotheses rapidly and reliably,
 to search through large spaces rapidly.
 When it comes to performance debugging, the human's role is to describe
@@ -48,11 +75,11 @@ synthesis.  This platform will ask users to define:
 \end{enumerate}
 
 The first 4 items need only be defined once ---they form a
-\emph{resource-aware synthesis module}.  The last item allows
+\emph{resource-aware synthesis plug-in}.  The last item allows
 different clients to optimize for different environements.
 
 For example, to implement Hawkin's et al.'s representation synthesis engine, the
-engineer defining the resource-aware synthesis module would
+engineer defining the resource-aware synthesis plug-in would
 specify:
 
 \begin{enumerate}
@@ -67,6 +94,19 @@ Then users of that module could supply example data/programs and re-optimize for
 their environment.
 
 
+Goals:
+  - help user find programs that are correct and resource-savvy for
+  relevant workloads.  ``performance auto-tuning''
+  - help user write programs that are robust with respect to workload
+  changes.  Devise an infrastructure that allows programmers to specify their
+  intent at a high level, and then synthesize a performant
+  implementation.  This approach means the system can resynthesize a
+  different implementation in response to changes in workload while
+  leaving the high-level logic of the program unchanged.  
+  - help user find inputs on which current implementation exhibits
+  poor resource utlization.  annoying/unsuable and security
+  vulnerability as attackers can use these inputs to create denial of
+  service attacks. 
 
 
 
