@@ -219,10 +219,16 @@ is to make it easier to build and adapt optimizing extensions like
 Autobahn and others, and to allow ordinary programmers, rather than 
 compiler experts to do so.  
 
-\subsection{Autobahn via resource-aware synthesis}
-
-\paragraph{Simple Synthetic Plug-ins.} 
+\subsection{Autobahn via \rsynth}
 \label{sec:autobahn}
+
+Figure~\ref{fig:autobahn-via-synthesis} sketches an example of a synthetic 
+language plug-in designed to implement Autobahn and Figure~\ref{fig:autobahn-client} sketches a client program that uses this language plug-in.  These two 
+figures present
+several technical elements of proposed design:  \emph{typed symbolic values}, 
+\emph{symbolic computations}, \emph{search strategies}, language directives to
+\emph{synthesize} optimal code from example data, language directives to
+find possible \emph{performance vulnerabilities}. 
 
 \begin{figure}[t]
     %% \centering
@@ -292,21 +298,34 @@ Can ``?'' be a part of an identifier in Haskell?
         
 \centering
 \begin{mylisting}
-#lang Autobahn
+#lang Autobahn    -- use language extensions
 
 -- application code
-main x = ...
+component x = ...
 
 -- generate optimal program using Autobahn search strategy
--- example data main 0, ... main n
-synthesize [main 0, main 1, main 2, ... main n]
+-- example data component 0, ... component n
+#synthesize [component 0, component 1, ... component n]
+
+-- generate possible performance vulnerabilities for 
+#vulnerabilities component
 \end{mylisting}
 \caption{Autobahn client program.}
 \label{fig:autobahn-client}
 %%\end{minipage}
 \end{figure}
 
-\section{Symbolic Types}
+\paragraph*{Symbolic values}
+
+\paragraph*{Strategies}
+
+\paragraph*{Synthesis}
+
+\paragraph*{Performance Vulnerabilities}
+
+
+
+\section{Representation synthesis via \rsynth}
 \label{sec:eval}
 
 \section{Evaluation}
