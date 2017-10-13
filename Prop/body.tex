@@ -242,33 +242,32 @@ find possible \emph{performance vulnerabilities}.
         
 \centering
 \begin{mylisting}
-#lang Autobahn
+{-# LANGUAGE Synthesis DEFINING Autobahn -}
 
--- define symbolic values
+-- a vector of symbolic booleans -- one per occurrence of gen* in the source code
 symbolic gen* :: bool
 
--- define search strategy for symbolic values
-strategy gen* = 
-  genetic { diversityRate = 0.4
-            , numGenerations = 20
-            , populationSize = 15
-            , archiveSize = 7
-            , mutateRate = 0.2
-            , mutateProb = 0.2
-            , crossRate = 0.8
-            , numFitnessRuns = 4 }
-
--- define search space using symbolic values
-eval? :: 'a -> 'a
+-- define the space of possible implementations
 eval? e =
   if gen* then
     !e
   else
     e
 
--- define syntax extension, which uses eval? to eager evaluate appropriate
--- function applications
-syntax extension ...
+-- rewrite syntax to use eval? at each functional application
+map\_syntax (\Apply(e1,e2) -> Apply(e1, Apply-inline (eval?, e2)))
+
+-- define the search strategy for the vector gen*
+{-# STRATEGY gen* = 
+              genetic { diversityRate = 0.4
+                      , numGenerations = 20
+                      , populationSize = 15
+                      , archiveSize = 7
+                      , mutateRate = 0.2
+                      , mutateProb = 0.2
+                      , crossRate = 0.8
+                      , numFitnessRuns = 4 }
+-}
 \end{mylisting}
 \caption{Autobahn via resource-aware program synthesis.  
 \dpw{Kathleen, I would like to make this look syntactically
@@ -298,17 +297,16 @@ Can ``?'' be a part of an identifier in Haskell?
         
 \centering
 \begin{mylisting}
-#lang Autobahn    -- use language extensions
+{-# LANGUAGE Autobahn -}    -- use the Autobahn extension
 
--- application code
+-- ordinary application code;  function applications may or may not be strict, as synthesized
 component x = ...
 
--- generate optimal program using Autobahn search strategy
--- example data component 0, ... component n
-#synthesize [component 0, component 1, ... component n]
+-- generate optimal program using example data component 0, ..., component n
+{-# SYNTHESIZE "mycomponent" [component 0, component 1, ..., component n] "dir/code" -}
 
--- generate possible performance vulnerabilities for 
-#vulnerabilities component
+-- generate performance vulnerabilities report
+{-# VULNERABILITIES "mycomponent" "report.txt" -}
 \end{mylisting}
 \caption{Autobahn client program.}
 \label{fig:autobahn-client}
