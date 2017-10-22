@@ -62,10 +62,18 @@ workloads to cope with the fact that purely analytic approaches are
 unlikely to be able to faithfully model resource utilization.
 
 Researchers have already developed solutions to a variety of specific problems
-using this technique.  For instance, ... Representation Synthesis, AutoBahn, implicit
-parallelism, super-optimization via stochastic search ...
-Indeed, database systems can be seen as another example of this
-approach.
+using this technique.  
+For instance, Hawkins \etal{} used this approach to synthesize
+performant implementations of relational tables~\cite{data-rep-synth} 
+and corresponding concurrency controls~\cite{conc-data-rep-synth}.
+Trella and Runciman use it to improve the performance of implicit parallel
+Haskell programs~\cite{implicit-parallel}, while
+Wang \etal{}'s \textsc{AutoBahn} system uses it to generate bang
+annotations to improve the runtime or memory utilization of Haskell
+programs~\cite{autobahn}.  Schkufza \etal{}'s \textsc{Stoke} system
+uses it to perform super-optimization via stochastic search, finding
+sequences of assembly language programs that outperform optimizing
+compilers and even hand-written codes~\cite{stochastic-superopt}.
 
 However, each of the above systems was built from scratch --- a substantial undertaking
 that can only be achieved by experts willing to build their own new languages and

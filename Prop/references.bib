@@ -14,6 +14,8 @@
 
 @String{ pldi = "{PLDI}" }
 
+@String{ asplos = "{ASPLOS}" }
+
 @String{ pods = "{PODS}" }
 
 @String{ jacm = "Journal of the {ACM}" }
@@ -35,6 +37,8 @@
 @String{ haskellworkshop = "{ACM SIGPLAN} {H}askell Workshop" }
 
 @String{ haskellworkshop = "{H}askell Workshop" }
+
+@String{ haskellsymposium = "{Haskell Symposium}" }
 
 @String{ oopsla = "{ACM} Conference on Object-oriented Programming, Systems, Languages, and Applications" }
 
@@ -1510,7 +1514,7 @@ Availability of Networks},
 @Misc{centaur,
   key = 	 {Stefik},
   author = 	 {},
-  title = 	 {Half-human, half-computer?  Meet the {Modern Centaur}},
+  title = 	 {Half-human, half-computer?  {M}eet the {Modern Centaur}},
   howpublished = {http://blogs.parc.com/2017/01/half-human-half-computer-meet-the-modern-centaur/},
   month = 	 jan,
   year = 	 2017,
@@ -1525,3 +1529,52 @@ Availability of Networks},
  publisher = {ACM},
  address = {New York, NY, USA},
 } 
+
+
+@inproceedings{data-rep-synth,
+ author = {Hawkins, Peter and Aiken, Alex and Fisher, Kathleen and Rinard, Martin and Sagiv, Mooly},
+ title = {Data Representation Synthesis},
+ booktitle = {PLDI},
+ year = {2011},
+ pages = {38--49},
+ url = {http://doi.acm.org/10.1145/1993498.1993504}
+}
+
+@inproceedings{conc-data-rep-synth,
+ author = {Hawkins, Peter and Aiken, Alex and Fisher, Kathleen and Rinard, Martin and Sagiv, Mooly},
+ title = {Concurrent Data Representation Synthesis},
+ booktitle = {PLDI},
+ year = {2012},
+ pages = {417--428},
+ url = {http://doi.acm.org/10.1145/2254064.2254114},
+}
+
+@inproceedings{autobahn,
+ author = {Wang, Yisu Remy and Nunez, Diogenes and Fisher, Kathleen},
+ title = {Autobahn: {Using} Genetic Algorithms to Infer Strictness Annotations},
+ booktitle = haskellsymposium,
+ year = {2016},
+ pages = {114--126},
+ url = {http://doi.acm.org/10.1145/2976002.2976009},
+} 
+
+@inproceedings{implicit-parallel,
+ author = {Trilla, Jos{\'e} Manuel Calder\'{o}n and Runciman, Colin},
+ title = {Improving Implicit Parallelism},
+ booktitle = haskellsymposium,
+ year = {2015},
+ pages = {153--164},
+ url = {http://doi.acm.org/10.1145/2804302.2804308},
+} 
+
+@inproceedings{stochastic-superopt,
+ author = {Schkufza, Eric and Sharma, Rahul and Aiken, Alex},
+ title = {Stochastic Superoptimization},
+ booktitle = {ASPLOS},
+ year = {2013},
+ pages = {305--316},
+ url = {http://doi.acm.org/10.1145/2451116.2451150},
+} 
+
+
+
