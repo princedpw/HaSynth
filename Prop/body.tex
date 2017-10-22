@@ -1,132 +1,134 @@
 
-\section{Introduction}
-\dpw{One of the most challenging aspects of software engineering is
-optimizing and performance-debugging one's programs.  }
-
-
-When writing robust software, functional correctness is only the
-beginning.  High-quality code also needs to make savvy use of
-resources.  In modern computer systems, there are many implementation
-choices, and the best choices depend upon many factors that may be
-only poorly understood by programmers.  Examples of such factors
-include difficult-to-predict effects of hardware and/or software
-caches, jit compilers, the changing needs of dynamic workloads, and
-implementations of lazy language features.   
-
-
-Overly Specialized.
-Even if programmers were able to figure out at a particular point in
-time how to get optimal performance on a particular machine with a
-particular compiler on a particular set of workloads, such codes are
-unlikely to be robust as the hardware/software/workload system
-co-evolves.
-
-
-Premature commitments. 
-Library writers face particuarly daunting challenges as the
-appropriate implementation choices may depend crucially on information
-not available until the library is used.  Exposing different API calls
-for different workloads, for example as Haskell's JSON parsing library
-does, is a brittle and clumsy mechanism for allowing users to
-customize performance.
-
-A different approach to building robust performant systems is to allow
-programmers to specify the required functionality of a given piece of
-a system \textit{but not the implementation}.  
-Instead, the programmer specifies a search space of implementations
-and a cost model.   
-
-
-
-  good example: database systems. 
-
-Possible solution: centaur-based approach.  
-
-
-Somewhere we need to mention combination of static and dynamic methods
-and argue for why static methods alone are likely to be insufficient.
-
-Goals:
-  - help user find programs that are correct and resource-savvy for
-  relevant workloads.  ``performance auto-tuning''
-  - help user write programs that are robust with respect to workload
-  changes.  Devise an infrastructure that allows programmers to specify their
-  intent at a high level, and then synthesize a performant
-  implementation.  This approach means the system can resynthesize a
-  different implementation in response to changes in workload while
-  leaving the high-level logic of the program unchanged.  
-  - help user find inputs on which current implementation exhibits
-  poor resource utlization.  annoying/unsuable and security
-  vulnerability as attackers can use these inputs to create denial of
-  service attacks. 
-
-
 \dpw{Explain
 how one does performance debugging and what is involved
 (found this:  \url{http://www.brendangregg.com/linuxperf.html})  Explain
 why it is hard.  Cite evidence.
 Note that the advent of big data makes this more important than ever 
 \em{today}.  Small
-changes in performance mean changes in power and lots of money.  Explain that
-the same program or same library can have different performance results 
-and require different implementations depending on the
-environment.  Perhaps bring in past experience with Hancock and explain
+changes in performance mean changes in power and lots of money.  
+Perhaps bring in past experience with Hancock and explain
 the programmer productivity bottlenecks in that context.  Ideally some data about Hancock
 might be nice. 
 DARPA program -- performance attacks.
 }
 
-One way to tackle these problems effectively is to use a \emph{Centaur}-based 
-approach to programming~\cite{centaur}.  The ``modern centaur'' is 
-part human and part machine, and it exploits the strengths of each.
-Typically, the human supplies general knowledge of the external world,
-specific knowledge of the problem domain, and intuition derived from life experience.  The
-computer supplies the ability to test hypotheses rapidly and reliably,
-to search through large spaces rapidly.
-When it comes to performance debugging, the human's role is to describe
-the set of possible implementations without concern for how these implementations
-perform; the machine uses its computational power to search through the space of 
-implementations to find the best-performing one for the current environment.
 
-Indeed, researchers have already developed solutions to a variety of specific problems
+
+\section{Introduction}
+When writing robust software, functional correctness is only the
+beginning.  
+High-quality code also needs to make savvy use of resources.  
+In constructing modern software systems, 
+programmers must make many implementation decisions, but
+the best choices depend upon a complex array of factors that may be
+only partially understandable even to excellent programmers.
+Examples of such factors include the difficult-to-predict effects of 
+concurrency control and parallelization,
+the shifting demands of dynamic workloads,  
+jit compilers, 
+implementations of lazy language features,
+garbage collection,
+hardware and/or software caches, and
+distributing computations across a variety of machines or data
+centers.
+%
+Even if programmers were able to obtain acceptable performance on a
+particular hardware configuration with a particular compiler/runtime 
+on a particular set of workloads, such codes are unlikely to
+be robust as the hardware/software/workload system evolves.
+%
+Library writers face particuarly daunting challenges as the
+appropriate implementation choices may depend crucially on information
+not available until the library is used.  Exposing different API calls
+for different workloads, for example as Haskell's JSON parsing library
+does, is a brittle and clumsy mechanism for performance tuning.
+
+One way to tackle these problems is to use a
+\emph{Centaur}-based approach~\cite{centaur}.
+The ``modern centaur'' is part human and part machine, and it exploits
+the strengths of each.  Typically, the human supplies general
+knowledge of the external world, specific knowledge of the problem
+domains, and intuition derived from life experience.
+The computer supplies the ability to test hypotheses efficiently and
+reliably and to search through large spaces rapidly.  
+In such a partnership targetting resource-savvy programming, 
+the human's role is to describe the set of
+possible implementations without concern for how those implementations
+perform and a set of representative workloads; 
+the machine uses its computational power to search through
+the space of implementations to find the one(s) with the best performance.
+The machine makes use of dynamic measurements on the representative
+workloads to cope with the fact that purely analytic approaches are
+unlikely to be able to faithfully model resource utilization.
+
+Researchers have already developed solutions to a variety of specific problems
 using this technique.  For instance, ... Representation Synthesis, AutoBahn, implicit
 parallelism, super-optimization via stochastic search ...
+Indeed, database systems can be seen as another example of this
+approach.
 
 However, each of the above systems was built from scratch --- a substantial undertaking
 that can only be achieved by experts willing to build their own new languages and
 compilers, or to dig into the internals of existing languages.  The goal of
-this proposal is to design and implement a platform for resource-aware program
+this proposal is to design and implement a platform for resource-savvy
 synthesis.  This platform will ask users to define:
 
 \begin{enumerate}
 \item new domain-specific abstractions for use by client programs
 \item the (possibly infinite) space of implementations of each abstraction
 \item a cost model
-\item a search strategy to navigate the space of implementations
-\item data to focus optimization
+\item a search strategy to navigate the space of implementations, and 
+\item a test harness including representative inputs.
 \end{enumerate}
-
-The first 4 items need only be defined once ---they form a
-\emph{resource-aware synthesis plug-in}.  The last item allows
-different clients to optimize for different environements.
+%
+The first four items need only be defined once ---they form a
+\emph{resource-aware synthesis plug-in}, what we call a ``\rasp{}.''
+The last item allows clients to instantiate the \rasp{} differently for
+different contexts and workloads.
 
 For example, to implement Hawkin's et al.'s representation synthesis engine, the
-engineer defining the resource-aware synthesis plug-in would
-specify:
+engineer defining the \rasp{} would specify:
 
 \begin{enumerate}
-\item an interface with functions to insert, delete and look up records in a database
-\item a description of the implementations, which will be in terms of key-value maps,
-including, for instance, a hash table, a list and a vector implementation
-\item the cost model is simply the running time
-\item the search strategy is brute force enumeration
+\item an interface with functions to insert, delete, and look up records in a relational table
+\item a description of the legal implementations, which will be in terms of key-value maps
+(such as hash tables, lists, and vectors), allowable sharing
+relationships, and functional dependencies
+\item the cost model, which is simply the running time on the supplied test harness
+\item the search strategy, which is brute force enumeration of the implementation space
 \end{enumerate}
+%
+Users of the \rasp{} could supply different harnesses to re-optimize for
+different use cases.
 
-Then users of that module could supply example data/programs and re-optimize for
-their environment.
-
-
-
+The \rasp{} platform will help end users in a variety of domains to
+\begin{enumerate}
+\item find programs that are functionally correct and resource-savvy for
+  relevant workloads.  This part of the effort can be seen as producing
+  a general framework for autotuning.
+\item write programs that are robust with respect to workload and/or
+  environmental 
+  changes.  Because our framework will allow programmers to specify their
+  intent at a high level and then synthesize a performant
+  implementation, the system can resynthesize a
+  different implementation in response to changes in workload or
+  infrastructure 
+  \textit{while leaving the high-level logic of the program unchanged}.  
+\item find outlier inputs on which the current implementation exhibits
+  poor resource utilization.  Because the system makes use of dynamic
+  measurement on a supplied workload, it can produce implementations
+  that give poor performance on other inputs.  Such behavior may be
+  acceptable or even desired, for example in cases where the humans know that
+  those inputs are impossible and that ruling them out leads to
+  significant performance improvements.  However, it may be that the
+  supplied workload was not sufficiently broad and the outlier needs
+  to be considered.  Failing to do so can lead to annoying performance
+  for end users and exposes the system to denial of service attacks
+  by hackers.   By identifying outliers, the system allows users to
+  either filter them out as illegal input or add them to the
+  representative workload the system considers when searching for
+  performant implementations.
+\end{enumerate}
 
 
 %\begin{figure}[t]

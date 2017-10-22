@@ -7,9 +7,11 @@
 \definecolor{princetonorange}{RGB}{255,143,0}
 \definecolor{tmlblue}{RGB}{0,58,120}  % tml == Toronto Maple Leafs
 \definecolor{brownbrown}{RGB}{121,37,0}
+\definecolor{tuftsblue}{RGB}{72,145,206}
 
 \newcommand{\finish}[1]{\ifdraft#1\else\fi}
 \newcommand{\dpw}[1]{\finish{\textcolor{tmlblue}{[#1 --DPW]}}} 
+\newcommand{\ksf}[1]{\finish{\textcolor{tuftsblue}{[#1 --KSF]}}} 
 \newcommand{\tdm}[1]{\finish{\textcolor{pennred}{[#1 --TDM]}}} 
 
 % Abbreviations
@@ -26,6 +28,9 @@
 \newcommand{\rsynth}{\emph{resourceful synthesis\@\xspace}}
 \newcommand{\Name}{{\sc MC}\@\xspace}  % Modern Centaur?  MC  
                                        % note there is an old inria system
-% called The Centaur System:  https://www.ercim.eu/publication/Ercim_News/enw32/pascual.html
+% called The Centaur System:
+% https://www.ercim.eu/publication/Ercim_News/enw32/pascual.html
+
+\newcommand{\rasp}{rasp}
 
 \newcommand{\cd}[1]{\lstinline[backgroundcolor=\color{white}]$#1$}
