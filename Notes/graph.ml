@@ -53,7 +53,7 @@ type dcomp_t =
     BaseT 
   | SrcT of dcomp_t map_t
   | DstT of dcomp_t map_t
-  | PairT of dcomp_t map_t * dcomp_t map_t
+  | PairT of dcomp_t * dcomp_t 
 
 (* defines the good decomposition types:
  * ensures Src & Dst appears at most once on each path to a leaf. *) 
@@ -64,7 +64,7 @@ let good_dcomp_t (dt:dcomp_t) : bool =
 	BaseT, _, _ -> true
       | SrcT mt, Unused, _ -> aux_map mt Used dst
       | DstT mt, _, Unused -> aux_map mt src Used
-      | PairT (mt1,mt2), _, _ -> aux_map mt1 src dst && aux_map mt2 src dst
+      | PairT (mt1,mt2), _, _ -> aux mt1 src dst && aux mt2 src dst
       | _, _, _ -> false
   and aux_map mt src dst =
     match mt with
@@ -113,8 +113,8 @@ let rec good_pd (p:path) (dt:dcomp_t) : bool =
       EndP, BaseT -> true
     | SrcP (s,p), SrcT dm -> good_pm p dm
     | DstP (d,p), DstT dm  -> good_pm p dm
-    | LeftP p, PairT (dm1, dm2) -> good_pm p dm1
-    | RightP p, PairT (dm1, dm2) -> good_pm p dm2
+    | LeftP p, PairT (dm1, dm2) -> good_pd p dm1
+    | RightP p, PairT (dm1, dm2) -> good_pd p dm2
     | _, _ -> false
 and good_pm (p:path) (dm:dcomp_t map_t) : bool =
   match dm with
