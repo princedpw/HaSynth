@@ -229,15 +229,15 @@ is to make it easier to build and adapt optimizing extensions like
 Autobahn and others, and to allow ordinary programmers, rather than 
 compiler experts to do so.  
 
-\subsection{Autobahn via \rsynth}
+\subsection{The Autobahn \rasp}
 \label{sec:autobahn}
 
-Figure~\ref{fig:autobahn-via-synthesis} sketches an example of a synthetic 
-language plug-in designed to implement Autobahn and Figure~\ref{fig:autobahn-client} sketches a client program that uses this language plug-in.  These two 
+Figure~\ref{fig:autobahn-via-synthesis} sketches an example of a 
+\rasp{} designed to implement Autobahn and Figure~\ref{fig:autobahn-client} sketches a client program that uses this language plug-in.  These two 
 figures present
 several technical elements of proposed design:  \emph{typed symbolic values}, 
 \emph{symbolic computations}, \emph{search strategies}, language directives to
-\emph{synthesize} optimal code from example data, language directives to
+\emph{synthesize} optimal code from example data, and language directives to
 find possible \emph{performance vulnerabilities}. 
 
 \begin{figure}[t]
@@ -265,7 +265,7 @@ eval? e =
     e
 
 -- rewrite syntax to use eval? at each functional application
-map\_syntax (\Apply(e1,e2) -> Apply(e1, Apply-inline (eval?, e2)))
+map_syntax (\Apply(e1,e2) -> Apply(e1, Apply-inline (eval?, e2)))
 
 -- define the search strategy for the vector gen*
 {-# STRATEGY gen* = 
@@ -324,8 +324,43 @@ component x = ...
 \end{figure}
 
 \paragraph*{Symbolic values}
+The first task in the design of any \rasp{} is to specify the space of
+implementations for the \rasp{} features.  In our proposal, the first step
+in doing so is to declare a set of \emph{typed, symbolic values}.  Once introduced, a symbolic value 
+of type T may be used in the same way that any ordinary value of type T is used.
+For example, symbolic booleans may be used in conditionals and symbolic integers may be used
+in arithmetic expressions.  However, the exact value of the symbolic constant is
+determined by the synthesis engine.  In our case, the symbolic constant will be determined 
+in such a way as to maximize resource utilization according to a user-defined cost metric and 
+search strategy.
+
+As an example, consider Figure~\ref{fig:autobahn-via-synthesis}>  Here, the programmer 
+defines \cd{gen*}, a new \emph{set} of symbolic booleans.  Intuitively, every occurence of \cd{gen*}
+in the final source code will correspond to a separate symbolic boolean.  The second declaration in
+the \rasp{} defines the function \cd{eval?}.  This function takes an arbitrary expression \cd{e}
+as an argument.  If \cd{gen*} is true, it forces eager evaluation of \cd{e} into weak head normal
+form; if  \cd{gen*} is false, it leaves \cd{e} untouched.  Hence, any place \cd{eval?}, it
+may or may not eagerly evaluate its argument, depending on how \cd{gen*} is resolved by the 
+synthesizer.
+
+In this case, the next step in \rasp{} definition involves a syntactic transformation of the client
+code.  More specifically, when using the Autobahn extension, every function 
+application (\ie, every place \cd{Apply(e1,e2)} appears in the client abstract syntax) will
+possibly eagerly evaluate (and possibly lazily evaluate) its argument.  We represent the application
+of this syntactic transformation via the \cd{map\_syntax} primitive.  One minor detail here is
+that body of \cd{eval?} should be inlined so that every function call has its own separate occurrence
+of \cd{gen*}.  Each occurence will correspond to a separate symbolic boolean, which will allow
+different evaluation choices to be made at each call site (as opposed to the same evaluation choice,
+which will lead to suboptimal performance).  There are a variety of ways
+a user might implement such syntactic transformations.  For instance, the user may use Template 
+Haskell~\cite{template-haskell}; we will also investigate developing alternative lightweight support for 
+commonly occurring syntax rewrites that we encounter in our applications, with combinators such as
+\cd{map\_syntax} being one possibility. 
 
 \paragraph*{Strategies}
+Together, symbolic values, symbolic computations (such as \cd{eval?}), and optional syntax rewriting
+define a broad space of possible implementations.  What is needed next are a set of \emph{strategies}
+for searching through the space for optimal choices of the symbols.
 
 \paragraph*{Synthesis}
 
