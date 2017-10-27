@@ -279,17 +279,7 @@ map_syntax (\Apply(e1,e2) -> Apply(e1, Apply-inline (eval?, e2)))
                       , numFitnessRuns = 4 }
 -}
 \end{mylisting}
-\caption{Autobahn via resource-aware program synthesis.  
-\dpw{Kathleen, I would like to make this look syntactically
-as though it is a sort of Haskell language extension so that
-if a Haskell person reviews the paper, they will node their head 
-and say ``yes this looks like a plausible way to extend haskell with
-components of this form.  We also need to do something plausible with
-the syntax extension, which I left blank.  We could do the syntax
-using template haskell.  A nice argument to make however is that users
-don't need to know compiler internals to work with what we are doing.
-Can ``?'' be a part of an identifier in Haskell?
-}
+\caption{The Autobahn \rasp.  
 }
 \label{fig:autobahn-via-synthesis}
 %%\end{minipage}
@@ -358,17 +348,99 @@ commonly occurring syntax rewrites that we encounter in our applications, with c
 \cd{map\_syntax} being one possibility. 
 
 \paragraph*{Strategies}
-Together, symbolic values, symbolic computations (such as \cd{eval?}), and optional syntax rewriting
-define a broad space of possible implementations.  What is needed next are a set of \emph{strategies}
+Together, symbolic values, symbolic computations (such as \cd{eval?}),
+and optional syntax rewriting define a broad space of possible
+implementations.  What is needed next are a set of \emph{strategies}
 for searching through the space for optimal choices of the symbols.
 
-\paragraph*{Synthesis}
+In the past, different systems have used different strategies for finding
+efficient implementations.  For example, Hawkins \etal~\cite{data-rep-synth} used
+simple enumeration from smallest to largest values to find efficient
+data structures for representing finite partial maps.  Such strategies are
+possible when the search space is small.  When the search space increases,
+other non-exhaustive strategies are required.  For instance, Autobahn 
+introduces a choice for every function call and the resulting search
+space grows exponentially with respect to the size of the program.  To
+navigate this space, Wang \etal demonstrate that genetic programming is effective.
+Other researchers have shown that for super-optimization, stocastic search is very
+efficient~\cite{stochastic-superopt}.  Finally, if data is available in the domain, probabilistic
+models~\cite{probabilistic} may help drive the search.
 
-\paragraph*{Performance Vulnerabilities}
+To illustrate how such strategies may be applied, please turn agoin to
+the our running example \rasp involving Autobahn in
+Figure~\ref{fig:autobahn-via-synthesis}.  Here, we add a declaration
+that describes how to search for concrete values corresponding to the
+unknowns in the \cd{gen*} vector of symbolic values.  The strategy
+invokes genetic programming (as in the original Autobahn system),
+parameters by another of features.  It implicitly uses a
+cost metric that measures run-time performance (as opposed to memory used,
+lines of code generated or other measures).
+
+More generally, to support the wide variety of possible strategies
+needed by different applications, we will need to investigate how to
+provide a uniform interface that makes it possible for programmers to
+define their own new optimization strategies.  This could include
+variations on the specific genetic programming algorithm used in
+Autobahn, or stocastic search, probabilistic modelling, enumerative
+search, or use of symbolic methods such as bounded model checking.
+
+In addition to supporting several strategies independently, we will have have
+to investigate the effects of mixing more than one strategy.  In particular,
+in large programs, we expect several different \rasp{}s to be used simultaneously.
+In order for optimization to scale, it may be necessary to make independence assumptions
+so that different \rasp{}s may be optimized separately.  Of course, such assumptions
+may turn out to be invalid and attempts at ordering optimizations one after another
+may wind up encountering the classic compiler optimization phase-ordering 
+problem~\cite{Vegdahl:phase-coupling,Click:combining-optimizations}.  If so, we will drawn on the literature
+to find solutions to such issues~\cite{Kulkarni:phase-ordering-search,Kulkarni:phase-ordering}.  While such issues are likely to present interesting
+and challenging research problems, they are unlikely to be show-stoppers---though we may not
+be able to supply optimal peformance, we may still be able to improve application performaance
+dramatically.
+
+In addition to facing the challenge of composing different strategies from different \rasp{}s, 
+we may also find that users may wish to tweak \rasp{} strategy.  One way to customize \rasp{}
+strategy to an application is to expose some of the paramaters of the \rasp{} strategy to users.
+In the Autobahn example, for instance, parameters of the genetic programming algorithm might
+be exposed to clients.  Perhaps more interestingly, users may wish to use several different 
+instances of the same \rasp{} within a single program.  For instance, a user may suspect that
+two modules, which both use Autobahn are performance-isolated from one another.  Consequently,
+they may be optimized separately, rather than jointly, which may improve the search for
+optimal answers.  In general, finding ways to allow users to specify how \rasp{}s are used and how program
+components are optimized is an important component of our proposed research.
+
+\paragraph*{Using a \rasp}
+The preceeding paragraphs demonstrate the main elements involved in
+defining a \rasp.  In order to use a \rasp, a programmer includes
+the \rasp{} definition in each file to which it applies.  In addition, they
+must provide some data with which to guide application-specific search,
+and optionally, may use language support to uncover performance vulnerabilities.
+The former allows performance to be customized to the local environment and application.
+The latter is a utility that should help programmers detect outliers and defend against
+unexpected performance variance that may lead either to reliability or security issues.
+
+Figure~\ref{fig:autobahn-client} sketches a simple use case of the Autobahn \rasp.
+Here, the pragma at the top of the figure indicates the programmer which to work
+within the Autobahn sublanguage.  The following declaration defines \cd{component},
+which is intended to be an ordinary function, defined within the \rasp{} sublanguage.
+The next diretive, \cd{SYNTHESIZE}, instructs the system to find values of symbolic
+variables that jointly optimize execution of \cd{component 0}, \cd{component 1}, \etc.  
+and to place optimized code in the specified directory.
+
+The \cd{VULNERABILITIES} pragma instructs the system to help users uncover potential
+performance problems given the code synthesized from example data.  A report containing
+analysis results will be
+generated in the specified file.
+
+\paragraph*{Related Applications}
+To illustrate our ideas, we have shown how to define a simple \rasp capable of
+
+automatic or semi-automatic parallelization, automatic or semi-automatic incrementalization.
+
+\paragraph*{Research Summary So Far}
 
 
 
-\section{Representation synthesis via \rsynth}
+\section{Representation Synthesis with \rasp{}s}
 \label{sec:eval}
 
 \section{Evaluation}
