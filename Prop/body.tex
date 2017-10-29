@@ -421,7 +421,7 @@ they may be optimized separately, rather than jointly, which may improve the sea
 optimal answers.  In general, finding ways to allow users to specify how \rasp{}s are used and how program
 components are optimized is an important component of our proposed research.
 
-\paragraph*{Using a \rasp}
+\paragraph*{Using a \rasp{}}
 The preceeding paragraphs demonstrate the main elements involved in
 defining a \rasp.  In order to use a \rasp, a programmer includes
 the \rasp{} definition in each file to which it applies.  In addition, they
@@ -439,10 +439,64 @@ The next diretive, \cd{SYNTHESIZE}, instructs the system to find values of symbo
 variables that jointly optimize execution of \cd{component 0}, \cd{component 1}, \etc{}  
 and to place optimized code in the specified directory.
 
-The \cd{VULNERABILITIES} pragma instructs the system to help users uncover potential
-performance problems given the code synthesized from example data.  A report containing
-analysis results will be
-generated in the specified file.
+\ksf{I'm not sure this fits here, or if should be its own section thingy.}
+\paragraph*{Finding performance bugs}
+The last element that we plan to explore is performance debugging
+\rasp{}-generated code.  
+We envision many \rasp{}s will use dynamic measurements to guide their search
+because of the difficulties of accurately modeling resource utilization
+at scale.  
+Dynamic approaches, however, are vulnerable because they necessarily
+consider only a portion of the input space.  
+Autobahn, for example, guarantees it will match or improve the
+performance of the programs it considers 
+\textit{on the supplied data}.  If the test data is representative of
+all the inputs that the program will actually be run on, then all is
+well. If, however, the program is given unexpected data at runtime
+that triggers different execution paths, the performance of the
+optimized program may be \textit{worse} than the original.  
+This situation may reflect a performance bug in the optimized
+program.  A solution would be to add the triggering inputs to the
+representative set given to Autobahn as input, which would cause it to
+optimize the program differently.  However, the situation could also
+reflect an input validation error if the program truly should not need
+to handle the triggering data.  For example, the standard \cd{factorial}
+function fails to terminate when called on a negative number, but we
+typically regard that as violating the pre-conditions of the function
+and would be happy with a compiler that took advantage of the
+knowledge that the argument is positive to perform optimizations.  In
+this situation, the solution would be to add an explicit pre-condition
+to the function outlawing the triggering value.  
+
+In this portion of the \rasp{} research project, we envision
+developing tools to help identify inputs that trigger excessive
+resource utilization in generated code. 
+Our high-level objective is to develop a performance model of each
+function of interest.   This model will first partition the space of inputs into
+subspaces defined by constraints (\eg{}, the first argument is 
+positive and the second argument is non-nil, the first argument is
+negative and the second argument is nil, \etc{}).  For each subspace,
+we will generate a symbolic (where possible)~\cite{Hoffmann17} or
+empircal~\cite{Goldsmith07} 
+characterization of the resources used as a function of the legal
+inputs for that subspace.   For \cd{factorial}, for example, the input
+will be partitioned into positive and negative values.  For negative
+values, the summary will show that resource utilization is unbounded
+(in simple cases, we may be able to show that the computation 
+diverges~\cite{Gupta08}).
+For positive values, the summary will show that the resource
+utilization grows linearly with the size of the argument either by
+proving that relationship by analyzing the code or by measuring it by
+running the program on inputs of increasing size.
+To carry out this work, we plan to use a combination of symbolic
+execution, complexity analysis, code coverage analysis, and 
+random-input generation that produces inputs of increasing size. 
+
+
+The \cd{VULNERABILITIES} pragma in Figure~\ref{fig:autobahn-client}
+triggers this analysis for the code synthezied by the Autobahn \rasp{}.
+A report containing analysis results will be generated in the
+specified file.
 
 \paragraph*{Related Applications}
 To illustrate our ideas, we have shown how to define a simple \rasp{} capable of
