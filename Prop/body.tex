@@ -175,7 +175,7 @@ incrementalization of programs.
 Lazy functional programming languages such as
 Haskell offer the promise of only evaluating the expressions needed
 to compute the answer. As such, they often enable useful programming
-idioms, modular designs~\cite{?} and the definition of powerful,
+idioms, modular designs~\cite{Hughes89} and the definition of powerful,
 yet syntactically-lightweight, first-class control constructs. 
 However, laziness does not always improve performance---quite the
 opposite.  Laziness is implemented using thunks: When a function is called, the
@@ -184,7 +184,7 @@ the function. If in the execution of the function it is determined that
 the value of the argument is actually needed, the thunk is forced,
 which causes the argument to be evaluated to weak head normal
 form. The thunk is then overwritten with the resulting value so future
-references don’t need to re-evaluate it.  Unfortunately,
+references don't need to re-evaluate it.  Unfortunately,
 allocating thunks that always eventually need to be forced is expensive,
 particularly if those thunks retain pointers to large data structures
 that are otherwise unneeded in the future.  The retention of such
@@ -195,23 +195,23 @@ To deal with this problem, Haskell allows users to add
 \emph{strictness annotations} to their programs.  These annotations
 cause immediate evaluation of computations. Oftentimes, only a few
 annotations need to be added, but figuring out where to put them often
-involves profiling, trial and error, insight and experience.  For a
-while, experts thought this problem could be solved the problem by
-placing annotations in Haskell libraries, written by
-experts. Unfortunately, this approach cannot work because the
-annotations needed within the library code depends upon how the
-library is used, which changes from one program to the next, and is
-not something the library writer can decide on in advance.
+involves profiling, trial and error, insight and experience.  Although
+it is tempting to think that the problem could be solved by having
+experts place annotations in library source code, this approach
+doesn't work because the appropriate annotations depend upon
+\textit{how the library is used}, which changes from one program to
+the next, and is not something the library writer can decide on in
+advance.
 
 In recent work, PI Fisher developed a new system called Autobahn~\cite{autobahn}
 to infer strictness annotations for Haskell programs.  Autobahn
 operates by assuming that strictness annotations may (or may not) be
 needed at every possible point in a program, or, alternatively, within
-user-directed regions of a program.  Next, given sample data with which to
+user-directed regions of a program.  Next, given representative data with which to
 execute the program, Autobahn searches for the set of strictness annotations
 that optimizes (run-time) performance of the application on the sample data.
-Given the vast number of possible program annotations, the search space is 
-large.  However, our research has discovered that genetic programming finds
+Given the large number of possible program annotations, the search space is 
+vast.  However, our research has discovered that genetic programming finds
 effective set of annotations in most cases.
 
 While Autobahn is an effective new tool for optimizing Haskell's evaluation
@@ -221,10 +221,11 @@ infrastructure to generate variations of user programs, execute them,
 measure performance and search for optimal variations.  All this
 infrastructure and knowledge was deployed to build just one tool.  
 However, Autobahn is just one of many --- there are other proposals to
-search for implicit parallelism~\cite{?}, to automatically incrementalize
+search for implicit parallelism~\cite{implicit-parallel}, to
+automatically incrementalize 
 programs~\cite{type-directed-incrementalization}, to use stochastic search
-in super-optimization~\cite{?,?,?}, and to find optimal data 
-representations~\cite{?}.  The goal of our research proposal
+in super-optimization~\cite{stochastic-superopt}, and to find optimal data 
+representations~\cite{data-rep-synth,conc-data-rep-synth}.  The goal of our research proposal
 is to make it easier to build and adapt optimizing extensions like
 Autobahn and others, and to allow ordinary programmers, rather than 
 compiler experts to do so.  
@@ -254,29 +255,25 @@ find possible \emph{performance vulnerabilities}.
 \begin{mylisting}
 {-# LANGUAGE Synthesis DEFINING Autobahn -}
 
--- a vector of symbolic booleans -- one per occurrence of gen* in the source code
+-- A vector of symbolic booleans. One per occurrence of gen* in the source code
 symbolic gen* :: bool
 
--- define the space of possible implementations
-eval? e =
-  if gen* then
-    !e
-  else
-    e
+-- Define the space of possible implementations
+eval? e = if gen* then seq e else e
 
--- rewrite syntax to use eval? at each functional application
+-- Rewrite syntax to use eval? at each function application
 map_syntax (\Apply(e1,e2) -> Apply(e1, Apply-inline (eval?, e2)))
 
--- define the search strategy for the vector gen*
+-- Define the search strategy for the vector gen*
 {-# STRATEGY gen* = 
-              genetic { diversityRate = 0.4
-                      , numGenerations = 20
-                      , populationSize = 15
-                      , archiveSize = 7
-                      , mutateRate = 0.2
-                      , mutateProb = 0.2
-                      , crossRate = 0.8
-                      , numFitnessRuns = 4 }
+    genetic { diversityRate = 0.4
+               , numGenerations = 20
+               , populationSize = 15
+               , archiveSize = 7
+               , mutateRate = 0.2
+               , mutateProb = 0.2
+               , crossRate = 0.8
+               , numFitnessRuns = 4 }
 -}
 \end{mylisting}
 \caption{The Autobahn \rasp.  
@@ -299,13 +296,15 @@ map_syntax (\Apply(e1,e2) -> Apply(e1, Apply-inline (eval?, e2)))
 \begin{mylisting}
 {-# LANGUAGE Autobahn -}    -- use the Autobahn extension
 
--- ordinary application code;  function applications may or may not be strict, as synthesized
+-- Ordinary application code.  
+-- Function applications may or may not be strict, as synthesized
 component x = ...
 
--- generate optimal program using example data component 0, ..., component n
-{-# SYNTHESIZE "mycomponent" [component 0, component 1, ..., component n] "dir/code" -}
+-- Generate optimal program using example data component 0, ..., component n
+{-# SYNTHESIZE "mycomponent" 
+        [component 0, component 1, ..., component n] "dir/code" -}
 
--- generate performance vulnerabilities report
+-- Generate performance vulnerabilities report
 {-# VULNERABILITIES "mycomponent" "report.txt" -}
 \end{mylisting}
 \caption{Autobahn client program.}
@@ -313,6 +312,8 @@ component x = ...
 %%\end{minipage}
 \end{figure}
 
+\ksf{The \texttt{cd} latex command is not producing code in a distinct font. Not
+  sure how to fix correctly given that \texttt{cd} macros is already defined.}
 \paragraph*{Symbolic values}
 The first task in the design of any \rasp{} is to specify the space of
 implementations for the \rasp{} features.  In our proposal, the first step
@@ -324,28 +325,37 @@ determined by the synthesis engine.  In our case, the symbolic constant will be 
 in such a way as to maximize resource utilization according to a user-defined cost metric and 
 search strategy.
 
-As an example, consider Figure~\ref{fig:autobahn-via-synthesis}>  Here, the programmer 
+As an example, consider Figure~\ref{fig:autobahn-via-synthesis}.  Here, the programmer 
 defines \cd{gen*}, a new \emph{set} of symbolic booleans.  Intuitively, every occurence of \cd{gen*}
 in the final source code will correspond to a separate symbolic boolean.  The second declaration in
 the \rasp{} defines the function \cd{eval?}.  This function takes an arbitrary expression \cd{e}
 as an argument.  If \cd{gen*} is true, it forces eager evaluation of \cd{e} into weak head normal
-form; if  \cd{gen*} is false, it leaves \cd{e} untouched.  Hence, any place \cd{eval?}, it
+form; if  \cd{gen*} is false, it leaves \cd{e} untouched.  Hence, any
+place \cd{eval?} occurs, it
 may or may not eagerly evaluate its argument, depending on how \cd{gen*} is resolved by the 
 synthesizer.
 
-In this case, the next step in \rasp{} definition involves a syntactic transformation of the client
-code.  More specifically, when using the Autobahn extension, every function 
-application (\ie, every place \cd{Apply(e1,e2)} appears in the client abstract syntax) will
-possibly eagerly evaluate (and possibly lazily evaluate) its argument.  We represent the application
-of this syntactic transformation via the \cd{map\_syntax} primitive.  One minor detail here is
-that body of \cd{eval?} should be inlined so that every function call has its own separate occurrence
-of \cd{gen*}.  Each occurence will correspond to a separate symbolic boolean, which will allow
-different evaluation choices to be made at each call site (as opposed to the same evaluation choice,
-which will lead to suboptimal performance).  There are a variety of ways
-a user might implement such syntactic transformations.  For instance, the user may use Template 
-Haskell~\cite{template-haskell}; we will also investigate developing alternative lightweight support for 
-commonly occurring syntax rewrites that we encounter in our applications, with combinators such as
-\cd{map\_syntax} being one possibility. 
+In this case, the next step in \rasp{} definition involves a syntactic
+transformation of the client code.  More specifically, when using the
+Autobahn extension, every function application (\ie, every place
+\cd{Apply(e1,e2)} appears in the client abstract syntax) will possibly
+eagerly evaluate (and possibly lazily evaluate) its argument.  We
+represent the application of this syntactic transformation via the
+\cd{map\_syntax} primitive.  One minor detail here is that body of
+\cd{eval?} should be inlined so that every function call has its own
+separate occurrence of \cd{gen*}.  Each occurence will correspond to a
+separate symbolic boolean, which will allow different evaluation
+choices to be made at each call site (as opposed to the same
+evaluation choice, which will lead to suboptimal performance).  There
+are a variety of ways a user might implement such syntactic
+transformations.  For instance, the user may use Template
+Haskell~\cite{template-haskell}; we will also investigate developing
+alternative lightweight support for commonly occurring syntax rewrites
+that we encounter in our applications, with combinators such as
+\cd{map\_syntax} being one possibility.
+\ksf{We might want to say this the other way: that we will develop a
+  set of light-weight mechainsms for the programmer to specify search
+  points, leveraging Template Haskell in the process.}
 
 \paragraph*{Strategies}
 Together, symbolic values, symbolic computations (such as \cd{eval?}),
@@ -361,20 +371,22 @@ possible when the search space is small.  When the search space increases,
 other non-exhaustive strategies are required.  For instance, Autobahn 
 introduces a choice for every function call and the resulting search
 space grows exponentially with respect to the size of the program.  To
-navigate this space, Wang \etal demonstrate that genetic programming is effective.
+navigate this space, Wang \etal{} demonstrate that genetic programming is effective.
 Other researchers have shown that for super-optimization, stocastic search is very
 efficient~\cite{stochastic-superopt}.  Finally, if data is available in the domain, probabilistic
-models~\cite{probabilistic} may help drive the search.
+models~\cite{probabilistic-netkat} may help drive the search.
 
-To illustrate how such strategies may be applied, please turn agoin to
-the our running example \rasp involving Autobahn in
+To illustrate how such strategies may be applied, please turn again to
+the running example \rasp involving Autobahn in
 Figure~\ref{fig:autobahn-via-synthesis}.  Here, we add a declaration
 that describes how to search for concrete values corresponding to the
 unknowns in the \cd{gen*} vector of symbolic values.  The strategy
 invokes genetic programming (as in the original Autobahn system),
-parameters by another of features.  It implicitly uses a
+parameterized by a number of features.  It implicitly uses a
 cost metric that measures run-time performance (as opposed to memory used,
-lines of code generated or other measures).
+lines of code generated or other measures). \ksf{Where is the test
+  harness specified?  Ie, the programs that we will run to measure the
+performance?  }
 
 More generally, to support the wide variety of possible strategies
 needed by different applications, we will need to investigate how to
@@ -384,14 +396,15 @@ variations on the specific genetic programming algorithm used in
 Autobahn, or stocastic search, probabilistic modelling, enumerative
 search, or use of symbolic methods such as bounded model checking.
 
-In addition to supporting several strategies independently, we will have have
-to investigate the effects of mixing more than one strategy.  In particular,
+In addition to supporting several strategies independently, we will 
+investigate the effects of mixing more than one strategy.  In particular,
 in large programs, we expect several different \rasp{}s to be used simultaneously.
 In order for optimization to scale, it may be necessary to make independence assumptions
 so that different \rasp{}s may be optimized separately.  Of course, such assumptions
 may turn out to be invalid and attempts at ordering optimizations one after another
 may wind up encountering the classic compiler optimization phase-ordering 
-problem~\cite{Vegdahl:phase-coupling,Click:combining-optimizations}.  If so, we will drawn on the literature
+problem~\cite{Click:combining-optimizations,Vegdahl:phase-coupling}. 
+ If so, we will drawn on the literature
 to find solutions to such issues~\cite{Kulkarni:phase-ordering-search,Kulkarni:phase-ordering}.  While such issues are likely to present interesting
 and challenging research problems, they are unlikely to be show-stoppers---though we may not
 be able to supply optimal peformance, we may still be able to improve application performaance
@@ -423,7 +436,7 @@ Here, the pragma at the top of the figure indicates the programmer which to work
 within the Autobahn sublanguage.  The following declaration defines \cd{component},
 which is intended to be an ordinary function, defined within the \rasp{} sublanguage.
 The next diretive, \cd{SYNTHESIZE}, instructs the system to find values of symbolic
-variables that jointly optimize execution of \cd{component 0}, \cd{component 1}, \etc.  
+variables that jointly optimize execution of \cd{component 0}, \cd{component 1}, \etc{}  
 and to place optimized code in the specified directory.
 
 The \cd{VULNERABILITIES} pragma instructs the system to help users uncover potential
@@ -432,7 +445,7 @@ analysis results will be
 generated in the specified file.
 
 \paragraph*{Related Applications}
-To illustrate our ideas, we have shown how to define a simple \rasp capable of
+To illustrate our ideas, we have shown how to define a simple \rasp{} capable of
 
 automatic or semi-automatic parallelization, automatic or semi-automatic incrementalization.
 
@@ -486,7 +499,7 @@ becoming an industry standard.
 
 \medskip
 \noindent
-{\bf Kathleen Fisher} has received no funding from NSF in the past
+{\bf Kathleen Fisher} has not applied for nor received funding from NSF in the past
 five years.
 
 
