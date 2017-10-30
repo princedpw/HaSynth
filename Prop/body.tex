@@ -499,16 +499,96 @@ A report containing analysis results will be generated in the
 specified file.
 
 \paragraph*{Related Applications}
-To illustrate our ideas, we have shown how to define a simple \rasp{} capable of
+To illustrate our ideas, we have shown how to define a simple \rasp capable of
 
-automatic or semi-automatic parallelization, automatic or semi-automatic incrementalization.
+automatic or semi-automatic parallelization~\cite{implicit-parallelism}, automatic or semi-automatic incrementalization.
+
+Another example:  parameterized sorting algorithms.  choose the sorting algorithm and choose the cutoff
+(eg: quicksort uses insertion sort at small array sizes).
 
 \paragraph*{Research Summary So Far}
 
 
 
-\section{Representation Synthesis with \rasp{}s}
+\section{Representation Synthesis with \rasps}
 \label{sec:eval}
+
+Autobahn and other similar applications, such as Trilla's work on
+improving implicit parallelism~\cite{implicit-parallelism}, focus on synthesizing new evaluation
+strategies or control-flow patterns.  Such applications are good starting point for our research as
+they make relatively simple use of symbolic values.  In particular, the symbols needed are usually
+booleans, and as such, little change to the type structure of the host language (in our case, Haskell),
+is required.  However, the second phase of our research will investigate \rasp support for the synthesis
+and use of efficient data structures.  Here, the symbolic values required may be arbitrarily complex,
+and in order to support efficient, type-safe computation over varied data structures, we will need to
+introduce \emph{symbolic types} and study their interaction with symbolic values, type classes, modules
+and polymorphic and dependent types. \dpw{It would be nice to mention Hancock somewhere.}
+
+\paragraph*{Simple symbolic data representations}
+%% Programmers are continuously making choices about their data structure representations.  In the era of
+%% ``big data,'' the choices have become more varied, complex, context-dependent and important.
+%% Wouldn't it be nice if programmers did not have to think about these choices and could instead focus 
+%% on higher-level algorithmic details?
+One option for defining and using datatypes in a modular fashion in Haskell is to use a \emph{type class}.  
+Type classes are interfaces that may have many different implementations; when using a class, the client 
+code's choice of concrete type determines the implementation.  Type classes support a useful kind of ``ad hoc'' 
+polymorphism that interacts smoothly with traditional parametric polymorphism and type inference.  Type
+classes have become popular in a variety of modern languages including Scala, FSharp and Coq as they
+are typically easy-to-use and syntactically light weight, and yet promote effective code reuse.  
+Though our research 
+will be developed in Haskell, we believe the ideas will be attractive in these other settings as well.
+As you will see below, we believe our design will be particularly lightweight and easy to integrate into
+existing programming practice.
+
+A simple example type class that defines an interface to collections is presented in 
+Figure~\ref{type-class-set}.  Here, we define the type class \cd{Set}, which has methods
+\cd{empty} to create the empty set (the parameter gives an estimated size of the set), \cd{insert} to add a member to a set, and \cd{member}
+to check for membership in a set.  We also sketch two instances (\ie, implementations) of this
+class.  One implementation uses a \cd{Vector} and the other uses a red-black tree.
+
+Typically, a programmer would have to choose which set representation to use in conjunction with their
+application --- such choices perhaps made after the programmer has taken time to analyze the performance
+ramifications for their code.  However, we propose to allow users to declare symbolic types for their
+data structures and to allow the system to search for optimal representatives for them.  For example,
+looking again at Figure~\ref{fig:type-class-set} ...
+
+\begin{figure}[t]
+\centering
+\begin{mylisting}
+{-# LANGUAGE SymbolicClasses -}    
+
+class Set s where
+  empty :: int -> s a
+  insert :: s a -> a -> s a
+  member :: s a -> a -> Bool
+
+instance Set Vector where
+  empty = ...
+  insert = ...
+  member = ...
+
+instance Set RBTree where
+  ...
+
+-- function using a set
+process :: Set s => s a -> a -> s a
+process = ...
+
+symbolic t* :: * -> *
+symbolic size* :: int 
+
+component n =
+  process (empty size* :: t* int)   -- Symbolic type class for sets of integers
+  ...                               -- Initial size symbolic
+
+{- SYNTHESIZE "mycomponent" [component 0, ...]  "dir/code" -} 
+{- VULNERABILITIES "mycomponent" "report.txt" -} 
+
+\end{mylisting}
+\caption{Autobahn client program.}
+\label{fig:type-class-set}
+%%\end{minipage}
+\end{figure}
 
 \section{Evaluation}
 \label{sec:eval}
