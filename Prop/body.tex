@@ -548,9 +548,32 @@ class.  One implementation uses a \cd{Vector} and the other uses a red-black tre
 
 Typically, a programmer would have to choose which set representation to use in conjunction with their
 application --- such choices perhaps made after the programmer has taken time to analyze the performance
-ramifications for their code.  However, we propose to allow users to declare symbolic types for their
+ramifications for their code.  However, we propose to allow users to declare \emph{symbolic types} for their
 data structures and to allow the system to search for optimal representatives for them.  For example,
-looking again at Figure~\ref{fig:type-class-set} ...
+looking again at Figure~\ref{fig:type-class-set}, we see declarations of a symbolic type \cd{t*}
+with kind \cd{* -> *}, indicating it is a function from types to types.  Moreover, \cd{t*} is constrained
+to be in the class \cd{Set}.  Such a constraint limits the collection of possible types, making search
+tractible.  Later, in \cd{component}, the type \cd{t*} is used in a typing annotation.  Doing so
+implies the implementation of sets used by the \cd{process} function will be determined by resource-aware
+synthesis.  At the bottom of the figure, directives to synthesize code based on example data and directives
+to help users find performance vulnerabilities appear as before.  Here, we also assume that the SymbolicClasses
+\rasp provides a default search strategy.  At the moment, it seems likely that the search space for this
+sort of usage is typically small (there may only be a small number of ways to construct particular type
+classes) and hence simple smallest-to-largest enumerative search may work well.  
+
+Notice that one of the key benefits of our proposed design is its simplicity and lack of intrusiveness.
+The symbolic program itself is hardly different from an ordinary Haskell program --- all of the work is
+done by a simple, constrained symbolic type definition.  And yet, the result appears powerful, with
+search strategies behind the scenes automatically constructing efficient representations.
+
+Many of the interesting research questions behind the design involve rigorously defining the specifics of the
+type theory, including the meaning of types and values when they are symbolic, the search strategy and
+the compiler algorithms, which will need to translate symbolic Haskell programs into concrete Haskell programs.
+In particular, for both foundational and practical reasons, it is important to define both the operational
+semantics of Haskell programs and the equalities (both at the type and value levels) that programmers
+may assume and to prove these semantics are sound and conservative extensions over existing Haskell semantics
+to avoid any dangerous or surprising results from mixing symbolic types with other advanced features of
+the Haskell platform.
 
 \begin{figure}[t]
 \centering
@@ -570,23 +593,43 @@ instance Set Vector where
 instance Set RBTree where
   ...
 
--- function using a set
-process :: Set s => s a -> a -> s a
+-- ordinary function using a set
+process :: Set s => s a -> ()
 process = ...
 
-symbolic t* :: * -> *
-symbolic size* :: int 
+symbolic t* :: * -> * where Set t   -- symbolic type t declaration
+symbolic size* :: int               -- symbolic integer
 
 component n =
-  process (empty size* :: t* int)   -- Symbolic type class for sets of integers
-  ...                               -- Initial size symbolic
+  process (empty size* :: t* int)   -- Symbolic type class for sets; 
+  ...                                 -- Initial set size determiend by symbolic size*
 
 {- SYNTHESIZE "mycomponent" [component 0, ...]  "dir/code" -} 
 {- VULNERABILITIES "mycomponent" "report.txt" -} 
 
 \end{mylisting}
-\caption{Autobahn client program.}
+\caption{Synthetic Type Classes.}
 \label{fig:type-class-set}
+%%\end{minipage}
+\end{figure}
+
+\paragraph*{Complex representations}
+The representations for the set type built from the classes listed in Figure~\ref{fig:type-class-set}
+are relatively straightforward as they may be built from stand-alone instances of pre-existing classes.
+In more complex situations, it is often necessary to construct hierarchical data structures from multiple
+components.  For example, Hancock~\cite{hancock} was ...
+
+Accessor methods must be defined so that they traverse the symbolically selected
+hierarchical structures efficiently and correctly.  Moreover, correct implementations can often only 
+be constructed when the structure satisfy non-trivial representation invariants.  Hence, programmers
+must be able to define such invariants and the synthesis infrastructure must be able to interpret them. 
+
+\begin{figure}[t]
+\centering
+\begin{mylisting}
+\end{mylisting}
+\caption{Synthetic data types with representation invariants.}
+\label{fig:rep-synth}
 %%\end{minipage}
 \end{figure}
 
