@@ -169,9 +169,25 @@ of this application, we consider other closely related applications
 including synthesis of parallel or distributed components and
 incrementalization of programs.
 
+\section{\rasps for synthesis of control structures}
+
+The flow of control and evaluation of expressions can often be
+optimized to great effect in functional programs.  However, choosing
+how and where to implement optimizations such as strict
+evaluation~\cite{autobahn}, introduction of
+parallelism~\cite{implicit-parallelism}, or caching is often difficult
+and time-consuming.  We hypothesize that \rasps can substantially
+improve the process of implementing such optimizations, relieving much
+of the burden from \rasp users while obtaining high performance.  In
+this section, we describe one candidate \rasp in this class.
+The \rasp is inspired by the
+Autobahn~\cite{autobahn} system, developed by PI Fisher and her
+collaborators.  We use the \rasp to illustrate several of the features
+we believe are necessary in general to attack this class of performance
+optimizations.
+
 \subsection{Autobahn}
 
-\dpw{Ideas and text plagiarized and/or paraphrased from autobahn paper:}
 Lazy functional programming languages such as
 Haskell offer the promise of only evaluating the expressions needed
 to compute the answer. As such, they often enable useful programming
@@ -614,24 +630,118 @@ component n =
 \end{figure}
 
 \paragraph*{Complex representations}
-The representations for the set type built from the classes listed in Figure~\ref{fig:type-class-set}
-are relatively straightforward as they may be built from stand-alone instances of pre-existing classes.
-In more complex situations, it is often necessary to construct hierarchical data structures from multiple
-components.  For example, Hancock~\cite{hancock} was ...
 
-Accessor methods must be defined so that they traverse the symbolically selected
-hierarchical structures efficiently and correctly.  Moreover, correct implementations can often only 
-be constructed when the structure satisfy non-trivial representation invariants.  Hence, programmers
-must be able to define such invariants and the synthesis infrastructure must be able to interpret them. 
+The representations for the set type built from the classes listed in
+Figure~\ref{fig:type-class-set} are relatively straightforward as they
+may be built from stand-alone instances of pre-existing classes.  In
+more complex situations, it is often necessary to construct
+hierarchical data structures from multiple components and to enforce
+and maintain sophisticated representation invariants.  We propose
+to dependent types to describe representation invariants and thereby
+cut down the space of possible implementations.  We also propose to use
+type-directed programming to safely specialize programs to a particular 
+implementation, once the most efficient symbolic choices have been made.
+
+To illustrate our proposed ideas, consider the problem of synthesizing
+efficient representations of weighted graphs, as described by Hawkins,
+co-PI Fisher and their colleagues~\cite{data-rep-synth}.  Such graphs
+consist of a set of vertices, which we assume will be represented
+using integers, and a set of edges, which are each defined by a source
+vertex, a destination vertex and a weight.  The performance of
+standard algorithms, such as forwards and backwards depth-first search
+(DFS), will vary substantially depending on the representation of the
+edges.  Indeed Hawkins' system considers 68 different representations
+of the set of edges as different kinds of hierarchical maps.  Such
+maps may be implemented by lists, vectors or hash tables.  And they
+may be indexed first by source node, destination node or weight.
+Figure~\ref{fig:rep-synth} presents pictures of a couple of plausible
+representations.
+
+One way for programmers to describe the space of possible
+implementations for sets of edges may be to use data types with
+constraints.  For instance, the following definitions describe the
+range of possible representations \cd{R} coarsely.
+
+\begin{mylisting}
+data Map = List | Hash
+data R = Src of Map * R | Dst of Map * R | Pair of (R, R) | Base
+\end{mylisting}
+
+Here, a representation \cd{R} may be a \cd{Map} (which may in turn
+be a \cd{List} or \cd{Hash} table) indexed by source
+or destination vertex, composed with some other (nested) representation
+for the rest of the data.  Complex clients may need to access the set of
+edges in more than one different way and hence a representation may also
+be a \cd{Pair} of representations.
+
+However, not all such representations are reasonable---for instance,
+it makes no sense to have a hierarchical structure that includes
+maps repeatedly and redundantly indexed by destination (or by source).
+A natural way to rule out such structures, is to use constraints of
+one kind or anther.  We plan to investigate various mechanisms for
+expressing such constraints, including GADTs~\cite{gadts},
+singleton types~\cite{weirich:singletons} and 
+liquid types~\cite{liquid-haskell}.
+
+In addition to specifying the possible shapes of data structures,
+it is necessary to specify the possible implementations of query
+methods.  Such methods should protect clients from having to know
+the implementation chosen, and should be as efficient as possible.
+We plan to investigate the use of type directed programming here.
+In other words, we plan to allow users to define functions parameterized
+by symbolic types; once the symblic types are made concrete, it should
+be possible to specialize the function implementation to the chosen
+symbolic type without incurring run-time overhead and without giving up
+type safety. 
+
+
+%For example, Hancock~\cite{hancock} was ...
+
+%% Accessor methods must be defined so that they traverse the symbolically selected
+%% hierarchical structures efficiently and correctly.  Moreover, correct implementations can often only 
+%% be constructed when the structure satisfy non-trivial representation invariants.  Hence, programmers
+%% must be able to define such invariants and the synthesis infrastructure must be able to interpret them.
+
 
 \begin{figure}[t]
 \centering
-\begin{mylisting}
-\end{mylisting}
-\caption{Synthetic data types with representation invariants.}
+Put the first 2 pictures, labelled (a) and (b) from figure 12 from Hawkins 2011 PLDI paper here.
+\caption{Possible representations for weighted graph edges.  Solid edges
+are maps implemented by Hash tables; dotted edges are maps implemented
+by lists.  (a) a Hash table 
+indexed by source node, followed by a list indexed by destination node;
+(b) like (a), but with a second accessor path via destination then
+source node.}
 \label{fig:rep-synth}
-%%\end{minipage}
 \end{figure}
+
+%% \begin{figure}[t]
+%% \centering
+%% \begin{mylisting}
+%% -- D describes the range of possible implementations
+%% data MapType = List | Hash
+%% data D =
+%%     Base
+%%   | SrcKey of MapType * D
+%%   | DstKey of MapType * D
+%%   | Pair of (D, D)
+
+%% -- good specifies representation invariants
+%% good :: Dcomp -> Bool
+%% good = ...
+
+%% -- a constrained type that specifies legal representations
+%% type GD* :: D where good
+
+%% -- 
+%% query :: GD* -> Query -> Weight
+
+%% -- a symbolic data structure describing
+%% symbolic t* :: GD
+%% \end{mylisting}
+%% \caption{Repesentation synthesis \rasp}
+%% \label{fig:rep-synth-rasp}
+%% \end{figure}
 
 \section{Evaluation}
 \label{sec:eval}
