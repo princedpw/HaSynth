@@ -40,110 +40,25 @@
 
  \begin{large}
 \begin{center}
-CCF:Small:Collaborative Research: \\
-Language Support for Resourceful Synthesis of Data and Control Structure
+SHF:Small:Collaborative Research: \\
+Language Support for Resource-Savvy Synthesis
 \end{center}
 \end{large}
 
 \noindent
 \textbf{Overview:} 
-Surveys of network operators have shown that human error during
-network configuration and update is one of the major causes of network
-downtime.  
-%% One fundamental reason for these misconfigurations is the
-%% mismatch between the intended high-level
-%% policies of operators and the low-level, device-by-device configurations
-%% that implement them.  On the one hand, most routing policies involve
-%% network-wide properties:  never announce a particular destination externally, isolate two subnetworks from one another, prefer traffic through a transit customer over a transit provider, etc.
-%% On the other hand, these policies must be implemented via hundreds of low-level configuration directives at each individual router in the network. 
-%% As a result, errors range from simple consistency issues (community values do not match) to more subtle scenarios (misconfigured ACLs causing intermittent disconnectivity).  Moreover, networks networks must continue to function properly when node and link failures occur---a near impossible task when reasoning
-%% about network behavior without automated help. 
-In response, researchers have proposed several
-high-level abstractions for programmatic network control, as well
-as compiler algorithms that synthesize the nitty-gritty details
-of router configurations.  The PIs' recent work on \Propane 
-(SIGCOMM 2016 Best Paper Award) is promising in this regard
-as it allows users to describe end-to-end paths for intra- and
-inter-domain routing, as well as backup paths in the case of 
-failure.  Unfortunately, many barriers to practical deployment of \Propane
-and related technologies persist as current languages are insufficiently
-expressive, lack tools that make their outputs intelligible, 
-provide no help migrating legacy configurations to new models, and
-do not admit incremental deployment.
-%(1) they are insufficiently \emph{expressive},
-%lacking abstractions that match operator cognitive models; (2) their
-%output configurations are insufficiently \emph{intelligeable}, preventing
-%operators from auditing or debugging their outputs; (3) they provide
-%no tools to help \emph{migrate} from legacy configurations to new
-%abstractions; and (4) they do not admit \emph{incremental deployment}.
 
-\noindent\textbf{Keywords:} network programming languages;
-domain-specific programming languages; program synthesis; 
-network verification; network management; inter-domain routing
+\noindent\textbf{Keywords:} program synthesis; type systems;
+functional programming; performance vulnerabilities
 
 \noindent
 \textbf{Intellectual Merit:} 
-The goal of this project is to 
-{\em surmount the technical challenges that impede practical 
-deployment of high-level network abstractions}.  We will demonstrate
-our advances by building on \Propane and delivering a new system \Name, which
-will exhibit:  
-\begin{enumerate}
-\item {\bf New topological abstractions}:  Users will be able to declare device 
-\emph{roles} (\emph{e.g.}, top-of-rack switch)
-and the \emph{connectivity invariants} related to them.  A new compiler
-will verify safety properties of policies in the presence of such 
-declarations and generate parameterized \emph{templates}
-that make compiler outputs more \emph{intelligible} for operators.  
-\item {\bf Costs and contracts for inter-domain transit:}
-Users will specify 
-\emph{financial contracts} that govern transit
-costs using a new declarative language and our compiler will
-optimize routes automatically by generating refined policies that meet objectives.
-\item {\bf Back-end diversity:}  We will develop algorithms that
-can synthesize and exploit the benefits of heterogenous back-ends 
-involving BGP, OSPF, OpenFlow and P4.
-%In order to give users access to
-%the benefits of performance properties of different protocols,
-%we will develop algorithms that synthesize configurations employing a 
-%combination of \emph{inter-domain routing} protocols such as BGP 
-%and \emph{intra-domain routing protocols} such as OSPF and RIP as well
-%as OpenFlow and P4. 
-\item {\bf Migration technology:} We will develop
-tools that will help network operators \emph{infer} 
-new high-level configurations from existing low-level configurations
-and to \emph{verify} that new configurations are equivalent to old ones.
-\item {\bf Mixed operation and verification:} We will support mixed
-legacy- and \Name-managed network operations so engineers can
-migrate their networks slowly over time and test partial deployment on
-small fractions of their live traffic.
-\end{enumerate}
+
+
 
 \noindent
 \textbf{Broader Impacts:} 
-%Our economy, businesses, governmental and 
-%military infrastructure all depend upon having networks that function
-%reliably. This proposal will tackle the technical challenges that
-%prevent deployment of high-level programming abstractions capable
-%of improving network reliability.  In addition, 
-We will 
-\emph{work with
-operators of two major clouds}, Microsoft Azure and Google,
-to identify the pragmatic barriers to adoption, evaluate our proposed solutions using the policies of real industrial networks, and deploy our system where possible.   We will also engage in more general \emph{industry outreach}
-by organizing a workshop under
-the umbrella of the newly-formed
-Cornell-Princeton Center for Network Programming (CNP).
-% in which 
-%academics and industrial researchers exchange problems, solutions,
-%ideas and contact information.  
-Our \emph{educational plan} involves
-developing a new curriculum at UCLA with the aim of producing
-future network engineers with interdisciplinary skills in verification
-and programming languages.  
-We will also work to provide both
-graduate and undergraduate
-\emph{under-represented minorities} research opportunities as we
-have successfully done in the past.
+
 
 
 
