@@ -703,15 +703,68 @@ type safety.
 %% must be able to define such invariants and the synthesis infrastructure must be able to interpret them.
 
 
+
+
 \begin{figure}[t]
 \centering
+\begin{tikzpicture}[style=g,node distance=0.8cm]
+
+\node (p1) {};
+\path (p1) +(20mm,0mm) node (p2) {};
+\path (p2) +(30mm,0mm) node (p3) {};
+
+\draw (p1) +(-6mm,15mm) node {\bf(a)};
+\draw (p2) +(-8mm,15mm) node {\bf(b)};
+%\draw (p3) +(-8mm,15mm) node {\bf(9)};
+
+\draw (p1) +(0mm,18mm) node (root) {};
+\draw (root) +(0mm,-6mm) node[v] (n) {$x$};
+\node[v] (nl) [below of=n] {$y$};
+\node[v] (nm) [below of=nl] {$z$};
+\node at ($(nm) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
+\draw[-stealth] 
+  (root) edge (n)
+  (n) edge node[left] {\etext$\mathit{src}$} (nl)
+  (nl) edge [densely dotted] node[left] {\etext$\mathit{dst}$} (nm);
+
+\draw (p2) +(0mm,18mm) node (root) {};
+\draw (root) +(0mm,-6mm) node[v] (n) {$x$};
+\node[v] (nl) [below of=n,xshift=-8mm] {$y$};
+\node[v] (nr) [below of=n,xshift=8mm] {$z$};
+\node[v] (nm) [below of=nl,xshift=8mm] {$w$};
+\node at ($(nm) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
+\draw[-stealth] 
+  (root) edge (n)
+  (n) edge node[left] {\etext$\mathit{src}$} (nl)
+  (n) edge node[right] {\etext$\mathit{dst}$} (nr)
+  (nl) edge [densely dotted] node[left] {\etext$\mathit{dst}$} (nm)
+  (nr) edge [densely dotted] node[right] {\etext$\mathit{src}$} (nm);
+
+%\draw (p3) +(0mm,18mm) node (root) {};
+%\draw (root) +(0mm,-6mm) node[v] (n) {$x$};
+%\node[v] (nl) [below of=n,xshift=-8mm] {$y$};
+%\node[v] (nr) [below of=n,xshift=8mm] {$z$};
+%\node[v] (nml) [below of=nl] {$l$};
+%\node[v] (nmr) [below of=nr] {$r$};
+%\node at ($(nml) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
+%\node at ($(nmr) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
+%\draw[-stealth] 
+%  (root) edge (n)
+%  (n) edge node[left] {\etext$\mathit{src}$} (nl)
+%  (n) edge node[right] {\etext$\mathit{dst}$} (nr)
+%  (nl) edge [densely dotted] node[left] {\etext$\mathit{dst}$} (nml)
+%  (nr) edge [densely dotted] node[right] {\etext$\mathit{src}$} (nmr);
+\end{tikzpicture}
+
 Put the first 2 pictures, labelled (a) and (b) from figure 12 from Hawkins 2011 PLDI paper here.
 \caption{Possible representations for weighted graph edges.  Solid edges
 are maps implemented by Hash tables; dotted edges are maps implemented
 by lists.  (a) a Hash table 
 indexed by source node, followed by a list indexed by destination node;
 (b) like (a), but with a second accessor path via destination then
-source node.}
+source node.
+This picture originally appeared in \cite{data-rep-synth}.
+}
 \label{fig:rep-synth}
 \end{figure}
 
