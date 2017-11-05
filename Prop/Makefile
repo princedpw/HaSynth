@@ -4,13 +4,13 @@ TEXFILES = $(wildcard *.tex)
 BIBFILES = $(wildcard *.bib)
 STYFILES = $(wildcard *.sty)
 
-proposal.pdf: ${TEXFILES} ${BIBFILES} ${STYFILES}
+proposal: ${TEXFILES} ${BIBFILES} ${STYFILES}
 	pdflatex proposal
 	bibtex proposal
 	pdflatex proposal
 	pdflatex proposal
 
-summary.pdf: ${TEXFILES} ${STYFILES}
+summary: ${TEXFILES} ${STYFILES}
 	pdflatex summary
 
 xelatex: ${TEXFILES} ${BIBFILES} ${STYFILES}

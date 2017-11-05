@@ -32,8 +32,7 @@
 \usepackage{color}
 \usepackage{xspace}
 
-\newcommand{\Propane}{{\sc Propane}\@\xspace}
-\newcommand{\Name}{{\sc Butane}\@\xspace}
+\input{defs}
 
 \begin{document}
 \setcounter{page}{1}
@@ -46,19 +45,67 @@ Language Support for Resource-Savvy Synthesis
 \end{large}
 
 \noindent
-\textbf{Overview:} 
+\textbf{Overview:}   
+In constructing modern software systems, 
+programmers must make many implementation decisions, but
+the best choices depend upon a complex array of factors that may be
+only partially understandable even to excellent programmers.
+Examples of such factors include the difficult-to-predict effects of 
+parallelization, the shifting demands of dynamic workloads,  the
+choice of data representations, and the effect of caching.
+In the past, researchers have defined many highly effective systems 
+for automated synthesis of efficient
+implementations such as Hawkin \emph{et al.}'s representation
+synthesis, the Stoke super-optimizer, and many others.
+However, these efforts, while valuable, have typically resulted in 
+\emph{one-off}, \emph{stand-alone} systems.
 
-\noindent\textbf{Keywords:} program synthesis; type systems;
-functional programming; performance vulnerabilities
+\noindent\textbf{Keywords:} program synthesis; data representation synthesis;
+type systems; functional programming; domain-specific languages
 
 \noindent
-\textbf{Intellectual Merit:} 
-
-
+\textbf{Intellectual Merit:}
+In contrast, the goal of our research is to make it possible to integrate
+tools for synthesis of high-performance implementations into the every-day 
+practice of modern programmers and to do so in the context of 
+established, modern,
+typed programming languages.  We plan to achieve our goal
+by designing linguistic mechanisms that allow users to define and use 
+their own new \emph{resource-savvy synthesis plug-ins} (\rasps).
+These \rasps will be defined using a combination of modules and user-defined
+ language extensions that facilitate
+synthesis of efficient implementations, relative to the current
+environment and client program.  A basic \rasp will involve definition
+of (i) a new abstract interface for clients, (ii) specification of a
+(possibly infinite) space of implementations, (iii)
+a cost metric, and (iv) a search strategy.  The space of implementations
+will be specified using \emph{typed symbolic values}, \emph{symbolic types}
+themselves, constrained using \emph{dependent types} and implemented 
+efficiently using \emph{compile-time, type-directed computations}.  New 
+search strategies may be implemented directly by users, and may range from
+brute force enumeration to genetic programming to stocastic search.
+To use a new \rasp, client programs will simply import the \rasp definition
+and supply example data to drive search/synthesis of optimal results.
+To support performance debugging and analysis of performance vulnerabilities,
+we will explore language support capable of helping to analyze synthesis 
+results and generating candidate inputs that may deliver unexpected 
+performance results.  We will implement our ideas in the context of the
+Haskell programming language, evaluate the resulting design by testing
+it on a series of applications ranging from strictness analysis to
+representation synthesis, and study the formal properties of the semantics and
+type theory resulting from our design.
 
 \noindent
 \textbf{Broader Impacts:} 
-
+Language-integrated, resource-savvy synthesis has the potential to
+save programmer time while also delivering high-performance implementations.
+This proposal, if successful, may have a transformative impact on the
+structure, performance and maintainability of modern software systems.
+We also propose an educational plan involving developing a seminar for 
+undergraduate students focused on producing new synthesis-supported,
+visual programming languages using Google's Blockly toolkit.  Not only
+with the seminars help introduce undergraduates to research, they will
+produce new educational tools for students learning to program.
 
 
 
