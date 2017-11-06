@@ -803,6 +803,71 @@ This picture originally appeared in \cite{data-rep-synth}.
 \section{Broader Impacts}
 \label{sec:impact}
 
+\begin{figure}
+\includegraphics[width=\textwidth]{rasp}
+
+\caption{\label{fig:rasp}A proposed visual element template for a load
+  balancing \rasp in a visual programming language.  Such a \rasp
+  would hide the implementation details from students while allowing them
+  to provide specific test harnesses to specialize the load balancer
+  to the particulars of their programs.}
+\end{figure}
+
+
+% Prose
+
+
+We will explore using \rasps to make is easier for educators to add new
+abstractions to a visual programming language.  Visual languages, such
+as Google's Blockly \cite{Blocks,BlocklyApps}, are designed to help
+novice programmers write engaging software artifacts by providing
+visual cues about how to assemble programs and by removing the need to
+worry about syntax.  As an example of current practice, the visual
+language BlockyTalky\cite{BlockyTalky} expresses distributed system
+design while tacitly handling implementation details like establishing
+remote connections and buffering message sends in its runtime system.
+Researchers have used BlockyTalky to engage middle school students
+from underrepresented backgrounds in computer science by having them
+design their own electronic instruments and use them to play music.
+
+It is useful to be able to add higher-level abstractions to visual
+programming languages so that students can express more interesting
+programs more quickly.  Unfortunately, adding such features is
+difficult at the moment.  One way is to extend the implementation of
+the visual language itself, but that requires the educator to be
+intimately familiar with the implementation of the language, which is
+not a reasonable requirement.  A second way is to define the new
+abstraction in the language itself, but that can be cumbersome using a
+visual interface because such abstractions can require a lot of screen
+space to express correctly.   
+
+We propose to explore how \rasps might allow instructors to use
+program synthesis to define new abstractions that take into
+consideration details of both the language runtime system and student
+programs without having to be intimately familiar with either.  For
+example, consider the case where an educator wants to add a load
+balancer to their students' toolbox.  The educator might develop a
+\rasp such as the one shown in Figure~\ref{fig:rasp} to specify a
+widget for spreading messages across a variety of devices that works
+even when student programs have very different message sending
+properties.
+
+For this part of our project, we will use students from one of
+Princeton's independent work seminars (IW) to play the role of
+educators building abstractions for a visual programming language.
+David Walker will lead one such IW seminar, which will be comprised of 10-15
+undergraduate students.  Tufts PhD student Matthew Ahrens, who worked
+on BlockTalky, will design and build a \rasp system for the visual
+programming language.  The Princeton undergraduates will work together
+under the guidance of Professor Walker to build their own \rasp-based
+abstractions for a visual language and explore what applications
+younger students might be able to build with those abstractions.
+As part of the IW seminar, the undergraduates will get exposure to
+working on a research project.  They will learn about writing research
+proposals, scheduling tasks, planning for contingencies, giving oral
+presentations, and writing technical papers.  The seminar provides a
+group structure to support the students on their individual research projects.
+ 
 
 \section{Results from Prior NSF Support}
 \label{sec:prior-support}
