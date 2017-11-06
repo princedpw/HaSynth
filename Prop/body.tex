@@ -3,12 +3,12 @@
 how one does performance debugging and what is involved
 (found this:  \url{http://www.brendangregg.com/linuxperf.html})  Explain
 why it is hard.  Cite evidence.
-Note that the advent of big data makes this more important than ever 
+Note that the advent of big data makes this more important than ever
 \em{today}.  Small
-changes in performance mean changes in power and lots of money.  
+changes in performance mean changes in power and lots of money.
 Perhaps bring in past experience with Hancock and explain
 the programmer productivity bottlenecks in that context.  Ideally some data about Hancock
-might be nice. 
+might be nice.
 DARPA program -- performance attacks.
 }
 
@@ -16,16 +16,16 @@ DARPA program -- performance attacks.
 
 \section{Introduction}
 When writing robust software, functional correctness is only the
-beginning.  
-High-quality code also needs to make savvy use of resources.  
-In constructing modern software systems, 
+beginning.
+High-quality code also needs to make savvy use of resources.
+In constructing modern software systems,
 programmers must make many implementation decisions, but
 the best choices depend upon a complex array of factors that may be
 only partially understandable even to excellent programmers.
-Examples of such factors include the difficult-to-predict effects of 
+Examples of such factors include the difficult-to-predict effects of
 concurrency control and parallelization,
-the shifting demands of dynamic workloads,  
-jit compilers, 
+the shifting demands of dynamic workloads,
+jit compilers,
 implementations of lazy language features,
 garbage collection,
 hardware and/or software caches, and
@@ -33,7 +33,7 @@ distributing computations across a variety of machines or data
 centers.
 %
 Even if programmers were able to obtain acceptable performance on a
-particular hardware configuration with a particular compiler/runtime 
+particular hardware configuration with a particular compiler/runtime
 on a particular set of workloads, such codes are unlikely to
 be robust as the hardware/software/workload system evolves.
 %
@@ -50,11 +50,11 @@ the strengths of each.  Typically, the human supplies general
 knowledge of the external world, specific knowledge of the problem
 domains, and intuition derived from life experience.
 The computer supplies the ability to test hypotheses efficiently and
-reliably and to search through large spaces rapidly.  
-In such a partnership targetting resource-savvy programming, 
+reliably and to search through large spaces rapidly.
+In such a partnership targetting resource-savvy programming,
 the human's role is to describe the set of
 possible implementations without concern for how those implementations
-perform and a set of representative workloads; 
+perform and a set of representative workloads;
 the machine uses its computational power to search through
 the space of implementations to find the one(s) with the best performance.
 The machine makes use of dynamic measurements on the representative
@@ -62,9 +62,9 @@ workloads to cope with the fact that purely analytic approaches are
 unlikely to be able to faithfully model resource utilization.
 
 Researchers have already developed solutions to a variety of specific problems
-using this technique.  
+using this technique.
 For instance, Hawkins \etal{} use this approach to synthesize
-performant implementations of relational tables~\cite{data-rep-synth} 
+performant implementations of relational tables~\cite{data-rep-synth}
 and corresponding concurrency controls~\cite{conc-data-rep-synth}.
 Trella and Runciman use it to improve the performance of implicit parallel
 Haskell programs~\cite{implicit-parallel}, while
@@ -85,7 +85,7 @@ synthesis.  This platform will ask users to define:
 \item new domain-specific abstractions for use by client programs
 \item the (possibly infinite) space of implementations of each abstraction
 \item a cost model
-\item a search strategy to navigate the space of implementations, and 
+\item a search strategy to navigate the space of implementations, and
 \item a test harness including representative inputs.
 \end{enumerate}
 %
@@ -115,13 +115,13 @@ The \rasp{} platform will help end users in a variety of domains to
   relevant workloads.  This part of the effort can be seen as producing
   a general framework for autotuning.
 \item write programs that are robust with respect to workload and/or
-  environmental 
+  environmental
   changes.  Because our framework will allow programmers to specify their
   intent at a high level and then synthesize a performant
   implementation, the system can resynthesize a
   different implementation in response to changes in workload or
-  infrastructure 
-  \textit{while leaving the high-level logic of the program unchanged}.  
+  infrastructure
+  \textit{while leaving the high-level logic of the program unchanged}.
 \item find outlier inputs on which the current implementation exhibits
   poor resource utilization.  Because the system makes use of dynamic
   measurement on a supplied workload, it can produce implementations
@@ -155,7 +155,7 @@ The \rasp{} platform will help end users in a variety of domains to
 \paragraph*{Intellectual Merit.}
 
 
-\paragraph{The Team.}  Our team has the breadth of skills, backgrounds, and perspectives that will be required to accomplish the agenda set out above.  
+\paragraph{The Team.}  Our team has the breadth of skills, backgrounds, and perspectives that will be required to accomplish the agenda set out above.
 
 
 We hypothesize that resource-aware synthesis, implemented via the kind
@@ -192,7 +192,7 @@ Lazy functional programming languages such as
 Haskell offer the promise of only evaluating the expressions needed
 to compute the answer. As such, they often enable useful programming
 idioms, modular designs~\cite{Hughes89} and the definition of powerful,
-yet syntactically-lightweight, first-class control constructs. 
+yet syntactically-lightweight, first-class control constructs.
 However, laziness does not always improve performance---quite the
 opposite.  Laziness is implemented using thunks: When a function is called, the
 system passes a heap-allocated thunk storing an unevaluated argument to
@@ -226,7 +226,7 @@ needed at every possible point in a program, or, alternatively, within
 user-directed regions of a program.  Next, given representative data with which to
 execute the program, Autobahn searches for the set of strictness annotations
 that optimizes (run-time) performance of the application on the sample data.
-Given the large number of possible program annotations, the search space is 
+Given the large number of possible program annotations, the search space is
 vast.  However, our research has discovered that genetic programming finds
 effective set of annotations in most cases.
 
@@ -235,27 +235,27 @@ order, it was costly to construct.  In particular, the researchers
 required knowledge of Haskell's compiler internals and had to generate
 infrastructure to generate variations of user programs, execute them,
 measure performance and search for optimal variations.  All this
-infrastructure and knowledge was deployed to build just one tool.  
+infrastructure and knowledge was deployed to build just one tool.
 However, Autobahn is just one of many --- there are other proposals to
 search for implicit parallelism~\cite{implicit-parallel}, to
-automatically incrementalize 
+automatically incrementalize
 programs~\cite{type-directed-incrementalization}, to use stochastic search
-in super-optimization~\cite{stochastic-superopt}, and to find optimal data 
+in super-optimization~\cite{stochastic-superopt}, and to find optimal data
 representations~\cite{data-rep-synth,conc-data-rep-synth}.  The goal of our research proposal
 is to make it easier to build and adapt optimizing extensions like
-Autobahn and others, and to allow ordinary programmers, rather than 
-compiler experts to do so.  
+Autobahn and others, and to allow ordinary programmers, rather than
+compiler experts to do so.
 
 \subsection{The Autobahn \rasp}
 \label{sec:autobahn}
 
-Figure~\ref{fig:autobahn-via-synthesis} sketches an example of a 
-\rasp{} designed to implement Autobahn and Figure~\ref{fig:autobahn-client} sketches a client program that uses this language plug-in.  These two 
+Figure~\ref{fig:autobahn-via-synthesis} sketches an example of a
+\rasp{} designed to implement Autobahn and Figure~\ref{fig:autobahn-client} sketches a client program that uses this language plug-in.  These two
 figures present
-several technical elements of proposed design:  \emph{typed symbolic values}, 
+several technical elements of proposed design:  \emph{typed symbolic values},
 \emph{symbolic computations}, \emph{search strategies}, language directives to
 \emph{synthesize} optimal code from example data, and language directives to
-find possible \emph{performance vulnerabilities}. 
+find possible \emph{performance vulnerabilities}.
 
 \begin{figure}[t]
     %% \centering
@@ -266,7 +266,7 @@ find possible \emph{performance vulnerabilities}.
     %%     \label{fig:data-center-topo}
     %% \end{minipage}%
     %%\begin{minipage}{0.5\textwidth}
-        
+
 \centering
 \begin{mylisting}
 {-# LANGUAGE Synthesis DEFINING Autobahn -}
@@ -281,7 +281,7 @@ eval? e = if gen* then seq e else e
 map_syntax (\Apply(e1,e2) -> Apply(e1, Apply-inline (eval?, e2)))
 
 -- Define the search strategy for the vector gen*
-{-# STRATEGY gen* = 
+{-# STRATEGY gen* =
     genetic { diversityRate = 0.4
                , numGenerations = 20
                , populationSize = 15
@@ -292,7 +292,7 @@ map_syntax (\Apply(e1,e2) -> Apply(e1, Apply-inline (eval?, e2)))
                , numFitnessRuns = 4 }
 -}
 \end{mylisting}
-\caption{The Autobahn \rasp.  
+\caption{The Autobahn \rasp.
 }
 \label{fig:autobahn-via-synthesis}
 %%\end{minipage}
@@ -307,17 +307,17 @@ map_syntax (\Apply(e1,e2) -> Apply(e1, Apply-inline (eval?, e2)))
     %%     \label{fig:data-center-topo}
     %% \end{minipage}%
     %%\begin{minipage}{0.5\textwidth}
-        
+
 \centering
 \begin{mylisting}
 {-# LANGUAGE Autobahn -}    -- use the Autobahn extension
 
--- Ordinary application code.  
+-- Ordinary application code.
 -- Function applications may or may not be strict, as synthesized
 component x = ...
 
 -- Generate optimal program using example data component 0, ..., component n
-{-# SYNTHESIZE "mycomponent" 
+{-# SYNTHESIZE "mycomponent"
         [component 0, component 1, ..., component n] "dir/code" -}
 
 -- Generate performance vulnerabilities report
@@ -333,22 +333,22 @@ component x = ...
 \paragraph*{Symbolic values}
 The first task in the design of any \rasp{} is to specify the space of
 implementations for the \rasp{} features.  In our proposal, the first step
-in doing so is to declare a set of \emph{typed, symbolic values}.  Once introduced, a symbolic value 
+in doing so is to declare a set of \emph{typed, symbolic values}.  Once introduced, a symbolic value
 of type T may be used in the same way that any ordinary value of type T is used.
 For example, symbolic booleans may be used in conditionals and symbolic integers may be used
 in arithmetic expressions.  However, the exact value of the symbolic constant is
-determined by the synthesis engine.  In our case, the symbolic constant will be determined 
-in such a way as to maximize resource utilization according to a user-defined cost metric and 
+determined by the synthesis engine.  In our case, the symbolic constant will be determined
+in such a way as to maximize resource utilization according to a user-defined cost metric and
 search strategy.
 
-As an example, consider Figure~\ref{fig:autobahn-via-synthesis}.  Here, the programmer 
+As an example, consider Figure~\ref{fig:autobahn-via-synthesis}.  Here, the programmer
 defines \cd{gen*}, a new \emph{set} of symbolic booleans.  Intuitively, every occurence of \cd{gen*}
 in the final source code will correspond to a separate symbolic boolean.  The second declaration in
 the \rasp{} defines the function \cd{eval?}.  This function takes an arbitrary expression \cd{e}
 as an argument.  If \cd{gen*} is true, it forces eager evaluation of \cd{e} into weak head normal
 form; if  \cd{gen*} is false, it leaves \cd{e} untouched.  Hence, any
 place \cd{eval?} occurs, it
-may or may not eagerly evaluate its argument, depending on how \cd{gen*} is resolved by the 
+may or may not eagerly evaluate its argument, depending on how \cd{gen*} is resolved by the
 synthesizer.
 
 In this case, the next step in \rasp{} definition involves a syntactic
@@ -384,7 +384,7 @@ efficient implementations.  For example, Hawkins \etal~\cite{data-rep-synth} use
 simple enumeration from smallest to largest values to find efficient
 data structures for representing finite partial maps.  Such strategies are
 possible when the search space is small.  When the search space increases,
-other non-exhaustive strategies are required.  For instance, Autobahn 
+other non-exhaustive strategies are required.  For instance, Autobahn
 introduces a choice for every function call and the resulting search
 space grows exponentially with respect to the size of the program.  To
 navigate this space, Wang \etal{} demonstrate that genetic programming is effective.
@@ -412,25 +412,25 @@ variations on the specific genetic programming algorithm used in
 Autobahn, or stocastic search, probabilistic modelling, enumerative
 search, or use of symbolic methods such as bounded model checking.
 
-In addition to supporting several strategies independently, we will 
+In addition to supporting several strategies independently, we will
 investigate the effects of mixing more than one strategy.  In particular,
 in large programs, we expect several different \rasp{}s to be used simultaneously.
 In order for optimization to scale, it may be necessary to make independence assumptions
 so that different \rasp{}s may be optimized separately.  Of course, such assumptions
 may turn out to be invalid and attempts at ordering optimizations one after another
-may wind up encountering the classic compiler optimization phase-ordering 
-problem~\cite{Click:combining-optimizations,Vegdahl:phase-coupling}. 
+may wind up encountering the classic compiler optimization phase-ordering
+problem~\cite{Click:combining-optimizations,Vegdahl:phase-coupling}.
  If so, we will drawn on the literature
 to find solutions to such issues~\cite{Kulkarni:phase-ordering-search,Kulkarni:phase-ordering}.  While such issues are likely to present interesting
 and challenging research problems, they are unlikely to be show-stoppers---though we may not
 be able to supply optimal peformance, we may still be able to improve application performaance
 dramatically.
 
-In addition to facing the challenge of composing different strategies from different \rasp{}s, 
+In addition to facing the challenge of composing different strategies from different \rasp{}s,
 we may also find that users may wish to tweak \rasp{} strategy.  One way to customize \rasp{}
 strategy to an application is to expose some of the paramaters of the \rasp{} strategy to users.
 In the Autobahn example, for instance, parameters of the genetic programming algorithm might
-be exposed to clients.  Perhaps more interestingly, users may wish to use several different 
+be exposed to clients.  Perhaps more interestingly, users may wish to use several different
 instances of the same \rasp{} within a single program.  For instance, a user may suspect that
 two modules, which both use Autobahn are performance-isolated from one another.  Consequently,
 they may be optimized separately, rather than jointly, which may improve the search for
@@ -452,25 +452,25 @@ Here, the pragma at the top of the figure indicates the programmer which to work
 within the Autobahn sublanguage.  The following declaration defines \cd{component},
 which is intended to be an ordinary function, defined within the \rasp{} sublanguage.
 The next diretive, \cd{SYNTHESIZE}, instructs the system to find values of symbolic
-variables that jointly optimize execution of \cd{component 0}, \cd{component 1}, \etc{}  
+variables that jointly optimize execution of \cd{component 0}, \cd{component 1}, \etc{}
 and to place optimized code in the specified directory.
 
 \ksf{I'm not sure this fits here, or if should be its own section thingy.}
 \paragraph*{Finding performance bugs}
 The last element that we plan to explore is performance debugging
-\rasp{}-generated code.  
+\rasp{}-generated code.
 We envision many \rasp{}s will use dynamic measurements to guide their search
 because of the difficulties of accurately modeling resource utilization
-at scale.  
+at scale.
 Dynamic approaches, however, are vulnerable because they necessarily
-consider only a portion of the input space.  
+consider only a portion of the input space.
 Autobahn, for example, guarantees it will match or improve the
-performance of the programs it considers 
+performance of the programs it considers
 \textit{on the supplied data}.  If the test data is representative of
 all the inputs that the program will actually be run on, then all is
 well. If, however, the program is given unexpected data at runtime
 that triggers different execution paths, the performance of the
-optimized program may be \textit{worse} than the original.  
+optimized program may be \textit{worse} than the original.
 This situation may reflect a performance bug in the optimized
 program.  A solution would be to add the triggering inputs to the
 representative set given to Autobahn as input, which would cause it to
@@ -482,31 +482,31 @@ typically regard that as violating the pre-conditions of the function
 and would be happy with a compiler that took advantage of the
 knowledge that the argument is positive to perform optimizations.  In
 this situation, the solution would be to add an explicit pre-condition
-to the function outlawing the triggering value.  
+to the function outlawing the triggering value.
 
 In this portion of the \rasp{} research project, we envision
 developing tools to help identify inputs that trigger excessive
-resource utilization in generated code. 
+resource utilization in generated code.
 Our high-level objective is to develop a performance model of each
 function of interest.   This model will first partition the space of inputs into
-subspaces defined by constraints (\eg{}, the first argument is 
+subspaces defined by constraints (\eg{}, the first argument is
 positive and the second argument is non-nil, the first argument is
 negative and the second argument is nil, \etc{}).  For each subspace,
 we will generate a symbolic (where possible)~\cite{Hoffmann17} or
-empircal~\cite{Goldsmith07} 
+empircal~\cite{Goldsmith07}
 characterization of the resources used as a function of the legal
 inputs for that subspace.   For \cd{factorial}, for example, the input
 will be partitioned into positive and negative values.  For negative
 values, the summary will show that resource utilization is unbounded
-(in simple cases, we may be able to show that the computation 
+(in simple cases, we may be able to show that the computation
 diverges~\cite{Gupta08}).
 For positive values, the summary will show that the resource
 utilization grows linearly with the size of the argument either by
 proving that relationship by analyzing the code or by measuring it by
 running the program on inputs of increasing size.
 To carry out this work, we plan to use a combination of symbolic
-execution, complexity analysis, code coverage analysis, and 
-random-input generation that produces inputs of increasing size. 
+execution, complexity analysis, code coverage analysis, and
+random-input generation that produces inputs of increasing size.
 
 
 The \cd{VULNERABILITIES} pragma in Figure~\ref{fig:autobahn-client}
@@ -543,20 +543,20 @@ and polymorphic and dependent types. \dpw{It would be nice to mention Hancock so
 \paragraph*{Simple symbolic data representations}
 %% Programmers are continuously making choices about their data structure representations.  In the era of
 %% ``big data,'' the choices have become more varied, complex, context-dependent and important.
-%% Wouldn't it be nice if programmers did not have to think about these choices and could instead focus 
+%% Wouldn't it be nice if programmers did not have to think about these choices and could instead focus
 %% on higher-level algorithmic details?
-One option for defining and using datatypes in a modular fashion in Haskell is to use a \emph{type class}.  
-Type classes are interfaces that may have many different implementations; when using a class, the client 
-code's choice of concrete type determines the implementation.  Type classes support a useful kind of ``ad hoc'' 
+One option for defining and using datatypes in a modular fashion in Haskell is to use a \emph{type class}.
+Type classes are interfaces that may have many different implementations; when using a class, the client
+code's choice of concrete type determines the implementation.  Type classes support a useful kind of ``ad hoc''
 polymorphism that interacts smoothly with traditional parametric polymorphism and type inference.  Type
 classes have become popular in a variety of modern languages including Scala, FSharp and Coq as they
-are typically easy-to-use and syntactically light weight, and yet promote effective code reuse.  
-Though our research 
+are typically easy-to-use and syntactically light weight, and yet promote effective code reuse.
+Though our research
 will be developed in Haskell, we believe the ideas will be attractive in these other settings as well.
 As you will see below, we believe our design will be particularly lightweight and easy to integrate into
 existing programming practice.
 
-A simple example type class that defines an interface to collections is presented in 
+A simple example type class that defines an interface to collections is presented in
 Figure~\ref{type-class-set}.  Here, we define the type class \cd{Set}, which has methods
 \cd{empty} to create the empty set (the parameter gives an estimated size of the set), \cd{insert} to add a member to a set, and \cd{member}
 to check for membership in a set.  We also sketch two instances (\ie, implementations) of this
@@ -575,7 +575,7 @@ synthesis.  At the bottom of the figure, directives to synthesize code based on 
 to help users find performance vulnerabilities appear as before.  Here, we also assume that the SymbolicClasses
 \rasp provides a default search strategy.  At the moment, it seems likely that the search space for this
 sort of usage is typically small (there may only be a small number of ways to construct particular type
-classes) and hence simple smallest-to-largest enumerative search may work well.  
+classes) and hence simple smallest-to-largest enumerative search may work well.
 
 Notice that one of the key benefits of our proposed design is its simplicity and lack of intrusiveness.
 The symbolic program itself is hardly different from an ordinary Haskell program --- all of the work is
@@ -594,7 +594,7 @@ the Haskell platform.
 \begin{figure}[t]
 \centering
 \begin{mylisting}
-{-# LANGUAGE SymbolicClasses -}    
+{-# LANGUAGE SymbolicClasses -}
 
 class Set s where
   empty :: int -> s a
@@ -617,11 +617,11 @@ symbolic t* :: * -> * where Set t   -- symbolic type t declaration
 symbolic size* :: int               -- symbolic integer
 
 component n =
-  process (empty size* :: t* int)   -- Symbolic type class for sets; 
+  process (empty size* :: t* int)   -- Symbolic type class for sets;
   ...                                 -- Initial set size determiend by symbolic size*
 
-{- SYNTHESIZE "mycomponent" [component 0, ...]  "dir/code" -} 
-{- VULNERABILITIES "mycomponent" "report.txt" -} 
+{- SYNTHESIZE "mycomponent" [component 0, ...]  "dir/code" -}
+{- VULNERABILITIES "mycomponent" "report.txt" -}
 
 \end{mylisting}
 \caption{Synthetic Type Classes.}
@@ -639,7 +639,7 @@ hierarchical data structures from multiple components and to enforce
 and maintain sophisticated representation invariants.  We propose
 to dependent types to describe representation invariants and thereby
 cut down the space of possible implementations.  We also propose to use
-type-directed programming to safely specialize programs to a particular 
+type-directed programming to safely specialize programs to a particular
 implementation, once the most efficient symbolic choices have been made.
 
 To illustrate our proposed ideas, consider the problem of synthesizing
@@ -680,7 +680,7 @@ maps repeatedly and redundantly indexed by destination (or by source).
 A natural way to rule out such structures, is to use constraints of
 one kind or anther.  We plan to investigate various mechanisms for
 expressing such constraints, including GADTs~\cite{gadts},
-singleton types~\cite{weirich:singletons} and 
+singleton types~\cite{weirich:singletons} and
 liquid types~\cite{liquid-haskell}.
 
 In addition to specifying the possible shapes of data structures,
@@ -692,13 +692,13 @@ In other words, we plan to allow users to define functions parameterized
 by symbolic types; once the symblic types are made concrete, it should
 be possible to specialize the function implementation to the chosen
 symbolic type without incurring run-time overhead and without giving up
-type safety. 
+type safety.
 
 
 %For example, Hancock~\cite{hancock} was ...
 
 %% Accessor methods must be defined so that they traverse the symbolically selected
-%% hierarchical structures efficiently and correctly.  Moreover, correct implementations can often only 
+%% hierarchical structures efficiently and correctly.  Moreover, correct implementations can often only
 %% be constructed when the structure satisfy non-trivial representation invariants.  Hence, programmers
 %% must be able to define such invariants and the synthesis infrastructure must be able to interpret them.
 
@@ -722,7 +722,7 @@ type safety.
 \node[v] (nl) [below of=n] {$y$};
 \node[v] (nm) [below of=nl] {$z$};
 \node at ($(nm) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
-\draw[-stealth] 
+\draw[-stealth]
   (root) edge (n)
   (n) edge node[left] {\etext$\mathit{src}$} (nl)
   (nl) edge [densely dotted] node[left] {\etext$\mathit{dst}$} (nm);
@@ -733,7 +733,7 @@ type safety.
 \node[v] (nr) [below of=n,xshift=8mm] {$z$};
 \node[v] (nm) [below of=nl,xshift=8mm] {$w$};
 \node at ($(nm) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
-\draw[-stealth] 
+\draw[-stealth]
   (root) edge (n)
   (n) edge node[left] {\etext$\mathit{src}$} (nl)
   (n) edge node[right] {\etext$\mathit{dst}$} (nr)
@@ -748,7 +748,7 @@ type safety.
 %\node[v] (nmr) [below of=nr] {$r$};
 %\node at ($(nml) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
 %\node at ($(nmr) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
-%\draw[-stealth] 
+%\draw[-stealth]
 %  (root) edge (n)
 %  (n) edge node[left] {\etext$\mathit{src}$} (nl)
 %  (n) edge node[right] {\etext$\mathit{dst}$} (nr)
@@ -759,7 +759,7 @@ type safety.
 Put the first 2 pictures, labelled (a) and (b) from figure 12 from Hawkins 2011 PLDI paper here.
 \caption{Possible representations for weighted graph edges.  Solid edges
 are maps implemented by Hash tables; dotted edges are maps implemented
-by lists.  (a) a Hash table 
+by lists.  (a) a Hash table
 indexed by source node, followed by a list indexed by destination node;
 (b) like (a), but with a second accessor path via destination then
 source node.
@@ -786,7 +786,7 @@ This picture originally appeared in \cite{data-rep-synth}.
 %% -- a constrained type that specifies legal representations
 %% type GD* :: D where good
 
-%% -- 
+%% --
 %% query :: GD* -> Query -> Weight
 
 %% -- a symbolic data structure describing
@@ -817,29 +817,43 @@ This picture originally appeared in \cite{data-rep-synth}.
 % Prose
 
 
-We will explore using \rasps to make is easier for educators to add new
-abstractions to a visual programming language.  Visual languages, such
-as Google's Blockly \cite{Blocks,BlocklyApps}, are designed to help
-novice programmers write engaging software artifacts by providing
-visual cues about how to assemble programs and by removing the need to
-worry about syntax.  As an example of current practice, the visual
-language BlockyTalky\cite{BlockyTalky} expresses distributed system
-design while tacitly handling implementation details like establishing
+We will explore using \rasps to enable educators to add new
+abstractions to a visual programming language more easily. Visual programming
+languages enable students to create software artifacts without
+worrying about syntax.
+However, As Resnick and Silverman noted after developing the visual language,
+Scratch\cite{Scratch}, ``one of the most important
+decisions is the choice of the basic building blocks of the
+kit. This choice determines, to a large extent, what ideas
+users can explore.'' 
+To facilitate the construction of blocks,
+visual language frameworks, such
+as Google's Blockly \cite{Blocks,BlocklyApps}, allow language
+developers to
+provide a visual front end for an existing textual language.
+%In contrast, educators, who typically aren't language developers, 
+%want to be able to provide a new high-level
+%abstractions for existing visual languages.
+As an example of current practice, the visual
+language BlockyTalky\cite{BlockyTalky} declares Blockly blocks to wrap distributed
+programming primatives while tacitly handling implementation details like establishing
 remote connections and buffering message sends in its runtime system.
-Researchers have used BlockyTalky to engage middle school students
+Researchers have used BlockyTalky to engage middle and high school students
 from underrepresented backgrounds in computer science by having them
-design their own electronic instruments and use them to play music.
+design their own networked, LEGO, and GrovePi hardware instruments to play music
+in summer workshops and music education classrooms.
 
-It is useful to be able to add higher-level abstractions to visual
-programming languages so that students can express more interesting
-programs more quickly.  Unfortunately, adding such features is
-difficult at the moment.  One way is to extend the implementation of
+Educators would find it useful to be able to add higher-level abstractions
+to existing visual programming languages, like Scratch or BlockyTalky,
+so that students can express more interesting programs quickly.
+Unfortunately, adding such features is
+difficult at the moment\cite{ScratchExt}. One way is to extend the implementation of
 the visual language itself, but that requires the educator to be
 intimately familiar with the implementation of the language, which is
 not a reasonable requirement.  A second way is to define the new
 abstraction in the language itself, but that can be cumbersome using a
 visual interface because such abstractions can require a lot of screen
-space to express correctly.   
+space to express correctly.
 
 We propose to explore how \rasps might allow instructors to use
 program synthesis to define new abstractions that take into
@@ -867,7 +881,7 @@ working on a research project.  They will learn about writing research
 proposals, scheduling tasks, planning for contingencies, giving oral
 presentations, and writing technical papers.  The seminar provides a
 group structure to support the students on their individual research projects.
- 
+
 
 \section{Results from Prior NSF Support}
 \label{sec:prior-support}
@@ -883,23 +897,23 @@ five years.
 In NSF CNS-1111520, \emph{High-Level Language Support for Trustworthy Networks}
 (\$1,400,000, 08/11-07/16),
 PI Walker and his collaborators developed new languages, interfaces
-and systems for managing software-defined networks (SDNs).  
+and systems for managing software-defined networks (SDNs).
 This project produced the Frenetic family
 of network programming languages, the first high-level languages for
 programming software-defined networks.  These languages, which include
-Frenetic~\cite{frenetic}, 
+Frenetic~\cite{frenetic},
 Pyretic~\cite{pyretic},
 NetKAT~\cite{netkat} and others, all adhere to the
 \emph{principle of compositionality}, a key design element missing
-from earlier network programming languages.  
+from earlier network programming languages.
 %They also invented the
 %notion of consistent network update~\cite{reitblatt+:consistent-updates},
 %which ensures key safety invariants are preserved across network update.
 Open source code for systems produced by this project is available
 at \url{frenetic-lang.org}.
 %
-{\bf Broader Impacts:} 
-The PIs held a well-attended summer school on network programming and 
+{\bf Broader Impacts:}
+The PIs held a well-attended summer school on network programming and
 verification for students and faculty. The
 Pyretic programming language was used in Nick Feamster's popular
 SDN MOOC; thousands of students and
@@ -918,7 +932,7 @@ In NSF CNS-1703493, \emph{NeTS: Medium: Collaborative Research: Network Configur
 (\$423,891 (Princeton portion), 07/17-06/21), we plan to build on work on network configuration
 synthesis and verification.  By synthesizing network configurations from
 high-level specifications, we can avoid entire classes of bugs; by applying
-verification technology to synthesized or legacy configurations, we can 
+verification technology to synthesized or legacy configurations, we can
 root out additional errors.  Though this grant has just begun, we have already
 made substantial progress by showing how to scale synthesis of network configurations to networks with hundreds or thousands of routers using abstract topologies~\cite{propane-at}.  We also designed, implemented and optimized a new
 network verification tool that translates configurations for OSPF, BGP and
@@ -926,11 +940,11 @@ other standard protocols into SMT formulas for verification of a wide range
 of properties ranging from reachability to fault tolerance to multi-path
 consistency~\cite{minesweeper}.  Both systems are available open source
 on github (\url{https://github.com/rabeckett/propane} and \url{https://batfish.github.io/minesweeper/}).
-{\bf Broader Impacts:} The Propane system is currently being used in 
+{\bf Broader Impacts:} The Propane system is currently being used in
 colleague Jennifer Rexford's graduate networking class to teach the basics
 of network configuration and analysis.  The PIs will host
-a workshop on network synthesis and verification under the umbrella of the 
-Cornell-Princeton Center on Network Programming and with ample industry 
+a workshop on network synthesis and verification under the umbrella of the
+Cornell-Princeton Center on Network Programming and with ample industry
 participation as a way of transferring academic discoveries to industry.
 
 
