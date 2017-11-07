@@ -642,6 +642,70 @@ cut down the space of possible implementations.  We also propose to use
 type-directed programming to safely specialize programs to a particular
 implementation, once the most efficient symbolic choices have been made.
 
+\begin{figure}[h]
+%\begin{wrapfigure}{R}{0.4\textwidth}
+\centering
+\begin{tikzpicture}[style=g,node distance=0.8cm]
+
+\node (p1) {};
+\path (p1) +(20mm,0mm) node (p2) {};
+\path (p2) +(30mm,0mm) node (p3) {};
+
+\draw (p1) +(-6mm,15mm) node {\bf(a)};
+\draw (p2) +(-8mm,15mm) node {\bf(b)};
+%\draw (p3) +(-8mm,15mm) node {\bf(9)};
+
+\draw (p1) +(0mm,18mm) node (root) {};
+\draw (root) +(0mm,-6mm) node[v] (n) {$x$};
+\node[v] (nl) [below of=n] {$y$};
+\node[v] (nm) [below of=nl] {$z$};
+\node at ($(nm) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
+\draw[-stealth]
+  (root) edge (n)
+  (n) edge node[left] {\etext$\mathit{src}$} (nl)
+  (nl) edge [densely dotted] node[left] {\etext$\mathit{dst}$} (nm);
+
+\draw (p2) +(0mm,18mm) node (root) {};
+\draw (root) +(0mm,-6mm) node[v] (n) {$x$};
+\node[v] (nl) [below of=n,xshift=-8mm] {$y$};
+\node[v] (nr) [below of=n,xshift=8mm] {$z$};
+\node[v] (nm) [below of=nl,xshift=8mm] {$w$};
+\node at ($(nm) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
+\draw[-stealth]
+  (root) edge (n)
+  (n) edge node[left] {\etext$\mathit{src}$} (nl)
+  (n) edge node[right] {\etext$\mathit{dst}$} (nr)
+  (nl) edge [densely dotted] node[left] {\etext$\mathit{dst}$} (nm)
+  (nr) edge [densely dotted] node[right] {\etext$\mathit{src}$} (nm);
+
+%\draw (p3) +(0mm,18mm) node (root) {};
+%\draw (root) +(0mm,-6mm) node[v] (n) {$x$};
+%\node[v] (nl) [below of=n,xshift=-8mm] {$y$};
+%\node[v] (nr) [below of=n,xshift=8mm] {$z$};
+%\node[v] (nml) [below of=nl] {$l$};
+%\node[v] (nmr) [below of=nr] {$r$};
+%\node at ($(nml) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
+%\node at ($(nmr) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
+%\draw[-stealth]
+%  (root) edge (n)
+%  (n) edge node[left] {\etext$\mathit{src}$} (nl)
+%  (n) edge node[right] {\etext$\mathit{dst}$} (nr)
+%  (nl) edge [densely dotted] node[left] {\etext$\mathit{dst}$} (nml)
+%  (nr) edge [densely dotted] node[right] {\etext$\mathit{src}$} (nmr);
+\end{tikzpicture}
+
+\caption{Possible representations for weighted graph edges.  Solid edges
+are maps implemented by Hash tables; dotted edges are maps implemented
+by lists.  (a) a Hash table
+indexed by source node, followed by a list indexed by destination node;
+(b) like (a), but with a second accessor path via destination then
+source node.
+This picture originally appeared in \cite{data-rep-synth}.
+}
+\label{fig:rep-synth}
+%\end{wrapfigure}
+\end{figure}
+
 To illustrate our proposed ideas, consider the problem of synthesizing
 efficient representations of weighted graphs, as described by Hawkins,
 co-PI Fisher and their colleagues~\cite{data-rep-synth}.  Such graphs
@@ -705,68 +769,7 @@ type safety.
 
 
 
-\begin{figure}[t]
-\centering
-\begin{tikzpicture}[style=g,node distance=0.8cm]
 
-\node (p1) {};
-\path (p1) +(20mm,0mm) node (p2) {};
-\path (p2) +(30mm,0mm) node (p3) {};
-
-\draw (p1) +(-6mm,15mm) node {\bf(a)};
-\draw (p2) +(-8mm,15mm) node {\bf(b)};
-%\draw (p3) +(-8mm,15mm) node {\bf(9)};
-
-\draw (p1) +(0mm,18mm) node (root) {};
-\draw (root) +(0mm,-6mm) node[v] (n) {$x$};
-\node[v] (nl) [below of=n] {$y$};
-\node[v] (nm) [below of=nl] {$z$};
-\node at ($(nm) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
-\draw[-stealth]
-  (root) edge (n)
-  (n) edge node[left] {\etext$\mathit{src}$} (nl)
-  (nl) edge [densely dotted] node[left] {\etext$\mathit{dst}$} (nm);
-
-\draw (p2) +(0mm,18mm) node (root) {};
-\draw (root) +(0mm,-6mm) node[v] (n) {$x$};
-\node[v] (nl) [below of=n,xshift=-8mm] {$y$};
-\node[v] (nr) [below of=n,xshift=8mm] {$z$};
-\node[v] (nm) [below of=nl,xshift=8mm] {$w$};
-\node at ($(nm) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
-\draw[-stealth]
-  (root) edge (n)
-  (n) edge node[left] {\etext$\mathit{src}$} (nl)
-  (n) edge node[right] {\etext$\mathit{dst}$} (nr)
-  (nl) edge [densely dotted] node[left] {\etext$\mathit{dst}$} (nm)
-  (nr) edge [densely dotted] node[right] {\etext$\mathit{src}$} (nm);
-
-%\draw (p3) +(0mm,18mm) node (root) {};
-%\draw (root) +(0mm,-6mm) node[v] (n) {$x$};
-%\node[v] (nl) [below of=n,xshift=-8mm] {$y$};
-%\node[v] (nr) [below of=n,xshift=8mm] {$z$};
-%\node[v] (nml) [below of=nl] {$l$};
-%\node[v] (nmr) [below of=nr] {$r$};
-%\node at ($(nml) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
-%\node at ($(nmr) + (0mm,-3.5mm)$) {\ntext$\mathit{weight}$};
-%\draw[-stealth]
-%  (root) edge (n)
-%  (n) edge node[left] {\etext$\mathit{src}$} (nl)
-%  (n) edge node[right] {\etext$\mathit{dst}$} (nr)
-%  (nl) edge [densely dotted] node[left] {\etext$\mathit{dst}$} (nml)
-%  (nr) edge [densely dotted] node[right] {\etext$\mathit{src}$} (nmr);
-\end{tikzpicture}
-
-Put the first 2 pictures, labelled (a) and (b) from figure 12 from Hawkins 2011 PLDI paper here.
-\caption{Possible representations for weighted graph edges.  Solid edges
-are maps implemented by Hash tables; dotted edges are maps implemented
-by lists.  (a) a Hash table
-indexed by source node, followed by a list indexed by destination node;
-(b) like (a), but with a second accessor path via destination then
-source node.
-This picture originally appeared in \cite{data-rep-synth}.
-}
-\label{fig:rep-synth}
-\end{figure}
 
 %% \begin{figure}[t]
 %% \centering
@@ -804,7 +807,7 @@ This picture originally appeared in \cite{data-rep-synth}.
 \label{sec:impact}
 
 \begin{figure}
-\includegraphics[width=\textwidth]{rasp}
+\includegraphics[width=0.4\textwidth]{rasp}
 
 \caption{\label{fig:rasp}A proposed visual element template for a load
   balancing \rasp in a visual programming language.  Such a \rasp
@@ -882,6 +885,40 @@ proposals, scheduling tasks, planning for contingencies, giving oral
 presentations, and writing technical papers.  The seminar provides a
 group structure to support the students on their individual research projects.
 
+\section{Collaboration Plan}
+
+PIs Fisher and Walker have already been collaborating successfully with one 
+another for roughly a decade on projects ranging from the design and implementation
+of domain-specific languages for data processing such as 
+PADS~\cite{mandelbaum:pads-ml,fisher+:next-700,fisher+:pads-overview} and 
+Forest~\cite{fisher+:forest} 
+to the development of new algorithms 
+for program 
+synthesis~\cite{fisher+:learnpads,zhu+:learnpads2,miltner+:synthesizing-bijective-lenses}.  These colloborations have always occurred with the PIs at separate
+institutions, as in the current proposal.
+As we have done for our prior and ongoing collaborations, we will continue to hold weekly team-wide videoconference meetings.  This mechanism allows everyone to stay abreast of the activities at both universities and enables all students to take advantage of the broad knowledge and perspectives represented across the team.  In this way, the PIs truly co-advise all graduate students, regardless of their location, which in our experience produces stronger, higher-impact research.  
+We also have frequent email discussions between meetings.  
+Due to our existing collaborations we already have a shared Github repository for code, data, and publications.  We will continue to use this repository to share and maintain our research artifacts.  The table in Figure~\ref{fig:timeline}
+presents a timeline for our collaborative activities.
+
+\begin{figure}[!hbt]
+\begin{small}
+\centering
+\begin{tabular}{|l|c|c|}
+\hline\hline
+{\bf Research Task} & {\bf Start} & {\bf Finish} \\
+\hline\hline
+Control Structure Synthesis Infrastructure & Year 1 & Year 1\\\hline
+Control Structure Applications  & Year 1& Year 1 \\\hline
+Representation Synthesis Infrastructure & Year 2 & Year 2\\\hline
+Representation Synthesis Applications  & Year 2 & Year 2\\\hline\hline
+{\bf Educational Task} & {\bf Start} & {\bf Finish} \\\hline\hline
+Blockly Infrastructure Development & Year 1 & Year 2 (Fall) \\\hline
+Princeton UGrad IW Seminar & Year 2 (Spring) & Year 2 (Spring) \\\hline\hline
+\end{tabular}
+\end{small}
+\caption{Research Timeline}\label{fig:timeline}
+\end{figure} 
 
 \section{Results from Prior NSF Support}
 \label{sec:prior-support}
