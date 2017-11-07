@@ -6,6 +6,17 @@
 \textwidth=6.5in
 \textheight=9.0in
 
+\usepackage{color}
+\usepackage{xspace}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{syntax}
+\usepackage{url}
+\usepackage{fancyhdr}
+\usepackage{listings}
+
+\input{defs}
 
 \begin{document}
  \begin{large}
@@ -16,17 +27,19 @@ Data Management Plan
 \setcounter{page}{1}
 
 \paragraph{Expected Data} The research conducted under this award will
-create three kinds of data:
+create four kinds of data:
 
 \begin{enumerate}
-\item \textit{Code:} The implementation of our platform for synthesis and verification of distributed control planes.
+\item \textit{Platform Code:} The implementation of our platform for supporting \rasp development in Haskell.
 
-\item \textit{Data:} These include the inputs that we use to evaluate our results, including network topologies, high-level network policies, and existing low-level network configurations.  These also include the outputs from our research artifacts, including synthesized configurations and counterexamples that demonstrate property violations.
+\item \textit{Application Code:} The implementation of \rasp applications, such as \rasp-enabled Autobahn and clients of
+\rasp-enabled Autobahn.
 
-\item \textit{Metadata:} These include the information needed to
+\item \textit{Data:} These data include the inputs that we use to evaluate our results.  These data also include the outputs from our research artifacts, including synthesized programs.
+
+\item \textit{Metadata:} These data include the information needed to
   replicate all of our experiments, including installation instructions,
-  command-line options, and experimental
-  setup.
+  command-line options, and experimental setup. 
 \end{enumerate}
 
 \paragraph{Period of data retention} Our results will be disseminated in
@@ -41,14 +54,14 @@ of our approaches and their applicability to other domains.
 The data will be made available immediately after
 publication, and in some cases will be made available to reviewers
 before publication. We will keep the data for at least three years
-after the end of the project. We will host all of the data on Github. In the case where personnel on the grant will change affiliation
+after the end of the project. We will host all of the data on Github. 
+In the case where personnel on the grant will change affiliation
 (because of graduation, separation, or other circumstances), the data
 will be the responsibility of the PI and Co-PIs. 
 
 \paragraph{Policies for access and sharing} 
 Published data such as articles, dissertations and book chapters will
-be accessible from publishers or upon request from the researchers
-involved, subject to privacy, confidentiality, security, and
+be accessible from publishers or on researcher web pages, subject to privacy, confidentiality, security, and
 intellectual-property-right policies of individual publishers.
 
 \end{document}

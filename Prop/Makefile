@@ -41,7 +41,7 @@ millstein:
 	pdflatex millstein-bio
 
 data:
-	pdflatex data-management
+	pdflatex data
 
 collaboration:
 	pdflatex collaboration
