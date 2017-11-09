@@ -25,17 +25,16 @@ only partially understandable even to excellent programmers.
 Examples of such factors include the difficult-to-predict effects of
 concurrency control and parallelization,
 the shifting demands of dynamic workloads,
-jit compilers,
-implementations of lazy language features,
-garbage collection,
-hardware and/or software caches, and
+the effects of jit compilers or garbage collection,
+the performance of hardware or software caches or lazy computation, 
+and the effectiveness of
 distributing computations across a variety of machines or data
 centers.
 %
 Even if programmers were able to obtain acceptable performance on a
 particular hardware configuration with a particular compiler/runtime
 on a particular set of workloads, such codes are unlikely to
-be robust as the hardware/software/workload system evolves.
+be robust as the hardware, software, or workload of the system evolves.
 %
 Library writers face particuarly daunting challenges as the
 appropriate implementation choices may depend crucially on information
@@ -57,7 +56,7 @@ possible implementations without concern for how those implementations
 perform and a set of representative workloads;
 the machine uses its computational power to search through
 the space of implementations to find the one(s) with the best performance.
-The machine makes use of dynamic measurements on the representative
+The machine makes use of dynamic measurements of the representative
 workloads to cope with the fact that purely analytic approaches are
 unlikely to be able to faithfully model resource utilization.
 
@@ -68,53 +67,82 @@ performant implementations of relational tables~\cite{data-rep-synth}
 and corresponding concurrency controls~\cite{conc-data-rep-synth}.
 Trella and Runciman use it to improve the performance of implicit parallel
 Haskell programs~\cite{implicit-parallel}, while
-Wang \etal{}'s \textsc{AutoBahn} system uses it to generate bang
+Wang \etal{}'s \textsc{AutoBahn} system uses it to generate strictness
 annotations to improve the runtime or memory utilization of Haskell
 programs~\cite{autobahn}.  Schkufza \etal{}'s \textsc{Stoke} system
 uses it to perform super-optimization via stochastic search, finding
 sequences of assembly language programs that outperform optimizing
 compilers and even hand-written codes~\cite{stochastic-superopt}.
-
 However, each of the above systems was built from scratch --- a substantial undertaking
 that can only be achieved by experts willing to build their own new languages and
-compilers, or to dig into the internals of existing languages.  The goal of
-this proposal is to design and implement a platform for resource-savvy
-synthesis.  This platform will ask users to define:
+compilers, or to dig into the internals of existing languages.  
+%Moreover,
+%each of system lives in isolation from the others.  For instance, Hawkins
+%approach to implementing relation tables is a stand-alone DSL embedded in
+%C++, while \textsc{Autobahn} provides a new compiler subsystem that improves
+%lazy evaluation Haskell 
+%programs.  
+
+\dpw{I'm thinking that somewhere near this spot we need to emphasize the
+fact that we want to do this in the context of strongly typed,
+polymorphic languages.  Types seem like the most succinct 
+way to distinguish this
+linguistically from the intersection of Rosette and PetaBricks.}
+
+\dpw{refine the following problem statement?}
+\begin{quote} 
+\emph{The goal of this proposal is to design and implement a platform that 
+enables programmers to quickly and easily define new abstractions 
+for resource-savvy synthesis in the context of a modern, typed programming
+language.}
+\end{quote}
+
+\noindent
+This platform will ask users to define:
 
 \begin{enumerate}
 \item new domain-specific abstractions for use by client programs
-\item the (possibly infinite) space of implementations of each abstraction
+\item the (possibly infinite) space of implementations of each abstraction,
+via \emph{typed symbolic values}~\cite{rosette} and 
+\emph{polymorphic, dependent and symbolic types}.
 \item a cost model
 \item a search strategy to navigate the space of implementations, and
 \item a test harness including representative inputs.
 \end{enumerate}
 %
-The first four items need only be defined once ---they form a
-\emph{resource-aware synthesis plug-in}, what we call a ``\rasp{}.''
-The last item allows clients to instantiate the \rasp{} differently for
+The first four items need only be defined once---they form a
+\emph{Resource-Savvy Synthesis Plug-in}, or \rasp{}  (pronounced ``rasp'').
+The last item allows clients of the \rasp to instantiate it differently for
 different contexts and workloads.
-
-For example, to implement Hawkin's et al.'s representation synthesis engine, the
-engineer defining the \rasp{} would specify:
+For example, to implement Hawkin's et al.'s representation synthesis engine, 
+the engineer defining the \rasp{} would specify:
 
 \begin{enumerate}
 \item an interface with functions to insert, delete, and look up records in a relational table
 \item a description of the legal implementations, which will be in terms of key-value maps
 (such as hash tables, lists, and vectors), allowable sharing
-relationships, and functional dependencies
+relationships, and functional dependencies; the definition of these
+implementations will be guided by \emph{symbolic types}, which when 
+concretized, will govern the shapes of data structures, as well as
+choices amongst \emph{symbolic values}
 \item the cost model, which is simply the running time on the supplied test harness
-\item the search strategy, which is brute force enumeration of the implementation space
+\item the search strategy, which, in this case, would be simple 
+brute force enumeration of the implementation space
 \end{enumerate}
 %
 Users of the \rasp{} could supply different harnesses to re-optimize for
 different use cases.
 
-The \rasp{} platform will help end users in a variety of domains to
+The \rasp{} platform will help end users in a variety of domains:
 \begin{enumerate}
-\item find programs that are functionally correct and resource-savvy for
+\item to find \emph{data structures} to represent their information succinctly,
+      to find \emph{types} to describe those data structures and to
+      guide the operation of algorithms over those structures
+      in a functionally correct and resource-savvy way for
   relevant workloads.  This part of the effort can be seen as producing
-  a general framework for autotuning.
-\item write programs that are robust with respect to workload and/or
+  a general framework for autotuning with source-level control over
+  program \emph{type structure}, \emph{data} and \emph{algorithms}.
+\item to write programs that are robust with respect to workload and/or
   environmental
   changes.  Because our framework will allow programmers to specify their
   intent at a high level and then synthesize a performant
@@ -126,7 +154,7 @@ The \rasp{} platform will help end users in a variety of domains to
   poor resource utilization.  Because the system makes use of dynamic
   measurement on a supplied workload, it can produce implementations
   that give poor performance on other inputs.  Such behavior may be
-  acceptable or even desired, for example in cases where the humans know that
+  perfectly acceptable, for example in cases where the humans know that
   those inputs are impossible and that ruling them out leads to
   significant performance improvements.  However, it may be that the
   supplied workload was not sufficiently broad and the outlier needs
