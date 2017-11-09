@@ -60,7 +60,7 @@ The machine makes use of dynamic measurements of the representative
 workloads to cope with the fact that purely analytic approaches are
 unlikely to be able to faithfully model resource utilization.
 
-Researchers have already developed solutions to a variety of specific problems
+Recently, researchers have developed solutions to a variety of \emph{specific} problems
 using this technique.
 For instance, Hawkins \etal{} use this approach to synthesize
 performant implementations of relational tables~\cite{data-rep-synth}
@@ -73,6 +73,9 @@ programs~\cite{autobahn}.  Schkufza \etal{}'s \textsc{Stoke} system
 uses it to perform super-optimization via stochastic search, finding
 sequences of assembly language programs that outperform optimizing
 compilers and even hand-written codes~\cite{stochastic-superopt}.
+Ragan-Kelley \emph{et al.}'s Halide system~\cite{Ragan-Kelley-Halide} 
+synthesizes high-performance
+image-processing pipelines.
 However, each of the above systems was built from scratch --- a substantial undertaking
 that can only be achieved by experts willing to build their own new languages and
 compilers, or to dig into the internals of existing languages.  
@@ -83,28 +86,45 @@ compilers, or to dig into the internals of existing languages.
 %lazy evaluation Haskell 
 %programs.  
 
-\dpw{I'm thinking that somewhere near this spot we need to emphasize the
-fact that we want to do this in the context of strongly typed,
-polymorphic languages.  Types seem like the most succinct 
-way to distinguish this
-linguistically from the intersection of Rosette and PetaBricks.}
+In order to provide everyday programmers with access to a multitude of
+efficient, new synthesis-enabled abstractions, like the ones mentioned
+above, and more, we claim that modern programming languages need new
+mechanisms that will allow programmers to define such abstractions and
+clients to specialize these abstractions to their own workloads.
+We propose to study, design and implement such mechanisms as a conservative extension
+of modern, strongly typed programming languages.  By focusing on resource-savvy
+synthesis in the context of typed languages, we will be able to provide programmers
+with both the software-engineering and security advantages of typed languages as
+well as the performance enabled by synthesis.  However, synthesis of algorithms
+and data structures in typed languages also presents a new set of practial
+and theoretical research questions.
 
-\dpw{refine the following problem statement?}
-\begin{quote} 
-\emph{The goal of this proposal is to design and implement a platform that 
-enables programmers to quickly and easily define new abstractions 
-for resource-savvy synthesis in the context of a modern, typed programming
-language.}
-\end{quote}
+%% in the context of strongly typed programming languages in order to retain the
+%% software-engineering and security properties of strongly type languages while
+%% simultaneously providing improved
+
+
+%% \dpw{I'm thinking that somewhere near this spot we need to emphasize the
+%% fact that we want to do this in the context of strongly typed,
+%% polymorphic languages.  Types seem like the most succinct 
+%% way to distinguish this
+%% linguistically from the intersection of Rosette and PetaBricks.}
+
+%% \dpw{refine the following problem statement?}
+%% \begin{quote} 
+%% \emph{The goal of this proposal is to design and implement a platform that 
+%% enables programmers to quickly and easily define new abstractions 
+%% for resource-savvy synthesis in the context of a modern, typed programming
+%% language.}
+%% \end{quote}
 
 \noindent
-This platform will ask users to define:
+More specifically, the resource-savvy synthesis platform we propose will ask users to define:
 
 \begin{enumerate}
 \item new domain-specific abstractions for use by client programs
 \item the (possibly infinite) space of implementations of each abstraction,
-via \emph{typed symbolic values}~\cite{rosette} and 
-\emph{polymorphic, dependent and symbolic types}.
+via \emph{typed symbolic values} and \emph{polymorphic, dependent and symbolic types}.
 \item a cost model
 \item a search strategy to navigate the space of implementations, and
 \item a test harness including representative inputs.
