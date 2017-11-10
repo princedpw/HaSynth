@@ -217,6 +217,67 @@ of this application, we consider other closely related applications
 including synthesis of parallel or distributed components and
 incrementalization of programs.
 
+\section{Related Work}
+\dpw{This section can be moved if it turns out to be in the wrong place.}
+
+Inspired by a range of important real-world
+problems~\cite{inductive-programming-meets-real-world}, ranging from
+end-user programming support~\cite{Harris:spread-sheets,Barowy:flashrelate} to super-optimization~\cite{stochastic-superopt} to education~\cite{Singh:education,Gulwani:cacm-education}, there has been
+a great deal of recent work in the programming languages community on
+new languages and algorithms for synthesizing programs.
+
+The work we propose has been most closely inspired by 
+Rosette~\cite{Torlak:rosette-pldi,Torlak:rosette-onward}, 
+a ``solver-aided language,'' hosted within Racket, that allows 
+users to declare and use symbolic values within Racket computations.  
+Rosette attempts to synthesizes appropriate
+concrete values for the symbolic ones (usually concrete values that
+satisfy given assertions) by using a form of bounded model checking
+and SMT solvers.  We propose to adopt the idea of using symbolic values
+to specify a space of implementations, but to consider such values in
+the context of a modern, typed language---Haskell---rather than an
+untyped language such as Racket.  When one does so, a range of new
+opportunities and challenges emerge.  In particular, we propose to
+allow users to declare and use \emph{symbolic types} in addition to symbolic
+values.  As we will see later in the proposal, such symbolic types
+have the potential to drive generation of symbolic type classes
+and type-directed computations.  They also interact with dependent
+constraints and type families.  A second important difference between
+our proposed work and Rosette is that we plan to explore search strategies based
+on dynamic evaluation cost metrics ranging stochastic search to
+reinforcement learning rather than using static analyses such as 
+bounded model checking to drive synthesis.
+
+Kaplan~\cite{kaplan} is another solver-aided language like Rosette,
+though it is based in Scala, a typed language.  Kaplan's central
+innovation involves allowing programs to iterate over the solutions
+provided by an embedded SMT solver.  Like Rosette, and unlike our
+proposed work, Kaplan's synthesis strategy revolves around SMT solutions
+of static constraints rather than search based on dynamic evaluation
+costs.  Kaplan also has not considered the interaction between (dependent) 
+symbolic types, type-directed computation and symbolic values.
+
+FlashMeta~\cite{Polozov:Flashmeta} is another generic synthesis framework ....
+
+Our proposed work is also inspired by past work on auto-tuning
+software.  One early example is Bilmes \emph{et al.}'s 
+work~\cite{Bilmes:autotune} on  PHiPAC, an efficient, autotuned library 
+for matrix multiplication.  Until relatively recently, most such 
+efforts were embedded
+in libraries or compilers, and gave programmers little source-level
+control over the space of programs that the compiler might work with.
+However, work on PetaBricks~\cite{Ansel+:petabricks} took a substantial
+step forward by allowing \emph{source-level programmers} to specify 
+``transforms'' and ``rules'' that map data from one region of
+memory to another, and showed that a compiler could effectively search
+for efficient orderings of rules that lead to completion of computation.
+They investigated applications such as matrix
+multiplication and sorting.  Our proposed language design is quite
+different as it relies on first-class, symbolic types and values,
+and our proposed applications, ranging from representation synthesis
+to eager evaluation of Haskell, are quite different as well.
+
+
 \section{\rasps for synthesis of control structures}
 
 The flow of control and evaluation of expressions can often be
