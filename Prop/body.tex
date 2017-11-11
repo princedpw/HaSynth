@@ -73,7 +73,7 @@ programs~\cite{autobahn}.  Schkufza \etal{}'s \textsc{Stoke} system
 uses it to perform super-optimization via stochastic search, finding
 sequences of assembly language programs that outperform optimizing
 compilers and even hand-written codes~\cite{stochastic-superopt}.
-Ragan-Kelley \emph{et al.}'s Halide system~\cite{Ragan-Kelley-Halide} 
+Ragan-Kelley \emph{et al.}'s Halide system~\cite{Ragan-Kelley:Halide} 
 synthesizes high-performance
 image-processing pipelines.
 However, each of the above systems was built from scratch --- a substantial undertaking
@@ -284,7 +284,7 @@ The flow of control and evaluation of expressions can often be
 optimized to great effect in functional programs.  However, choosing
 how and where to implement optimizations such as strict
 evaluation~\cite{autobahn}, introduction of
-parallelism~\cite{implicit-parallelism}, or caching is often difficult
+parallelism~\cite{implicit-parallel}, or caching is often difficult
 and time-consuming.  We hypothesize that \rasps can substantially
 improve the process of implementing such optimizations, relieving much
 of the burden from \rasp users while obtaining high performance.  In
@@ -437,8 +437,6 @@ component x = ...
 %%\end{minipage}
 \end{figure}
 
-\ksf{The \texttt{cd} latex command is not producing code in a distinct font. Not
-  sure how to fix correctly given that \texttt{cd} macros is already defined.}
 \paragraph*{Symbolic values}
 The first task in the design of any \rasp{} is to specify the space of
 implementations for the \rasp{} features.  In our proposal, the first step
@@ -626,7 +624,7 @@ specified file.
 \paragraph*{Related Applications}
 To illustrate our ideas, we have shown how to define a simple \rasp capable of
 
-automatic or semi-automatic parallelization~\cite{implicit-parallelism}, automatic or semi-automatic incrementalization.
+automatic or semi-automatic parallelization~\cite{implicit-parallel}, automatic or semi-automatic incrementalization.
 
 Another example:  parameterized sorting algorithms.  choose the sorting algorithm and choose the cutoff
 (eg: quicksort uses insertion sort at small array sizes).
@@ -636,10 +634,10 @@ Another example:  parameterized sorting algorithms.  choose the sorting algorith
 
 
 \section{Representation Synthesis with \rasps}
-\label{sec:eval}
+\label{sec:representation-synthesis}
 
 Autobahn and other similar applications, such as Trilla's work on
-improving implicit parallelism~\cite{implicit-parallelism}, focus on synthesizing new evaluation
+improving implicit parallelism~\cite{implicit-parallel}, focus on synthesizing new evaluation
 strategies or control-flow patterns.  Such applications are good starting point for our research as
 they make relatively simple use of symbolic values.  In particular, the symbols needed are usually
 booleans, and as such, little change to the type structure of the host language (in our case, Haskell),
@@ -665,11 +663,14 @@ will be developed in Haskell, we believe the ideas will be attractive in these o
 As you will see below, we believe our design will be particularly lightweight and easy to integrate into
 existing programming practice.
 
-A simple example type class that defines an interface to collections is presented in
-Figure~\ref{type-class-set}.  Here, we define the type class \cd{Set}, which has methods
-\cd{empty} to create the empty set (the parameter gives an estimated size of the set), \cd{insert} to add a member to a set, and \cd{member}
-to check for membership in a set.  We also sketch two instances (\ie, implementations) of this
-class.  One implementation uses a \cd{Vector} and the other uses a red-black tree.
+A simple example type class that defines an interface to collections
+is presented in Figure~\ref{fig:type-class-set}.  Here, we define the type
+class \cd{Set}, which has methods \cd{empty} to create the empty set
+(the parameter gives an estimated size of the set), \cd{insert} to add
+a member to a set, and \cd{member} to check for membership in a set.
+We also sketch two instances (\ie, implementations) of this class.
+One implementation uses a \cd{Vector} and the other uses a red-black
+tree.
 
 Typically, a programmer would have to choose which set representation to use in conjunction with their
 application --- such choices perhaps made after the programmer has taken time to analyze the performance
