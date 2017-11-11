@@ -384,8 +384,8 @@ find possible \emph{performance vulnerabilities}.
 \begin{mylisting}
 {-# LANGUAGE Synthesis DEFINING Autobahn -}
 
--- A vector of symbolic booleans. One per occurrence of gen* in the source code
-symbolic gen* :: bool
+-- A vector of symbolic booleans. 
+-- One per occurrence of gen* in the source code symbolic gen* :: bool
 
 -- Define the space of possible implementations
 eval? e = if gen* then seq e else e
@@ -396,13 +396,13 @@ map_syntax (\Apply(e1,e2) -> Apply(e1, Apply-inline (eval?, e2)))
 -- Define the search strategy for the vector gen*
 {-# STRATEGY gen* =
     genetic { diversityRate = 0.4
-               , numGenerations = 20
-               , populationSize = 15
-               , archiveSize = 7
-               , mutateRate = 0.2
-               , mutateProb = 0.2
-               , crossRate = 0.8
-               , numFitnessRuns = 4 }
+            , numGenerations = 20
+            , populationSize = 15
+            , archiveSize = 7
+            , mutateRate = 0.2
+            , mutateProb = 0.2
+            , crossRate = 0.8
+            , numFitnessRuns = 4 }
 -}
 \end{mylisting}
 \caption{The Autobahn \rasp.
@@ -641,15 +641,21 @@ Another example:  parameterized sorting algorithms.  choose the sorting algorith
 \label{sec:representation-synthesis}
 
 Autobahn and other similar applications, such as Trilla's work on
-improving implicit parallelism~\cite{implicit-parallel}, focus on synthesizing new evaluation
-strategies or control-flow patterns.  Such applications are good starting point for our research as
-they make relatively simple use of symbolic values.  In particular, the symbols needed are usually
-booleans, and as such, little change to the type structure of the host language (in our case, Haskell),
-is required.  However, the second phase of our research will investigate \rasp support for the synthesis
-and use of efficient data structures.  Here, the symbolic values required may be arbitrarily complex,
-and in order to support efficient, type-safe computation over varied data structures, we will need to
-introduce \emph{symbolic types} and study their interaction with symbolic values, type classes, modules
-and polymorphic and dependent types. \dpw{It would be nice to mention Hancock somewhere.}
+improving implicit parallelism~\cite{implicit-parallel}, focus on
+synthesizing new evaluation strategies or control-flow patterns.  Such
+applications are a good starting point for our research as they make
+relatively simple use of symbolic values.  In particular, the symbols
+needed are usually booleans, and as such, require little change to the
+type structure of the host language (in our case, Haskell).  However,
+the second phase of our research will investigate \rasp support for
+the synthesis and use of efficient data structures such as those used
+to enable the construction of fraud signatures in
+Hancock~\cite{hancock}.  Here, the symbolic values required may be
+arbitrarily complex, and in order to support efficient, type-safe
+computation over varied data structures, we will need to introduce
+\emph{symbolic types} and study their interaction with symbolic
+values, type classes, modules and polymorphic and dependent
+types.
 
 \paragraph*{Simple symbolic data representations}
 %% Programmers are continuously making choices about their data structure representations.  In the era of
@@ -676,20 +682,27 @@ We also sketch two instances (\ie, implementations) of this class.
 One implementation uses a \cd{Vector} and the other uses a red-black
 tree.
 
-Typically, a programmer would have to choose which set representation to use in conjunction with their
-application --- such choices perhaps made after the programmer has taken time to analyze the performance
-ramifications for their code.  However, we propose to allow users to declare \emph{symbolic types} for their
-data structures and to allow the system to search for optimal representatives for them.  For example,
-looking again at Figure~\ref{fig:type-class-set}, we see declarations of a symbolic type \cd{t*}
-with kind \cd{* -> *}, indicating it is a function from types to types.  Moreover, \cd{t*} is constrained
-to be in the class \cd{Set}.  Such a constraint limits the collection of possible types, making search
-tractible.  Later, in \cd{component}, the type \cd{t*} is used in a typing annotation.  Doing so
-implies the implementation of sets used by the \cd{process} function will be determined by resource-aware
-synthesis.  At the bottom of the figure, directives to synthesize code based on example data and directives
-to help users find performance vulnerabilities appear as before.  Here, we also assume that the SymbolicClasses
-\rasp provides a default search strategy.  At the moment, it seems likely that the search space for this
-sort of usage is typically small (there may only be a small number of ways to construct particular type
-classes) and hence simple smallest-to-largest enumerative search may work well.
+In current practice, programmers have to choose which set
+representation to use in conjunction with their application ---
+ideally after they have taken the time to analyze the performance
+ramifications for their code.  With our work, users will be able to
+declare \emph{symbolic types} for their data structures; the system
+will search for optimal representations on their behalf.  For example,
+looking again at Figure~\ref{fig:type-class-set}, we see the declaration
+of a symbolic type \cd{t*} with kind \cd{* -> *}, indicating it is a
+function from types to types.  Moreover, \cd{t*} is constrained to be
+in the class \cd{Set}.  Such a constraint limits the number of types that
+must be considered, making search tractable.  Later, in \cd{component},
+the type \cd{t*} appears in a typing annotation, with the implication that the
+implementation of sets used in the \cd{process} function will be
+determined by resource-savvy synthesis.  At the bottom of the figure,
+directives to synthesize code based on example data and directives to
+help users find performance vulnerabilities appear as before.  Here,
+we also assume that the SymbolicClasses \rasp provides a default
+search strategy.  We hypothesize that the search space
+for this sort of usage will typically be small (there may only be a small
+number of ways to construct particular type classes) and hence simple,
+smallest-to-largest enumerative search may work well.
 
 Notice that one of the key benefits of our proposed design is its simplicity and lack of intrusiveness.
 The symbolic program itself is hardly different from an ordinary Haskell program --- all of the work is
@@ -697,7 +710,7 @@ done by a simple, constrained symbolic type definition.  And yet, the result app
 search strategies behind the scenes automatically constructing efficient representations.
 
 Many of the interesting research questions behind the design involve rigorously defining the specifics of the
-type theory, including the meaning of types and values when they are symbolic, the search strategy and
+type theory, including the meaning of types and values when they are symbolic, the search strategies, and
 the compiler algorithms, which will need to translate symbolic Haskell programs into concrete Haskell programs.
 In particular, for both foundational and practical reasons, it is important to define both the operational
 semantics of Haskell programs and the equalities (both at the type and value levels) that programmers
@@ -727,12 +740,12 @@ instance Set RBTree where
 process :: Set s => s a -> ()
 process = ...
 
-symbolic t* :: * -> * where Set t   -- symbolic type t declaration
-symbolic size* :: int               -- symbolic integer
+symbolic t* :: * -> * where Set t   -- Symbolic type t declaration
+symbolic size* :: int               -- Symbolic integer
 
 component n =
-  process (empty size* :: t* int)   -- Symbolic type class for sets;
-  ...                                 -- Initial set size determiend by symbolic size*
+  process (empty size* :: t* int)   -- Symbolic type class for sets
+  ...                               -- Initial size determined by symbolic size*
 
 {- SYNTHESIZE "mycomponent" [component 0, ...]  "dir/code" -}
 {- VULNERABILITIES "mycomponent" "report.txt" -}
@@ -748,10 +761,10 @@ component n =
 The representations for the set type built from the classes listed in
 Figure~\ref{fig:type-class-set} are relatively straightforward as they
 may be built from stand-alone instances of pre-existing classes.  In
-more complex situations, it is often necessary to construct
+more complex situations, it will be necessary to construct
 hierarchical data structures from multiple components and to enforce
 and maintain sophisticated representation invariants.  We propose
-to dependent types to describe representation invariants and thereby
+using dependent types to describe representation invariants and thereby
 cut down the space of possible implementations.  We also propose to use
 type-directed programming to safely specialize programs to a particular
 implementation, once the most efficient symbolic choices have been made.
@@ -765,8 +778,8 @@ implementation, once the most efficient symbolic choices have been made.
 \path (p1) +(20mm,0mm) node (p2) {};
 \path (p2) +(30mm,0mm) node (p3) {};
 
-\draw (p1) +(-6mm,15mm) node {\bf(a)};
-\draw (p2) +(-8mm,15mm) node {\bf(b)};
+\draw (p1) +(-6mm,15mm) node {(a)};
+\draw (p2) +(-8mm,15mm) node {(b)};
 %\draw (p3) +(-8mm,15mm) node {\bf(9)};
 
 \draw (p1) +(0mm,18mm) node (root) {};
@@ -809,10 +822,10 @@ implementation, once the most efficient symbolic choices have been made.
 \end{tikzpicture}
 
 \caption{Possible representations for weighted graph edges.  Solid edges
-are maps implemented by Hash tables; dotted edges are maps implemented
-by lists.  (a) a Hash table
+are maps implemented by hash tables; dotted edges are maps implemented
+by lists.  (a) A hash table
 indexed by source node, followed by a list indexed by destination node;
-(b) like (a), but with a second accessor path via destination then
+(b) Like (a), but with a second accessor path via destination then
 source node.
 This picture originally appeared in \cite{data-rep-synth}.
 }
@@ -832,13 +845,13 @@ edges.  Indeed Hawkins' system considers 68 different representations
 of the set of edges as different kinds of hierarchical maps.  Such
 maps may be implemented by lists, vectors or hash tables.  And they
 may be indexed first by source node, destination node or weight.
-Figure~\ref{fig:rep-synth} presents pictures of a couple of plausible
+Figure~\ref{fig:rep-synth} depicts two plausible
 representations.
 
 One way for programmers to describe the space of possible
 implementations for sets of edges may be to use data types with
-constraints.  For instance, the following definitions describe the
-range of possible representations \cd{R} coarsely.
+constraints.  For instance, the following definitions coarsely
+describe the range of possible representations \cd{R}.
 
 \begin{mylisting}
 data Map = List | Hash
@@ -855,8 +868,8 @@ be a \cd{Pair} of representations.
 However, not all such representations are reasonable---for instance,
 it makes no sense to have a hierarchical structure that includes
 maps repeatedly and redundantly indexed by destination (or by source).
-A natural way to rule out such structures, is to use constraints of
-one kind or anther.  We plan to investigate various mechanisms for
+A natural way to rule out such structures is to use constraints of
+some kind.  We plan to investigate various mechanisms for
 expressing such constraints, including GADTs~\cite{gadts},
 singleton types~\cite{weirich:singletons} and
 liquid types~\cite{liquid-haskell}.
