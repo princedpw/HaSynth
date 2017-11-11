@@ -943,6 +943,49 @@ type safety.
 \section{Evaluation}
 \label{sec:eval}
 
+We will evaluate our design ideas using both theoretical machinery and
+practical applications.
+
+On the theoretical side, we plan to define the 
+static and dynamic semantics of our extensions formally and 
+to prove classic type safety theorems to ensure that the interactions
+between symbolic types, symbolic values and Haskell's rich type system
+do not interfere with one another.  In addition, we plan to study
+how symbolic types change or support reasoning principles such as
+parametricity, and to investigate logical relations as means
+for reasoning about programs in the presence of symbolic types.  
+Ahmed's step-indexed logical relations are likely the right place
+to begin the investigation.  And to extend the work to stateful programs,
+we would consider recent work from Ahmed, Dreyer, Rossberg and others 
+as a starting
+point~\cite{Ahmed:state-logical-relations,Dreyer:logical-relations}.
+Proving safety properties and ensuring established reasoning principles
+are available to programmers will help evaluate the meta-theoretic
+properties that all programs in our extended language will enjoy.
+
+On the practical side, we plan to use our framework to reimplement
+existing stand-alone systems.  We will start by demonstrating we can
+reimplement PI Fisher's Autobahn~\cite{autobahn}, Trilla's implicit 
+parallelism~\cite{implicit-parallel} and Hawkins (in collaboration with
+Fisher again) representation synthesis engine~\cite{implicit-parallel}.  
+By reimplementing existing synthesis
+systems, we have a baseline against which we can measure the properties
+of our new framework, including synthesis time, effort (in terms of lines
+of code and person-hours) and performance of the synthesized code.  Naturally,
+such measurements will likely inspire further research that aims to
+optimize the performance of the framework.   We will also experiment
+with and evaluate new search strategies for existing frameworks.  For
+example, we are eager to evaluate the tradeoffs in using reinforcement
+learn vs genetic programming in applications such Autobahn.
+
+In addition to evaluating the effectiveness of our framework when
+re-implementing existing applications, we hope to develop new
+applications.  Some of this will be done by mentoring undergraduate
+students on independent projects using our new framework.  While it is
+difficult to set up a controlled experiment that measures programmer
+productivity accurately in this context, we hope to gain ad hoc
+insights into the utility of our tools that will lead to their improvement 
+through this process.
 
 \section{Broader Impacts}
 \label{sec:impact}
