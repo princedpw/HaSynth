@@ -56,7 +56,7 @@ choice of data representations, and the effects of caching.
 In the past, researchers have built effective systems 
 for automated synthesis of efficient
 implementations such as Hawkin \emph{et al.}'s representation
-synthesis, the Stoke super-optimizer, and many others.
+synthesis, the Stoke super-optimizer, and others.
 However, these efforts, while valuable, have typically resulted in 
 \emph{one-off}, \emph{stand-alone} systems.
 
@@ -80,21 +80,33 @@ synthesis of efficient implementations, taking into consideration the current
 environment and client program.  A basic \rasp will include the definition
 of (i) a new abstract interface for clients, (ii) a specification of a
 (possibly infinite) space of implementations, (iii)
-a cost metric, and (iv) a search strategy.  The space of implementations
-will be specified using \emph{typed symbolic values}, which will have \emph{symbolic types}
-that are constrained using \emph{dependent types}, and be implemented 
-efficiently using \emph{compile-time, type-directed computations}.  New 
+a cost metric, and (iv) a search strategy.  
+%The space of implementations will be specified using typed symbolic 
+%values, which will have symbolic types that are constrained using 
+%dependent types, and be implemented efficiently using compile-time, 
+%type-directed computations.
+The space of implementations
+will be specified using both \emph{symbolic values} and \emph{symbolic types}.
+The latter will define the shapes of data structures, customized for
+particular workloads and environments.  To specify the necessary representation 
+invariants over such data structures, we proprose to augment our
+symbolic types with constraints, thereby giving rise to \emph{dependent
+symbolic types}.
+%will be used to drive
+%that are constrained using \emph{dependent types}, and be implemented 
+Efficient algorithms for operating over such data structures will be defined
+using \emph{compile-time, type-directed computations}.  New 
 search strategies may be implemented directly by users, and may range from
-brute force enumeration to genetic programming to stocastic search.
+brute force enumeration to genetic programming to deep reinforcement learning.
 To use a new \rasp, client programs will simply import the \rasp definition
 and supply example data to drive the search/synthesis process.
 To support performance debugging and analysis of performance vulnerabilities,
 we will explore language support for analyzing synthesis 
 results and generating candidate inputs that may exhibit unexpected 
 performance.  We will implement our ideas in the context of the
-Haskell programming language, evaluate the resulting design by testing
-it on a series of applications ranging from strictness analysis to
-representation synthesis, and study the formal properties of the semantics and
+Haskell programming language and evaluate the resulting design by testing
+it on applications ranging from strictness analysis to
+representation synthesis.  We will also study the formal properties of the
 type theory resulting from our design.
 
 \noindent
