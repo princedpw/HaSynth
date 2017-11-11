@@ -222,31 +222,35 @@ incrementalization of programs.
 
 Inspired by a range of important real-world
 problems~\cite{inductive-programming-meets-real-world}, ranging from
-end-user programming support~\cite{Harris:spread-sheets,Barowy:flashrelate} to super-optimization~\cite{stochastic-superopt} to education~\cite{Singh:education,Gulwani:cacm-education}, there has been
-a great deal of recent work in the programming languages community on
-new languages and algorithms for synthesizing programs.
+end-user programming
+support~\cite{Barowy:flashrelate,Harris:spread-sheets} to
+super-optimization~\cite{stochastic-superopt} to
+education~\cite{Gulwani:cacm-education,Singh:education}, there has
+been a great deal of recent work in the programming languages
+community on new languages and algorithms for synthesizing programs.
 
-The work we propose has been most closely inspired by 
-Rosette~\cite{Torlak:rosette-pldi,Torlak:rosette-onward}, 
-a ``solver-aided language,'' hosted within Racket, that allows 
-users to declare and use symbolic values within Racket computations.  
-Rosette attempts to synthesizes appropriate
-concrete values for the symbolic ones (usually concrete values that
-satisfy given assertions) by using a form of bounded model checking
-and SMT solvers.  We propose to adopt the idea of using symbolic values
-to specify a space of implementations, but to consider such values in
-the context of a modern, typed language---Haskell---rather than an
-untyped language such as Racket.  When one does so, a range of new
-opportunities and challenges emerge.  In particular, we propose to
-allow users to declare and use \emph{symbolic types} in addition to symbolic
-values.  As we will see later in the proposal, such symbolic types
-have the potential to drive generation of symbolic type classes
-and type-directed computations.  They also interact with dependent
-constraints and type families.  A second important difference between
-our proposed work and Rosette is that we plan to explore search strategies based
-on dynamic evaluation cost metrics ranging stochastic search to
-reinforcement learning rather than using static analyses such as 
-bounded model checking to drive synthesis.
+The work we propose is most closely inspired by
+Rosette~\cite{Torlak:rosette-onward,Torlak:rosette-pldi}, a
+``solver-aided language,'' hosted within Racket, that allows users to
+declare and use symbolic values within Racket computations.  Rosette
+attempts to synthesizes appropriate concrete values for the symbolic
+ones (usually concrete values that satisfy given assertions) by using
+a form of bounded model checking and SMT solvers.  We propose to adopt
+the idea of using symbolic values to specify a space of
+implementations, but to consider such values in the context of a typed
+language---Haskell---rather than an untyped language such as Racket.
+In doing so, a range of new opportunities and challenges emerge.  In
+particular, we propose to allow users to declare and use
+\emph{symbolic types} in addition to symbolic values.  As we will see
+later in the proposal, such symbolic types have the potential to drive
+the generation of \emph{symbolic type classes} and corresponding
+type-directed computations.  Symbolic types also interact with
+dependent constraints and type families.  A second important
+difference between our proposed work and Rosette is that we plan to
+drive the synthesis process 
+using search strategies based on the dynamic evaluation of cost metrics
+ranging from stochastic search to reinforcement learning rather than using
+static analyses such as bounded model checking.
 
 Kaplan~\cite{kaplan} is another solver-aided language like Rosette,
 though it is based in Scala, a typed language.  Kaplan's central
