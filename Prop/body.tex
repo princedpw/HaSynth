@@ -824,12 +824,12 @@ instance Set RBTree where
 process :: Set s => s a -> ()
 process = ...
 
-symbolic t* :: * -> * where Set t   -- Symbolic type t declaration
+symbolic t* :: * -> * where Set t   -- Constrained symbolic type t
 symbolic size* :: int               -- Symbolic integer
 
 component n =
   process (empty size* :: t* int)   -- Symbolic type class for sets
-  ...                               -- Initial size determined by symbolic size*
+  ...                               -- Initial size determined by size*
 
 {- SYNTHESIZE "mycomponent" [component 0, ...]  "dir/code" -}
 {- VULNERABILITIES "mycomponent" "report.txt" -}
@@ -847,9 +847,17 @@ Figure~\ref{fig:type-class-set} are relatively straightforward as they
 may be built from stand-alone instances of pre-existing classes.  In
 more complex situations, it will be necessary to construct
 hierarchical data structures from multiple components and to enforce
-and maintain sophisticated representation invariants.  We propose
+and maintain sophisticated representation invariants.  For example,
+in PI Fisher's work on the Hancock DSL~\cite{hancock}, programmers had to hand-craft
+complex hierarchical maps for big data processing, with different levels
+implementing different parts of the map---synthesis could
+replace this manual work, if we can represent the appropriate implementation
+constraints.  Likewise, Fisher~\cite{data-rep-synth}
+suggests synthesis can be used to construct efficient kernel lookup tables,
+provided we can represent functional dependencies and other constraints
+over the data structures.  We propose
 using dependent types to describe representation invariants and thereby
-cut down the space of possible implementations.  We also propose to use
+cut down the space of legal implementations.  We also propose to use
 type-directed programming to safely specialize programs to a particular
 implementation, once the most efficient symbolic choices have been made.
 
@@ -920,7 +928,7 @@ implementation, once the most efficient symbolic choices have been made.
   %
   \begin{minipage}{.45\textwidth}
     \centering
-    \includegraphics[width=0.8\textwidth]{rasp}
+    \includegraphics[width=\textwidth]{rasp}
     \caption{\label{fig:rasp}A proposed visual element template for a load
       balancing \rasp in a visual programming language.  Such a \rasp
       would hide the implementation details from students while allowing them
@@ -976,7 +984,7 @@ In addition to specifying the possible shapes of data structures,
 it is necessary to specify the possible implementations of query
 methods.  Such methods should protect clients from having to know
 the implementation chosen, and should be as efficient as possible.
-We plan to investigate the use of type directed programming here.
+We plan to investigate the use of type-directed programming here.
 In other words, we plan to allow users to define functions parameterized
 by symbolic types; once the symblic types are made concrete, it should
 be possible to specialize the function implementation to the chosen
