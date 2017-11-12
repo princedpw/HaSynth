@@ -352,11 +352,11 @@ execute the program, Autobahn searches for the set of strictness annotations
 that optimizes (run-time) performance of the application on the sample data.
 Given the large number of possible program annotations, the search space is
 vast.  However, our research has discovered that genetic programming finds
-effective set of annotations in most cases.
+an effective set of annotations in most cases.
 
 While Autobahn is an effective new tool for optimizing Haskell's evaluation
 order, it was costly to construct.  In particular, the researchers
-required knowledge of Haskell's compiler internals and had to generate
+required knowledge of Haskell's compiler internals and had to develop
 infrastructure to generate variations of user programs, execute them,
 measure performance and search for optimal variations.  All this
 infrastructure and knowledge was deployed to build just one tool.
@@ -486,14 +486,27 @@ separate symbolic boolean, which will allow different evaluation
 choices to be made at each call site (as opposed to the same
 evaluation choice, which will lead to suboptimal performance).  There
 are a variety of ways a user might implement such syntactic
-transformations.  For instance, the user may use Template
-Haskell~\cite{template-haskell}; we will also investigate developing
-alternative lightweight support for commonly occurring syntax rewrites
-that we encounter in our applications, with combinators such as
-\cd{map\_syntax} being one possibility.
-\ksf{We might want to say this the other way: that we will develop a
-  set of light-weight mechainsms for the programmer to specify search
-  points, leveraging Template Haskell in the process.}
+transformations.  We will develop a set of light-weight mechanisms that
+allow the program to specify syntax rewrites, leveraging 
+Template Haskell~\cite{template-haskell} in the process.
+
+We will also need to consider the range of different types that may be made symbolic.
+Types such as \cd{Bool}, have a small finite range, making search tractable, even
+if there are many of them.   Symbolic integers have a larger range, affecting the search
+\emph{strategies} (discussed next) that may be used and symbolic functions (say, type \cd{int -> int} have an 
+infinite range.  Indeed, if we allow programmers to introduce symbolic functions, we
+are squarely in the domain of arbitrary program synthesis.  We should be able to use
+standard Haskell mechanisms such as type classes to limit the types of symbolic values,
+while also allowing users to extend this set where appropriate.
+
+%% For instance, the user may use Template
+%% Haskell~\cite{template-haskell}; we will also investigate developing
+%% alternative lightweight support for commonly occurring syntax rewrites
+%% that we encounter in our applications, with combinators such as
+%% \cd{map\_syntax} being one possibility.
+%% \ksf{We might want to say this the other way: that we will develop a
+%%   set of light-weight mechainsms for the programmer to specify search
+%%   points, leveraging Template Haskell in the process.}
 
 \paragraph*{Strategies}
 Together, symbolic values, symbolic computations (such as \cd{eval?}),
