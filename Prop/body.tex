@@ -493,10 +493,10 @@ Template Haskell~\cite{template-haskell} in the process.
 We will also need to consider the range of different types that may be made symbolic.
 Types such as \cd{Bool}, have a small finite range, making search tractable, even
 if there are many of them.   Symbolic integers have a larger range, affecting the search
-\emph{strategies} (discussed next) that may be used and symbolic functions (say, type \cd{int -> int} have an 
+\emph{strategies} (discussed next) that may be used and symbolic functions (say, type \cd{int -> int}) have an 
 infinite range.  Indeed, if we allow programmers to introduce symbolic functions, we
 are squarely in the domain of arbitrary program synthesis.  We should be able to use
-standard Haskell mechanisms such as type classes to limit the types of symbolic values,
+standard Haskell mechanisms, such as type classes, to limit the types of symbolic values,
 while also allowing users to extend this set where appropriate.
 
 %% For instance, the user may use Template
@@ -535,9 +535,10 @@ unknowns in the \cd{gen*} vector of symbolic values.  The strategy
 invokes genetic programming (as in the original Autobahn system),
 parameterized by a number of features.  It implicitly uses a
 cost metric that measures run-time performance (as opposed to memory used,
-lines of code generated or other measures). \ksf{Where is the test
-  harness specified?  Ie, the programs that we will run to measure the
-performance?  }
+lines of code generated or other measures).\footnote{The test data to drive 
+the strategy is not given with the \rasp definition itself, it is given
+with the client code so that different clients may specialize the \rasp
+definitions differently. See the next subsection.}
 
 More generally, to support the wide variety of possible strategies
 needed by different applications, we will need to investigate how to
@@ -567,7 +568,7 @@ strategy to an application is to expose some of the paramaters of the \rasp{} st
 In the Autobahn example, for instance, parameters of the genetic programming algorithm might
 be exposed to clients.  Perhaps more interestingly, users may wish to use several different
 instances of the same \rasp{} within a single program.  For instance, a user may suspect that
-two modules, which both use Autobahn are performance-isolated from one another.  Consequently,
+two modules, which both use Autobahn, are performance-isolated from one another.  Consequently,
 they may be optimized separately, rather than jointly, which may improve the search for
 optimal answers.  In general, finding ways to allow users to specify how \rasp{}s are used and how program
 components are optimized is an important component of our proposed research.
@@ -583,22 +584,23 @@ The latter is a utility that should help programmers detect outliers and defend 
 unexpected performance variance that may lead either to reliability or security issues.
 
 Figure~\ref{fig:autobahn-client} sketches a simple use case of the Autobahn \rasp.
-Here, the pragma at the top of the figure indicates the programmer which to work
+Here, the pragma at the top of the figure indicates the program should be interpreted
 within the Autobahn sublanguage.  The following declaration defines \cd{component},
 which is intended to be an ordinary function, defined within the \rasp{} sublanguage.
-The next diretive, \cd{SYNTHESIZE}, instructs the system to find values of symbolic
+The next directive, \cd{SYNTHESIZE}, instructs the system to find values of symbolic
 variables that jointly optimize execution of \cd{component 0}, \cd{component 1}, \etc{}
 and to place optimized code in the specified directory.
 
-\ksf{I'm not sure this fits here, or if should be its own section thingy.}
-\paragraph*{Finding performance bugs}
-The last element that we plan to explore is performance debugging
+%\ksf{I'm not sure this fits here, or if should be its own section thingy.}
+\paragraph*{Finding performance vulnerabilities}
+The last element that we plan to explore is support for finding performance vulnerabilities in
 \rasp{}-generated code.
-We envision many \rasp{}s will use dynamic measurements to guide their search
-because of the difficulties of accurately modeling resource utilization
-at scale.
-Dynamic approaches, however, are vulnerable because they necessarily
-consider only a portion of the input space.
+%We envision many \rasp{}s will use dynamic measurements to guide their search
+%because of the difficulties of accurately modeling resource utilization
+%statically at scale.
+\rasps typically evaluate client code many times on ``representative'' inputs.
+%Dynamic approaches, however, are vulnerable because they necessarily
+%consider only a portion of the input space.
 Autobahn, for example, guarantees it will match or improve the
 performance of the programs it considers
 \textit{on the supplied data}.  If the test data is representative of
@@ -607,17 +609,17 @@ well. If, however, the program is given unexpected data at runtime
 that triggers different execution paths, the performance of the
 optimized program may be \textit{worse} than the original.
 This situation may reflect a performance bug in the optimized
-program.  A solution would be to add the triggering inputs to the
-representative set given to Autobahn as input, which would cause it to
-optimize the program differently.  However, the situation could also
-reflect an input validation error if the program truly should not need
-to handle the triggering data.  For example, the standard \cd{factorial}
+program or, in a security context, a vulnerability.  
+If the programmer can identify the inputs that will trigger such behavior,
+those inputs can be used to augment the
+representative set given to Autobahn.  Alternatively, such inputs may be
+deemed illegal by the programmer. For example, the standard \cd{factorial}
 function fails to terminate when called on a negative number, but we
 typically regard that as violating the pre-conditions of the function
 and would be happy with a compiler that took advantage of the
 knowledge that the argument is positive to perform optimizations.  In
 this situation, the solution would be to add an explicit pre-condition
-to the function outlawing the triggering value.
+or contract to the function outlawing the triggering value.
 
 In this portion of the \rasp{} research project, we envision
 developing tools to help identify inputs that trigger excessive
@@ -628,7 +630,7 @@ subspaces defined by constraints (\eg{}, the first argument is
 positive and the second argument is non-nil, the first argument is
 negative and the second argument is nil, \etc{}).  For each subspace,
 we will generate a symbolic (where possible)~\cite{Hoffmann17} or
-empircal~\cite{Goldsmith07}
+empirical~\cite{Goldsmith07}
 characterization of the resources used as a function of the legal
 inputs for that subspace.   For \cd{factorial}, for example, the input
 will be partitioned into positive and negative values.  For negative
@@ -643,21 +645,20 @@ To carry out this work, we plan to use a combination of symbolic
 execution, complexity analysis, code coverage analysis, and
 random-input generation that produces inputs of increasing size.
 
-
 The \cd{VULNERABILITIES} pragma in Figure~\ref{fig:autobahn-client}
 triggers this analysis for the code synthezied by the Autobahn \rasp{}.
 A report containing analysis results will be generated in the
 specified file.
 
-\paragraph*{Related Applications}
-To illustrate our ideas, we have shown how to define a simple \rasp capable of
+%% \paragraph*{Related Applications}
+%% To illustrate our ideas, we have shown how to define a simple \rasp capable of
 
-automatic or semi-automatic parallelization~\cite{implicit-parallel}, automatic or semi-automatic incrementalization.
+%% automatic or semi-automatic parallelization~\cite{implicit-parallel}, automatic or semi-automatic incrementalization.
 
-Another example:  parameterized sorting algorithms.  choose the sorting algorithm and choose the cutoff
-(eg: quicksort uses insertion sort at small array sizes).
+%% Another example:  parameterized sorting algorithms.  choose the sorting algorithm and choose the cutoff
+%% (eg: quicksort uses insertion sort at small array sizes).
 
-\paragraph*{Research Summary So Far}
+%% \paragraph*{Research Summary So Far}
 
 
 
