@@ -1051,15 +1051,18 @@ to begin the investigation.  And to extend the work to stateful programs,
 we would consider recent work from Ahmed, Dreyer, Rossberg and others 
 as a starting
 point~\cite{Ahmed:state-logical-relations,Dreyer:logical-relations}.
-Proving safety properties and ensuring established reasoning principles
+We plan, in particular, to investigate how to construct proofs that
+no matter which values of symbolic variables are synthesized, functional
+properties of a program are preserved.
+Proving safety properties and establishing that sound reasoning principles
 are available to programmers will help evaluate the meta-theoretic
 properties that all programs in our extended language will enjoy.
 
 On the practical side, we plan to use our framework to reimplement
 existing stand-alone systems.  We will start by demonstrating we can
 reimplement PI Fisher's Autobahn~\cite{autobahn}, Trilla's implicit 
-parallelism~\cite{implicit-parallel} and Hawkins (in collaboration with
-Fisher again) representation synthesis engine~\cite{implicit-parallel}.  
+parallelism~\cite{implicit-parallel} and Fisher and collaborators's work on 
+representation synthesis~\cite{implicit-parallel}.  
 By reimplementing existing synthesis
 systems, we have a baseline against which we can measure the properties
 of our new framework, including synthesis time, effort (in terms of lines
@@ -1076,8 +1079,7 @@ applications.  Some of this will be done by mentoring undergraduate
 students on independent projects using our new framework.  While it is
 difficult to set up a controlled experiment that measures programmer
 productivity accurately in this context, we hope to gain ad hoc
-insights into the utility of our tools that will lead to their improvement 
-through this process.
+insights into the utility of our tools that will lead to their improvement.
 
 \section{Broader Impacts}
 \label{sec:impact}
@@ -1188,6 +1190,8 @@ Control Structure Synthesis Infrastructure & Year 1 & Year 1\\\hline
 Control Structure Applications  & Year 1& Year 1 \\\hline
 Representation Synthesis Infrastructure & Year 2 & Year 2\\\hline
 Representation Synthesis Applications  & Year 2 & Year 2\\\hline\hline
+Performance Vulnerabilities  & Year 1 & Year 2\\\hline\hline
+Meta-theory, Reasoning Principles  & Year 1 & Year 2\\\hline\hline
 {\bf Educational Task} & {\bf Start} & {\bf Finish} \\\hline\hline
 Blockly Infrastructure Development & Year 1 & Year 2 (Fall) \\\hline
 Princeton UGrad IW Seminar & Year 2 (Spring) & Year 2 (Spring) \\\hline\hline
