@@ -149,12 +149,11 @@ would be expressed using \emph{polymorphic, dependent, symbolic types}, while
 value-level choices would be captured using \emph{symbolic values},
 \item the cost model, which is simply the running time on the supplied
   test harness, and
-\item the search strategy, which, in this case, would be simple 
-brute force enumeration of the implementation space
+\item the search strategy, which in this case would be brute force enumeration of the implementation space
 \end{enumerate}
 %
 Users of the \rasp{} would supply appropriate test harnesses to optimize for
-different use cases such as those described by Hawkins \etal.
+different use cases such as those described by Hawkins \etal
 
 One potential pitfall of this approach stems from its use of
 dynamic measurements on supplied workloads to make optimization
@@ -217,12 +216,53 @@ produce new educational tools for students learning to program.
 %% \end{wrapfigure}
 %\end{figure}
 
+\paragraph{The Team.}  
 
-\paragraph{The Team.}  Our team has the breadth of skills,
-backgrounds, and perspectives that will be required to accomplish the
-agenda set out above, including relevant experience in type theory,
-program synthesis, and in applying machine-learning techniques to
-programming language problems.
+Our team has the breadth of skill, background, and perspective that
+will be required to accomplish the ambitious agenda set out above, including
+relevant experience in program synthesis, applying machine-learning
+techniques to programming language problems, domain-specific language
+design and optimization, type theory, and visual programming
+languages.
+Specifically, both PI Fisher and PI Walker have extensive experience
+with program synthesis in domains ranging from data structure
+description languages~\cite{zhu+:learnpads2}, to data representation
+selection~\cite{data-rep-synth},
+concurrency control strategies~\cite{conc-data-rep-synth}, 
+network configuration~\cite{beckett+:propane,beckett+:config-synt2}, and
+lenses for bidirectional transformations between data
+formats~\cite{miltner+:synthesizing-bijective-lenses}.
+They also have experience in using machine learning to address
+challenges in programming languages, including searching for PADS
+descriptions that best fit a collection of ad hoc data
+sources~\cite{zhu+:learnpads2}, using genetic programming to reduce
+resource utilization in Haskell programs~\cite{autobahn}, and using
+topic models to understand the flow of ideas in the programming
+language literature~\cite{TMPL-snapl}.
+With respect to language design, PI Fisher co-designed and built
+Hancock~\cite{hancock}, a domain-specific language with
+workload-tunable data structures that enabled fraud detection
+applications not previously possible and saved AT\&T hundreds of
+millions of dollars annually.
+PI Walker and his collaborators developed the first high-level
+SDN programming languages, including Frenetic~\cite{frenetic}, Pyretic~\cite{pyretic} and
+NetKAT~\cite{netkat}. 
+Together, the PIs have designed and built domain-specific languages for
+describing ad hoc data~\cite{pldi05:fisher+,mandelbaum:pads-ml} and
+filestores~\cite{fisher+:forest}.
+In all these projects, the PIs have drawn upon their background in
+type theory to provide formal grounding for their work and to define
+precise semantics for the various languages.
+Finally, Ph.D. student Matthew Ahrens has experience designing visual
+languages for educational purposes and using such languages to work
+with students ~\cite{Blocks}.
+Together, the PIs cover the full spectrum of skills required for this
+proposal including 
+synthesizing programs in a variety of domains,
+applying machine learning,
+designing and building programming languages,  and
+developing and applying type theory.
+
 
 \ksf{I'm not sure this summary is still accurate or that we need it:
 We hypothesize that resource-savvy synthesis, implemented via the 
