@@ -594,6 +594,7 @@ Other researchers have shown that for super-optimization, stocastic search is ve
 efficient~\cite{stochastic-superopt}.  Finally, if data is available in the domain, probabilistic
 models~\cite{probabilistic-netkat} may help drive the search.
 
+
 To illustrate how such strategies may be applied, please turn again to
 the running example \rasp involving Autobahn in
 Figure~\ref{fig:autobahn-via-synthesis}.  Here, we add a declaration
@@ -608,26 +609,36 @@ with the client code so that different clients may specialize the \rasp
 definitions differently. See the next subsection.}
 
 More generally, to support the wide variety of possible strategies
-needed by different applications, we will need to investigate how to
-provide a uniform interface that makes it possible for programmers to
-define their own new optimization strategies.  This could include
+needed by different applications, we will investigate how to
+provide a uniform interface for adding new strategies.
+These strategies could include
 variations on the specific genetic programming algorithm used in
-Autobahn, or stocastic search, probabilistic modelling, enumerative
-search, or use of symbolic methods such as bounded model checking.
+Autobahn, stocastic search, probabilistic modelling, enumerative
+search, or the use of symbolic methods such as bounded model checking.  We
+will also explore whether reinforcement learning~\cite{reinforcement} might
+serve as a useful framework for our work; techniques from that
+community seem a natural fit as they seek to find solutions that
+maximize a reward function (or equivalently in our setting, minimize a
+cost function that captures resource utilization).
+We anticipate providing a collection of built-in strategies as well as
+providing mechanisms for advanced users to add new ones.
 
 In addition to supporting several strategies independently, we will
-investigate the effects of mixing more than one strategy.  In particular,
-in large programs, we expect several different \rasp{}s to be used simultaneously.
-In order for optimization to scale, it may be necessary to make independence assumptions
-so that different \rasp{}s may be optimized separately.  Of course, such assumptions
-may turn out to be invalid and attempts at ordering optimizations one after another
-may wind up encountering the classic compiler optimization phase-ordering
+investigate the effects of mixing more than one strategy.  In
+particular, in large programs, we expect several different \rasp{}s to
+be used simultaneously.  In order for optimization to scale, it may be
+necessary to make independence assumptions so that different \rasp{}s
+may be optimized separately.  Of course, such assumptions may turn out
+to be invalid and attempts at ordering optimizations one after another
+may wind up encountering the classic compiler optimization
+phase-ordering
 problem~\cite{Click:combining-optimizations,Vegdahl:phase-coupling}.
- If so, we will drawn on the literature
-to find solutions to such issues~\cite{Kulkarni:phase-ordering-search,Kulkarni:phase-ordering}.  While such issues are likely to present interesting
-and challenging research problems, they are unlikely to be show-stoppers---though we may not
-be able to supply optimal peformance, we may still be able to improve application performaance
-dramatically.
+If so, we will drawn on the literature to find
+solutions~\cite{Kulkarni:phase-ordering-search,Kulkarni:phase-ordering}.
+While such issues are likely to present interesting and challenging
+research problems, they are unlikely to be show-stoppers--- we
+may not be able to supply optimal peformance, but we may still be able to
+improve application performaance dramatically.
 
 In addition to facing the challenge of composing different strategies from different \rasp{}s,
 we may also find that users may wish to tweak \rasp{} strategy.  One way to customize \rasp{}
@@ -641,14 +652,13 @@ optimal answers.  In general, finding ways to allow users to specify how \rasp{}
 components are optimized is an important component of our proposed research.
 
 \paragraph*{Using a \rasp{}}
+
 The preceeding paragraphs demonstrate the main elements involved in
-defining a \rasp.  In order to use a \rasp, a programmer includes
-the \rasp{} definition in each file to which it applies.  In addition, they
-must provide some data with which to guide application-specific search,
-and optionally, may use language support to uncover performance vulnerabilities.
-The former allows performance to be customized to the local environment and application.
-The latter is a utility that should help programmers detect outliers and defend against
-unexpected performance variance that may lead either to reliability or security issues.
+defining a \rasp.  In order to use a \rasp, programmers include the
+\rasp{} definition in each file to which it applies.  In addition,
+they provide a test harness, including representative input, with
+which to guide application-specific search.  This information allows
+performance to be customized to the local environment and application.
 
 Figure~\ref{fig:autobahn-client} sketches a simple use case of the Autobahn \rasp.
 Here, the pragma at the top of the figure indicates the program should be interpreted
