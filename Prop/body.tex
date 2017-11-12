@@ -261,7 +261,18 @@ of static constraints rather than search based on dynamic evaluation
 costs.  Kaplan also has not considered the interaction between (dependent) 
 symbolic types, type-directed computation and symbolic values.
 
-FlashMeta~\cite{Polozov:Flashmeta} is another generic synthesis framework ....
+FlashMeta~\cite{Polozov:Flashmeta} is another generic synthesis framework, but
+it aims to synthesizing terms in arbitrary domain-specific languages.  After
+FlashMeta is provided with a description of the target language and the inverse
+semantics of that language's operators, it can synthesize that language's
+terms from quantifier-free predicates.  The central contribution of
+FlashMeta is the introduction of the $D^4$ methodology, which automatically
+combines deductive inference, based on the semantics of the target language,
+with enumerative search.  FlashMeta synthesizes programs for free, but does not
+provide easy integration with the target language.  Unlike Rosette, Kaplan, and
+our proposed system, there are no constructs for easily
+specifying synthesis tasks --- FlashMeta is best used as a backend
+engine instead of as a system for users to interact with.
 
 Our proposed work is also inspired by past work on auto-tuning
 software.  One early example is Bilmes \emph{et al.}'s 
