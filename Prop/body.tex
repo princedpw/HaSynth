@@ -32,7 +32,7 @@ particular hardware configuration with a particular compiler/runtime
 on a particular set of workloads, such codes are unlikely to
 be robust as the hardware, software, or workload of the system evolves.
 %
-Library writers face particuarly daunting challenges as the
+Library writers face particularly daunting challenges as the
 appropriate implementation choices may depend crucially on information
 not available until the library is used.  Exposing different API calls
 for different workloads, for example as Haskell's JSON parsing library
@@ -46,7 +46,7 @@ knowledge of the external world, specific knowledge of the problem
 domains, and intuition derived from life experience.
 The computer supplies the ability to test hypotheses efficiently and
 reliably and to search through large spaces rapidly.
-In such a partnership targetting resource-savvy programming,
+In such a partnership targeting resource-savvy programming,
 the human's role is to describe the set of
 possible implementations without concern for how those implementations
 perform and a set of representative workloads;
@@ -85,7 +85,7 @@ compilers, or to dig into the internals of existing languages.
 
 To enable everyday programmers to reap these kinds of benefits in
 domains of interest to them, we claim that modern programming
-langauges need new mechanisms to define abstractions suitable for
+languages need new mechanisms to define abstractions suitable for
 resource-savvy synthesis and objective functions that measure
 performance quality on relevant workloads.  We propose to study,
 design and implement such mechanisms as a conservative extension of
@@ -94,7 +94,7 @@ resource-savvy synthesis in the context of typed languages, we will be
 able to provide programmers with both the software-engineering and
 security advantages of typed languages as well as the performance
 benefits enabled by synthesis.  However, synthesis of algorithms and
-data structures in typed languages presents a new set of practial
+data structures in typed languages presents a new set of practical
 and theoretical research questions.
 
 %% in the context of strongly typed programming languages in order to retain the
@@ -283,7 +283,7 @@ Section~\ref{sec:prior-support} describes Co-PI Walker's recent NSF grants.
 \label{sec:related}
 
 Inspired by a range of important real-world
-problems~\cite{inductive-programming-meets-real-world}, ranging from
+problems~\cite{inductive-programming-meets-real-world} ranging from
 end-user programming
 support~\cite{Barowy:flashrelate,Harris:spread-sheets} to
 super-optimization~\cite{stochastic-superopt} to
@@ -344,10 +344,11 @@ software.  One early example is Bilmes \emph{et al.}'s
 work~\cite{Bilmes:autotune} on  PHiPAC, an efficient, autotuned library 
 for matrix multiplication.  Until relatively recently, most such 
 efforts were embedded
-in libraries or compilers~\cite[\ldots]{Whaley+:atlas,FrigoJo98,Im2001}, and
+in libraries or compilers~\cite[\ldots]{FrigoJo98,Im2001,Whaley+:atlas} and
 gave programmers little source-level 
 control over the space of programs that the compiler might work with.
-Recently, \textsc{chameleon}~\cite{Shacham+:chameleon} changed this by allowing
+Recently, \textsc{chameleon}~\cite{Shacham+:chameleon} changed this
+situation by allowing
 some user customization.  \textsc{chameleon} chooses an efficient collection
 implementation at runtime based on program traces and the heap. Users can
 customize \textsc{chameleon} by providing their own collection implementations. 
@@ -359,28 +360,29 @@ for efficient orderings of rules that lead to completion of computation.
 They investigated applications such as matrix
 multiplication and sorting.
 PetaBricks has been extended to support optimizing variable-accuracy algorithms,
-where one can sacrafice accuracy for efficiency, and
+where one can sacrifice accuracy for efficiency, and
 vice-versa~\cite{Ansel+:variablepetabricks}. 
 Our proposed language design is quite
 different in that it relies on first-class, symbolic types and values,
 and our proposed applications, ranging from representation synthesis
 to eager evaluation of Haskell, are quite different as well.
 
-Our proposed work aims to tackle the task of synthesizing efficient data
-structures.  Given a relational specification, the \textsc{RelC}
-system~\cite{data-rep-synth,conc-data-rep-synth} synthesizes a data structure
-capable of holding that relational information. Insertion, query, and deletion
-functions that act on the synthesized data structure also provides.
-\textsc{RelC} has an autotuner component that makes the synthesized data
-structure perform well on provided examples. The Cozy system~\cite{cozy}
-performs a similar task, synthesizing an efficient data structure from a
-description of the data structure's fields and the queries that will be
-performed on it.  Like \textsc{RelC}, Cozy provides autotuning capabilities.
-Our work differs from previous work on synthesizing and autotuning data
-structures, in that previous work only allowed specific types of specifications
-to be provided by the user.  Our proposed work, however, allows users to build
-their own specification definitions, letting users easily extend their synthesis
-system to suit new use-cases.
+One application area of our work is the synthesis of efficient data
+structures, building on previous work by PI Fisher on
+\textsc{RelC}~\cite{data-rep-synth,conc-data-rep-synth}. Given a
+relational specification, the \textsc{RelC} system synthesizes a data
+structure capable of holding the relational information and
+corresponding functions for insertion, querying, and deletion.
+\textsc{RelC} has an autotuner component that makes the synthesized
+data structure perform well on provided examples. The Cozy
+system~\cite{cozy} performs a similar task, synthesizing an efficient
+data structure from a description of the data structure's fields and
+the queries that will be performed on it.  Like \textsc{RelC}, Cozy
+provides autotuning capabilities.  Our work differs in that the
+previous work only allowed specific types of specifications to be
+provided by the user.  In our proposed work users will be able to
+build their own specification definitions, letting them easily extend
+the synthesis system to suit new use-cases.
 
 
 \section{\rasps for synthesis of control structures}
@@ -554,7 +556,7 @@ in such a way as to maximize resource utilization according to a user-defined co
 search strategy.
 
 As an example, consider Figure~\ref{fig:autobahn-via-synthesis}.  Here, the programmer
-defines \cd{gen*}, a new \emph{set} of symbolic booleans.  Intuitively, every occurence of \cd{gen*}
+defines \cd{gen*}, a new \emph{set} of symbolic booleans.  Intuitively, every occurrence of \cd{gen*}
 in the final source code will correspond to a separate symbolic boolean.  The second declaration in
 the \rasp{} defines the function \cd{eval?}.  This function takes an arbitrary expression \cd{e}
 as an argument.  If \cd{gen*} is true, it forces eager evaluation of \cd{e} into weak head normal
@@ -571,7 +573,7 @@ eagerly evaluate (and possibly lazily evaluate) its argument.  We
 represent the application of this syntactic transformation via the
 \cd{map\_syntax} primitive.  One minor detail here is that body of
 \cd{eval?} should be inlined so that every function call has its own
-separate occurrence of \cd{gen*}.  Each occurence will correspond to a
+separate occurrence of \cd{gen*}.  Each occurrence will correspond to a
 separate symbolic boolean, which will allow different evaluation
 choices to be made at each call site (as opposed to the same
 evaluation choice, which will lead to suboptimal performance).  There
@@ -595,7 +597,7 @@ while also allowing users to extend this set where appropriate.
 %% that we encounter in our applications, with combinators such as
 %% \cd{map\_syntax} being one possibility.
 %% \ksf{We might want to say this the other way: that we will develop a
-%%   set of light-weight mechainsms for the programmer to specify search
+%%   set of light-weight mechanisms for the programmer to specify search
 %%   points, leveraging Template Haskell in the process.}
 
 \paragraph*{Strategies}
@@ -613,7 +615,7 @@ other non-exhaustive strategies are required.  For instance, Autobahn
 introduces a choice for every function call and the resulting search
 space grows exponentially with respect to the size of the program.  To
 navigate this space, Wang \etal{} demonstrate that genetic programming is effective.
-Other researchers have shown that for super-optimization, stocastic search is very
+Other researchers have shown that for super-optimization, stochastic search is very
 efficient~\cite{stochastic-superopt}.  Finally, if data is available in the domain, probabilistic
 models~\cite{probabilistic-netkat} may help drive the search.
 
@@ -636,7 +638,7 @@ needed by different applications, we will investigate how to
 provide a uniform interface for adding new strategies.
 These strategies could include
 variations on the specific genetic programming algorithm used in
-Autobahn, stocastic search, probabilistic modelling, enumerative
+Autobahn, stochastic search, probabilistic modeling, enumerative
 search, or the use of symbolic methods such as bounded model checking.  We
 will also explore whether reinforcement learning~\cite{reinforcement} might
 serve as a useful framework for our work; techniques from that
@@ -660,12 +662,12 @@ If so, we will drawn on the literature to find
 solutions~\cite{Kulkarni:phase-ordering-search,Kulkarni:phase-ordering}.
 While such issues are likely to present interesting and challenging
 research problems, they are unlikely to be show-stoppers--- we
-may not be able to supply optimal peformance, but we may still be able to
-improve application performaance dramatically.
+may not be able to supply optimal performance, but we may still be able to
+improve application performance dramatically.
 
 In addition to facing the challenge of composing different strategies from different \rasp{}s,
 we may also find that users may wish to tweak \rasp{} strategy.  One way to customize \rasp{}
-strategy to an application is to expose some of the paramaters of the \rasp{} strategy to users.
+strategy to an application is to expose some of the parameters of the \rasp{} strategy to users.
 In the Autobahn example, for instance, parameters of the genetic programming algorithm might
 be exposed to clients.  Perhaps more interestingly, users may wish to use several different
 instances of the same \rasp{} within a single program.  For instance, a user may suspect that
@@ -676,7 +678,7 @@ components are optimized is an important component of our proposed research.
 
 \paragraph*{Using a \rasp{}}
 
-The preceeding paragraphs demonstrate the main elements involved in
+The preceding paragraphs demonstrate the main elements involved in
 defining a \rasp.  In order to use a \rasp, programmers include the
 \rasp{} definition in each file to which it applies.  In addition,
 they provide a test harness, including representative input, with
@@ -746,7 +748,7 @@ execution, complexity analysis, code coverage analysis, and
 random-input generation that produces inputs of increasing size.
 
 The \cd{VULNERABILITIES} pragma in Figure~\ref{fig:autobahn-client}
-triggers this analysis for the code synthezied by the Autobahn \rasp{}.
+triggers this analysis for the code synthesized by the Autobahn \rasp{}.
 A report containing analysis results will be generated in the
 specified file.
 
@@ -1028,7 +1030,7 @@ methods.  Such methods should protect clients from having to know
 the implementation chosen, and should be as efficient as possible.
 We plan to investigate the use of type-directed programming here.
 In other words, we plan to allow users to define functions parameterized
-by symbolic types; once the symblic types are made concrete, it should
+by symbolic types; once the symbolic types are made concrete, it should
 be possible to specialize the function implementation to the chosen
 symbolic type without incurring run-time overhead and without giving up
 type safety.
@@ -1070,7 +1072,7 @@ type safety.
 %% -- a symbolic data structure describing
 %% symbolic t* :: GD
 %% \end{mylisting}
-%% \caption{Repesentation synthesis \rasp}
+%% \caption{Representation synthesis \rasp}
 %% \label{fig:rep-synth-rasp}
 %% \end{figure}
 
@@ -1103,7 +1105,7 @@ properties that all programs in our extended language will enjoy.
 On the practical side, we plan to use our framework to reimplement
 existing stand-alone systems.  We will start by demonstrating we can
 reimplement PI Fisher's Autobahn~\cite{autobahn}, Trilla's implicit 
-parallelism~\cite{implicit-parallel} and Fisher and collaborators's work on 
+parallelism~\cite{implicit-parallel} and Fisher and collaborators' work on 
 representation synthesis~\cite{implicit-parallel}.  
 By reimplementing existing synthesis
 systems, we have a baseline against which we can measure the properties
@@ -1149,7 +1151,7 @@ provide a visual front end for an existing textual language.
 %abstractions for existing visual languages.
 As an example of current practice, the visual
 language BlockyTalky\cite{BlockyTalky} declares Blockly blocks to wrap distributed
-programming primatives while tacitly handling implementation details like establishing
+programming primitives while tacitly handling implementation details like establishing
 remote connections and buffering message sends in its runtime system.
 Researchers have used BlockyTalky to engage middle and high school students
 from underrepresented backgrounds in computer science by having them
@@ -1184,7 +1186,7 @@ Princeton's independent work seminars (IW) to play the role of
 educators building abstractions for a visual programming language.
 David Walker will lead one such IW seminar, which will be comprised of 10-15
 undergraduate students.  Tufts PhD student Matthew Ahrens, who worked
-on BlockTalky, will design and build a \rasp system for the visual
+on BlockyTalky, will design and build a \rasp system for the visual
 programming language.  The Princeton undergraduates will work together
 under the guidance of Professor Walker to build their own \rasp-based
 abstractions for a visual language and explore what applications
@@ -1206,7 +1208,7 @@ PADS~\cite{fisher+:next-700,fisher+:pads-overview,mandelbaum:pads-ml}
 and Forest~\cite{fisher+:forest} to the development of new algorithms
 for program
 synthesis~\cite{fisher+:learnpads,miltner+:synthesizing-bijective-lenses,zhu+:learnpads2}.
-These colloborations have always occurred with the PIs at separate
+These collaborations have always occurred with the PIs at separate
 institutions, as in the current proposal.  As we have done for our
 prior and ongoing collaborations, we will continue to hold weekly
 team-wide videoconference meetings.  This mechanism allows everyone to
