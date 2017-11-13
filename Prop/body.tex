@@ -312,7 +312,9 @@ difference between our proposed work and Rosette is that we plan to
 drive the synthesis process 
 using search strategies based on the dynamic evaluation of cost metrics
 ranging from stochastic search to reinforcement learning rather than using
-static analyses such as bounded model checking.
+static analyses such as bounded model checking.  Rosette also focuses on
+correctness, and does not provide means to speed up performance, where our
+proposed system focuses on improving efficiency.
 
 Kaplan~\cite{kaplan} is another solver-aided language like Rosette,
 though it is based in Scala, a typed language.  Kaplan's central
@@ -342,7 +344,8 @@ software.  One early example is Bilmes \emph{et al.}'s
 work~\cite{Bilmes:autotune} on  PHiPAC, an efficient, autotuned library 
 for matrix multiplication.  Until relatively recently, most such 
 efforts were embedded
-in libraries or compilers, and gave programmers little source-level
+in libraries or compilers~\cite[\ldots]{Whaley+:atlas,FrigoJo98,Im2001}, and
+gave programmers little source-level 
 control over the space of programs that the compiler might work with.
 Recently, \textsc{chameleon}~\cite{Shacham+:chameleon} changed this by allowing
 some user customization.  \textsc{chameleon} chooses an efficient collection
@@ -373,6 +376,11 @@ structure perform well on provided examples. The Cozy system~\cite{cozy}
 performs a similar task, synthesizing an efficient data structure from a
 description of the data structure's fields and the queries that will be
 performed on it.  Like \textsc{RelC}, Cozy provides autotuning capabilities.
+Our work differs from previous work on synthesizing and autotuning data
+structures, in that previous work only allowed specific types of specifications
+to be provided by the user.  Our proposed work, however, allows users to build
+their own specification definitions, letting users easily extend their synthesis
+system to suit new use-cases.
 
 
 \section{\rasps for synthesis of control structures}
