@@ -61,10 +61,12 @@ using this technique.
 For instance, Hawkins \etal{} use this approach to synthesize
 performant implementations of relational tables~\cite{data-rep-synth}
 and corresponding concurrency controls~\cite{conc-data-rep-synth}.
-Trella and Runciman use it to improve the performance of implicit parallel
+Loncaric \emph{et al.}~\cite{cozy} investigated synthesis of even richer data
+representations with custom query methods.
+Trilla and Runciman use it to improve the performance of implicit parallel
 Haskell programs~\cite{implicit-parallel}, while
-Wang \etal{}'s \textsc{AutoBahn} system uses it to generate strictness
-annotations to improve the runtime or memory utilization of Haskell
+PI Fisher's \textsc{AutoBahn} system uses it to generate strictness
+annotations to improve the run-time or memory utilization of Haskell
 programs~\cite{autobahn}.  Schkufza \etal{}'s \textsc{Stoke} system
 uses it to perform super-optimization via stochastic search, finding
 sequences of assembly language programs that outperform optimizing
@@ -88,13 +90,13 @@ domains of interest to them, we claim that modern programming
 languages need new mechanisms to define abstractions suitable for
 resource-savvy synthesis and objective functions that measure
 performance quality on relevant workloads.  We propose to study,
-design and implement such mechanisms as a conservative extension of
+design, and implement such mechanisms as a conservative extension of
 modern, strongly typed programming languages.  By focusing on
 resource-savvy synthesis in the context of typed languages, we will be
 able to provide programmers with both the software-engineering and
 security advantages of typed languages as well as the performance
 benefits enabled by synthesis.  However, synthesis of algorithms and
-data structures in typed languages presents a new set of practical
+data structures in languages with rich type systems presents a new set of practical
 and theoretical research questions.
 
 %% in the context of strongly typed programming languages in order to retain the
@@ -163,7 +165,8 @@ ruling out illegal inputs can lead to significant performance
 improvements on the legal inputs. 
 However, it may be that the supplied
 workload was not sufficiently broad.
-In this case, failing to consider outliers can lead to annoying performance for end
+In this case, failing to consider outliers can lead to 
+unreliable performance for end
 users and can expose the system to denial of service attacks by hackers.
 
 For this reason, a second research thrust will be to develop
@@ -171,7 +174,7 @@ approaches and tools for finding outlier inputs on which the
 synthesized implementation makes poor use of resources.
 Users may respond to detected outliers by using refinement types or
 contracts to definitively mark them as illegal or by adding them
-to the representative workload.
+to the representative workload for synthesis.
 
 
 
@@ -186,9 +189,9 @@ in workload or infrastructure
 \textit{while leaving the high-level logic of the program unchanged}.  
 They will be able to use our tools to explore the stability of the
 performance of their synthesized programs in the face of unexpected inputs.
-In addition, we will advance the state of the art in type theory as we
+In addition, we will advance the state of the art in (1) type theory as we
 explore how best to use symbolic types to express the relevant search
-spaces and in the nascent field of machine-learning enabled program
+spaces, and in (2) the nascent field of machine-learning enabled program
 analysis as we study how best to find performant implementations and
 outliers.
 
@@ -276,7 +279,8 @@ challenges involved with supporting synthesis of complex
 data structures.  Section~\ref{sec:eval} explains how we will evaluate
 our work.  Section~\ref{sec:impact} describes our broader impacts
 and educational plan.  Section~\ref{sec:collab} describes our collaboration plan.
-This proposal, if funded, would be PI Fisher's first NSF grant;
+This proposal, if funded, would be PI Fisher's first technical NSF grant (most of her
+career has been spent in industry);
 Section~\ref{sec:prior-support} describes Co-PI Walker's recent NSF grants.
 
 \section{Related Work}
@@ -295,26 +299,35 @@ The work we propose is most closely inspired by
 Rosette~\cite{Torlak:rosette-onward,Torlak:rosette-pldi}, a
 ``solver-aided language,'' hosted within Racket, that allows users to
 declare and use symbolic values within Racket computations.  Rosette
-attempts to synthesizes appropriate concrete values for the symbolic
-ones (usually concrete values that satisfy given assertions) by using
+attempts to synthesize appropriate concrete values for the symbolic
+ones by using
 a form of bounded model checking and SMT solvers.  We propose to adopt
 the idea of using symbolic values to specify a space of
-implementations, but to consider such values in the context of a typed
-language---Haskell---rather than an untyped language such as Racket.
+implementations, but to consider such values in the context of a
+language with a very expressive type system (Haskell) rather 
+than an untyped language such as Racket.
 In doing so, a range of new opportunities and challenges emerge.  In
 particular, we propose to allow users to declare and use
 \emph{symbolic types} in addition to symbolic values.  As we will see
 later in the proposal, such symbolic types have the potential to drive
 the generation of \emph{symbolic type classes} and corresponding
-type-directed computations.  Symbolic types also interact with
-dependent constraints and type families.  A second important
+type-directed computations.  Symbolic types may also interact with
+dependent constraints and many of Haskell's advanced features such
+as GADTs and type families.  A second important
 difference between our proposed work and Rosette is that we plan to
 drive the synthesis process 
 using search strategies based on the dynamic evaluation of cost metrics
 ranging from stochastic search to reinforcement learning rather than using
 static analyses such as bounded model checking.  Rosette also focuses on
-correctness, and does not provide means to speed up performance, where our
-proposed system focuses on improving efficiency.
+correctness, and does not provide a means to speed up performance, whereas our
+proposed system focuses on improving efficiency.  
+
+Synapse~\cite{synapse} is a system built on top of Rosette and is designed
+for optimization.  The central innovation is the search strategy, which
+involves two collaborating algorithms that search through a series of 
+``metasketches.''  Unlike our proposal, Synapse is not hosted by a typed
+language like Haskell.  We also plan to investigate a different collection
+of search strategies.
 
 Kaplan~\cite{kaplan} is another solver-aided language like Rosette,
 though it is based in Scala, a typed language.  Kaplan's central
@@ -334,7 +347,7 @@ predicates.  The central contribution of FlashMeta is the introduction
 of the $D^4$ methodology, which automatically combines deductive
 inference, based on the semantics of the target language, with
 enumerative search.  FlashMeta synthesizes programs for free, but does
-not provide easy integration with the target language.  Unlike
+not provide easy integration with a host language.  Unlike
 Rosette, Kaplan, and our proposed system, there are no constructs for
 easily specifying synthesis tasks --- FlashMeta is best used as a
 backend engine instead of as a system for users to interact with.
@@ -365,24 +378,25 @@ vice-versa~\cite{Ansel+:variablepetabricks}.
 Our proposed language design is quite
 different in that it relies on first-class, symbolic types and values,
 and our proposed applications, ranging from representation synthesis
-to eager evaluation of Haskell, are quite different as well.
+to new evaluation strategies for Haskell, are quite 
+different as well.
 
-One application area of our work is the synthesis of efficient data
-structures, building on previous work by PI Fisher on
-\textsc{RelC}~\cite{data-rep-synth,conc-data-rep-synth}. Given a
-relational specification, the \textsc{RelC} system synthesizes a data
-structure capable of holding the relational information and
-corresponding functions for insertion, querying, and deletion.
-\textsc{RelC} has an autotuner component that makes the synthesized
-data structure perform well on provided examples. The Cozy
-system~\cite{cozy} performs a similar task, synthesizing an efficient
-data structure from a description of the data structure's fields and
-the queries that will be performed on it.  Like \textsc{RelC}, Cozy
-provides autotuning capabilities.  Our work differs in that the
-previous work only allowed specific types of specifications to be
-provided by the user.  In our proposed work users will be able to
-build their own specification definitions, letting them easily extend
-the synthesis system to suit new use-cases.
+%% One application area of our work is the synthesis of efficient data
+%% structures, building on previous work by PI Fisher on
+%% \textsc{RelC}~\cite{data-rep-synth,conc-data-rep-synth}. Given a
+%% relational specification, the \textsc{RelC} system synthesizes a data
+%% structure capable of holding the relational information and
+%% corresponding functions for insertion, querying, and deletion.
+%% \textsc{RelC} has an autotuner component that makes the synthesized
+%% data structure perform well on provided examples. The Cozy
+%% system~\cite{cozy} performs a similar task, synthesizing an efficient
+%% data structure from a description of the data structure's fields and
+%% the queries that will be performed on it.  Like \textsc{RelC}, Cozy
+%% provides autotuning capabilities.  Our work differs in that the
+%% previous work only allowed specific types of specifications to be
+%% provided by the user.  In our proposed work users will be able to
+%% build their own specification definitions, letting them easily extend
+%% the synthesis system to suit new use-cases.
 
 
 \section{\rasps for synthesis of control structures}
@@ -1308,6 +1322,8 @@ of network configuration and analysis.  The PIs will host
 a workshop on network synthesis and verification under the umbrella of the
 Cornell-Princeton Center on Network Programming and with ample industry
 participation as a way of transferring academic discoveries to industry.
+The PI has also given a recent talk at Cisco as a way of transferring academic
+discoveries to industry.
 
 
 
