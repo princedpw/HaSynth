@@ -282,7 +282,6 @@ Section~\ref{sec:prior-support} describes Co-PI Walker's recent NSF grants.
 \section{Related Work}
 \label{sec:related}
 
-
 Inspired by a range of important real-world
 problems~\cite{inductive-programming-meets-real-world}, ranging from
 end-user programming
@@ -345,16 +344,35 @@ for matrix multiplication.  Until relatively recently, most such
 efforts were embedded
 in libraries or compilers, and gave programmers little source-level
 control over the space of programs that the compiler might work with.
-However, work on PetaBricks~\cite{Ansel+:petabricks} took a substantial
-step forward by allowing \emph{source-level programmers} to specify 
+Recently, \textsc{chameleon}~\cite{Shacham+:chameleon} changed this by allowing
+some user customization.  \textsc{chameleon} chooses an efficient collection
+implementation at runtime based on program traces and the heap. Users can
+customize \textsc{chameleon} by providing their own collection implementations. 
+Work on PetaBricks~\cite{Ansel+:petabricks,Phothilimthana+:gpupetabricks} took a
+substantial step forward by allowing \emph{source-level programmers} to specify 
 ``transforms'' and ``rules'' that map data from one region of
 memory to another, and showed that a compiler could effectively search
 for efficient orderings of rules that lead to completion of computation.
 They investigated applications such as matrix
-multiplication and sorting.  Our proposed language design is quite
+multiplication and sorting.
+PetaBricks has been extended to support optimizing variable-accuracy algorithms,
+where one can sacrafice accuracy for efficiency, and
+vice-versa~\cite{Ansel+:variablepetabricks}. 
+Our proposed language design is quite
 different in that it relies on first-class, symbolic types and values,
 and our proposed applications, ranging from representation synthesis
 to eager evaluation of Haskell, are quite different as well.
+
+Our proposed work aims to tackle the task of synthesizing efficient data
+structures.  Given a relational specification, the \textsc{RelC}
+system~\cite{data-rep-synth,conc-data-rep-synth} synthesizes a data structure
+capable of holding that relational information. Insertion, query, and deletion
+functions that act on the synthesized data structure also provides.
+\textsc{RelC} has an autotuner component that makes the synthesized data
+structure perform well on provided examples. The Cozy system~\cite{cozy}
+performs a similar task, synthesizing an efficient data structure from a
+description of the data structure's fields and the queries that will be
+performed on it.  Like \textsc{RelC}, Cozy provides autotuning capabilities.
 
 
 \section{\rasps for synthesis of control structures}
